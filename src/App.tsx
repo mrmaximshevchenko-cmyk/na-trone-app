@@ -3,6 +3,12 @@ import './App.css'
 import Stats from './Stats'
 import { ACHIEVEMENTS, getUnlockedIds } from './achievements'
 import Profile from './Profile'
+import mascotMain from './assets/mascot/main.png'
+import mascotHappy from './assets/mascot/happy.png'
+import mascotNeutral from './assets/mascot/neutral.png'
+import mascotSad from './assets/mascot/sad.png'
+import mascotShrug from './assets/mascot/shrug.png'
+import mascotStreak from './assets/mascot/streak.png'
 import { saveSessionToServer, loadSessionsFromServer } from './api'
 
 
@@ -137,6 +143,7 @@ function App() {
   const [resultTitle, setResultTitle] = useState('')
   const [resultTip, setResultTip] = useState('')
   const [resultEmoji, setResultEmoji] = useState('🎉')
+  const [resultMascot, setResultMascot] = useState(mascotHappy)
 
   const [history, setHistory] = useState<Session[]>(() => {
     const saved = localStorage.getItem('throne_history')
@@ -199,27 +206,33 @@ function App() {
     let title = ''
     let tip = ''
 
-    if (amount === 'Осечка') {
+           if (amount === 'Осечка') {
       title = pick(ENCOURAGE)
       tip = pick(TIPS_HARD)
       setResultEmoji('😐')
+      setResultMascot(mascotShrug)
     } else if (consistency === 'Сухарь') {
       title = pick(SYMPATHY)
       tip = pick(TIPS_HARD)
       setResultEmoji('😔')
+      setResultMascot(mascotSad)
     } else if (consistency === 'Жидко') {
       title = pick(SYMPATHY)
       tip = pick(TIPS_LOOSE)
       setResultEmoji('😔')
+      setResultMascot(mascotSad)
     } else if (rating >= 7) {
       title = pick(PRAISE)
       setResultEmoji('🎉')
+      setResultMascot(mascotHappy)
     } else if (rating >= 4) {
       title = pick(NEUTRAL)
       setResultEmoji('😊')
+      setResultMascot(mascotNeutral)
     } else {
       title = pick(SYMPATHY)
       setResultEmoji('😔')
+      setResultMascot(mascotSad)
     }
 
     setResultTitle(title)
@@ -320,7 +333,7 @@ function App() {
     if (step === 'result') {
       return (
         <div className="app">
-          <div className="emoji">{resultEmoji}</div>
+          <img src={resultMascot} className="mascot-img" alt="Результат" />
           <h2 className="record-title">{resultTitle}</h2>
           {resultTip && <p className="result-tip">💡 {resultTip}</p>}
           <button className="btn-gold next-btn result-main-btn" onClick={closeFlow}>
@@ -492,7 +505,15 @@ function App() {
               <h1 className="brand-title">На троне</h1>
               <p className="brand-sub">Твой личный какашка-трекер</p>
             </div>
-            <div className="mascot">💩</div>
+            <img src={mascotMain} className="mascot-img" alt="На троне" />
+
+            <div className="newbie-features">
+              <div className="feature-row"><span className="feature-ico">✅</span> Веди дневник походов</div>
+              <div className="feature-row"><span className="feature-ico">💚</span> Следи за здоровьем ЖКТ</div>
+              <div className="feature-row"><span className="feature-ico">🏆</span> Зарабатывай достижения</div>
+              <div className="feature-row"><span className="feature-ico">🔥</span> Ставь рекорды и делись с друзьями</div>
+            </div>
+
             <p className="newbie-cta">Запиши свой первый поход!</p>
             <p className="newbie-arrow">👇 Жми на унитаз</p>
           </>
@@ -516,7 +537,7 @@ function App() {
                 : `Сегодня заходов: ${todayCount} ${'💩'.repeat(Math.min(todayCount, 5))}`}
             </p>
 
-            <div className="mascot">💩</div>
+            <img src={streak >= 3 ? mascotStreak : mascotMain} className="mascot-img" alt="Маскот" />
 
             <div className="mini-stats">
               <div className="mini-card">

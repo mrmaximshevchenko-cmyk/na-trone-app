@@ -105,6 +105,14 @@ body { font-family: var(--font-body); }
 
 .mascot { font-size: 80px; margin: 10px 0; filter: drop-shadow(0 8px 14px rgba(0,0,0,0.5)); }
 
+.mascot-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin: 10px 0;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+}
+
 /* ===== МИНИ-СТАТИСТИКА ===== */
 .mini-stats { display: flex; gap: 10px; margin: 16px 0 24px; }
 .mini-card {
@@ -421,4 +429,28 @@ body { font-family: var(--font-body); }
   font-family: var(--font-body);
 }
 
-.profile-about { margin-top: 24px; font-size: 12px; color: var(--text-dim); opacity: 0.6; }
+.profile-about { margin-top: 24px; font-size: 12px; color: var(--text-dim); opacity: 0.6; }/* ===== СПИСОК ПЛЮСОВ ДЛЯ НОВИЧКА ===== */
+.newbie-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 8px auto 20px;
+}
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text);
+  text-align: left;
+}
+.feature-ico {
+  font-size: 20px;
+  flex-shrink: 0;
+}
