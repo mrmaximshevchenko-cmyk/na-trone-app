@@ -117,6 +117,10 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
 
       {/* О приложении */}
       <p className="profile-about">На троне · версия 0.1</p>
+      <p className="profile-about" style={{ fontSize: '11px', opacity: 0.6 }}>
+        DEBUG: TG = {(window as any).Telegram?.WebApp ? 'ЕСТЬ' : 'НЕТ'} ·
+        user = {JSON.stringify((window as any).Telegram?.WebApp?.initDataUnsafe?.user || 'пусто')}
+      </p>
     </div>
   )
 }
