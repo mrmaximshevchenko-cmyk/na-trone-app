@@ -166,6 +166,11 @@ function App() {
     localStorage.setItem('throne_unlocked', JSON.stringify(unlocked))
   }, [unlocked])
   useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp
+    if (tg) {
+      tg.ready()
+      tg.expand()
+    }
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
