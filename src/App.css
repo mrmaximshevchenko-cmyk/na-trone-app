@@ -216,7 +216,7 @@ body { font-family: var(--font-body); }
   touch-action: none;
 }
 .sheet {
-  width: 150px; height: 34px; border: none;
+  width: 150px; height: 26px; border: none;
   border-bottom: 2px dashed rgba(232,200,122,0.3); background: #fdfdfa;
   cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
   transition: background 0.15s ease;
