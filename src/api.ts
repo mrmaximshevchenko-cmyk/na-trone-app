@@ -1,8 +1,12 @@
 // Адрес нашего сервера
 export const API_URL = 'https://na-trone-server.onrender.com'
 
-// Пока нет Telegram — используем ник из localStorage как id пользователя
+// Берём реальный Telegram-id. Если приложение открыто не в Telegram — откат на ник из localStorage (для тестов в браузере)
 export function getUserId(): string {
+  const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
+  if (tgUser?.id) {
+    return 'tg_' + tgUser.id
+  }
   return localStorage.getItem('throne_nick') || 'throne_user'
 }
 
@@ -57,5 +61,15 @@ export async function loadSessionsFromServer() {
   } catch (err) {
     console.log('Не удалось загрузить с сервера:', err)
     return null
+  }
+}// Данные пользователя из Telegram (имя, username). null если не в Telegram
+export function getTelegramUser() {
+  const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
+  if (!tgUser) return null
+  return {
+    id: tgUser.id,
+    username: tgUser.username || '',
+    firstName: tgUser.first_name || '',
+    lastName: tgUser.last_name || '',
   }
 }

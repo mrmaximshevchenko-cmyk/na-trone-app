@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { getTelegramUser } from './api'
 
 const AVATARS = ['💩', '👑', '🚽', '🧻', '🦠', '🍑', '💎', '🔥', '🌟', '🎯']
 
@@ -11,8 +12,13 @@ function validateNick(nick: string): string {
 }
 
 function Profile({ onClearHistory }: { onClearHistory: () => void }) {
-  // Имя: читаем из памяти или ставим заглушку (позже подтянется из Telegram)
-  const [nick, setNick] = useState(() => localStorage.getItem('throne_nick') || 'throne_user')
+  // Имя: сначала из Telegram (username или имя), иначе из памяти
+  const tgUser = getTelegramUser()
+  const [nick, setNick] = useState(() => {
+    if (tgUser?.username) return tgUser.username
+    if (tgUser?.firstName) return tgUser.firstName
+    return localStorage.getItem('throne_nick') || 'throne_user'
+  })
   const [avatar, setAvatar] = useState(() => localStorage.getItem('throne_avatar') || '💩')
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(nick)
