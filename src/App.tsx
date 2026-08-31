@@ -156,7 +156,7 @@ function App() {
 
   const [popupAch, setPopupAch] = useState<typeof ACHIEVEMENTS>([])
 
-  const TOTAL_SHEETS = 12
+  const TOTAL_SHEETS = 10
 
   useEffect(() => {
     localStorage.setItem('throne_history', JSON.stringify(history))
