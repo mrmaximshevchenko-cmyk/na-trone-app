@@ -463,4 +463,27 @@ body { font-family: var(--font-body); }
   width: 30px;
   text-align: center;
   flex-shrink: 0;
+}.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 20px;
+}
+.progress-bar .progress-dots {
+  margin-bottom: 0;
+}
+.back-arrow {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 28px;
+  cursor: pointer;
+  padding: 4px 10px;
+  line-height: 1;
+}
+.back-arrow-placeholder {
+  width: 44px;
+  flex-shrink: 0;
 }
