@@ -32,7 +32,7 @@ body { font-family: var(--font-body); }
 
 .app-scroll {
   justify-content: flex-start;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .tab-content {
@@ -40,7 +40,7 @@ body { font-family: var(--font-body); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 44px 24px 24px;
+  padding: 20px 24px 24px;
   text-align: center;
 }
 
@@ -64,7 +64,7 @@ body { font-family: var(--font-body); }
   font-size: 20px;
   font-weight: 700;
   color: var(--gold);
-  margin-top: 24px;
+  margin-top: 12px;
 }
 .newbie-arrow { font-size: 14px; color: var(--text-dim); margin-top: 8px; }
 
@@ -106,10 +106,10 @@ body { font-family: var(--font-body); }
 .mascot { font-size: 80px; margin: 10px 0; filter: drop-shadow(0 8px 14px rgba(0,0,0,0.5)); }
 
 .mascot-img {
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
-  margin: 10px 0;
+  margin: 4px 0;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
 }
 
@@ -209,15 +209,15 @@ body { font-family: var(--font-body); }
 }
 
 /* ===== РУЛОН ===== */
-.roll-top { font-size: 64px; margin: 10px 0 -6px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.roll-top { font-size: 52px; margin: 4px 0 -6px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
 .paper-roll {
-  display: flex; flex-direction: column; gap: 3px; margin: 24px 0 16px;
-  background: var(--gold-soft); padding: 10px; border-radius: 12px;
+  display: flex; flex-direction: column; gap: 2px; margin: 14px 0 12px;
+  background: var(--gold-soft); padding: 8px; border-radius: 12px;
 }
 .sheet {
-  width: 150px; height: 34px; border: none;
+  width: 150px; height: 22px; border: none;
   border-bottom: 2px dashed rgba(232,200,122,0.3); background: #fdfdfa;
-  cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
   transition: background 0.15s ease;
 }
 .sheet:first-child { border-radius: 8px 8px 0 0; }
@@ -433,10 +433,10 @@ body { font-family: var(--font-body); }
 .newbie-features {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   max-width: 320px;
-  margin: 8px auto 20px;
+  margin: 4px auto 12px;
 }
 .feature-row {
   display: flex;
