@@ -372,6 +372,10 @@ body { font-family: var(--font-body); }
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: var(--font-body);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 32px;
 }
 .big-option.active {
   background: var(--gold);
@@ -453,4 +457,9 @@ body { font-family: var(--font-body); }
 .feature-ico {
   font-size: 20px;
   flex-shrink: 0;
-}.opt-ico { font-size: 22px; margin-right: 6px; vertical-align: middle; }
+}.opt-ico {
+  font-size: 24px;
+  width: 30px;
+  text-align: center;
+  flex-shrink: 0;
+}
