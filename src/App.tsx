@@ -499,6 +499,14 @@ function App() {
               <p className="brand-sub">Твой личный какашка-трекер</p>
             </div>
             <img src={mascotMain} className="mascot-img" alt="На троне" />
+
+            <div className="newbie-features">
+              <div className="feature-row"><span className="feature-ico">✅</span> Веди дневник походов</div>
+              <div className="feature-row"><span className="feature-ico">💚</span> Следи за здоровьем ЖКТ</div>
+              <div className="feature-row"><span className="feature-ico">🏆</span> Зарабатывай достижения</div>
+              <div className="feature-row"><span className="feature-ico">🔥</span> Ставь рекорды и делись с друзьями</div>
+            </div>
+
             <p className="newbie-cta">Запиши свой первый поход!</p>
             <p className="newbie-arrow">👇 Жми на унитаз</p>
           </>
