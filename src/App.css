@@ -453,4 +453,4 @@ body { font-family: var(--font-body); }
 .feature-ico {
   font-size: 20px;
   flex-shrink: 0;
-}
+}.opt-ico { font-size: 22px; margin-right: 6px; vertical-align: middle; }

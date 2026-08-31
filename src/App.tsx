@@ -375,13 +375,13 @@ function App() {
           <h2 className="record-title">Сколько добра?</h2>
           <p className="subtitle">Оцени объём</p>
           <div className="big-options">
-            {['Осечка', 'Чуток', 'Стандарт', 'Куча'].map((opt) => (
+                      {[['Осечка','💨'], ['Чуток','🤏'], ['Стандарт','👍'], ['Куча','💪']].map(([opt, ico]) => (
               <button
                 key={opt}
                 className={amount === opt ? 'big-option active' : 'big-option'}
                 onClick={() => setAmount(opt)}
               >
-                {opt}
+                <span className="opt-ico">{ico}</span> {opt}
               </button>
             ))}
           </div>
@@ -405,13 +405,13 @@ function App() {
           <h2 className="record-title">Какая консистенция?</h2>
           <p className="subtitle">Выбери, что ближе</p>
           <div className="big-options">
-            {['Жидко', 'Мягко', 'Колбаска', 'Сухарь'].map((opt) => (
+              {[['Жидко','💧'], ['Мягко','🍦'], ['Колбаска','🌭'], ['Сухарь','🪨']].map(([opt, ico]) => (
               <button
                 key={opt}
                 className={consistency === opt ? 'big-option active' : 'big-option'}
                 onClick={() => setConsistency(opt)}
               >
-                {opt}
+                <span className="opt-ico">{ico}</span> {opt}
               </button>
             ))}
           </div>
