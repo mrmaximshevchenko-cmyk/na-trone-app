@@ -1,0 +1,24 @@
+:root {
+  --bg-dark: #1a1a1f;
+  --bg-light: #2a2a30;
+  --gold: #E8C87A;
+  --gold-soft: rgba(232, 200, 122, 0.1);
+  --gold-border: rgba(232, 200, 122, 0.3);
+  --text-white: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.7);
+
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-dark);
+  color: var(--text-white);
+}
