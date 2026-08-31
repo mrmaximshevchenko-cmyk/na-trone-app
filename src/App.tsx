@@ -311,10 +311,18 @@ function App() {
     : ['rating', 'amount', 'consistency', 'paper']
   const currentStepIndex = steps.indexOf(step)
   const progress = (
-    <div className="progress-dots">
-      {steps.map((s, i) => (
-        <span key={s} className={i <= currentStepIndex ? 'dot-step active' : 'dot-step'} />
-      ))}
+    <div className="progress-bar">
+      {currentStepIndex > 0 ? (
+        <button className="back-arrow" onClick={goBack} aria-label="Назад">←</button>
+      ) : (
+        <span className="back-arrow-placeholder" />
+      )}
+      <div className="progress-dots">
+        {steps.map((s, i) => (
+          <span key={s} className={i <= currentStepIndex ? 'dot-step active' : 'dot-step'} />
+        ))}
+      </div>
+      <span className="back-arrow-placeholder" />
     </div>
   )
 
@@ -392,7 +400,6 @@ function App() {
           >
             Далее →
           </button>
-          <button className="back-btn" onClick={goBack}>← Назад</button>
         </div>
       )
     }
@@ -422,7 +429,6 @@ function App() {
           >
             Далее →
           </button>
-          <button className="back-btn" onClick={goBack}>← Назад</button>
         </div>
       )
     }
@@ -440,6 +446,14 @@ function App() {
           className="paper-roll"
           onMouseLeave={() => setIsDragging(false)}
           onMouseUp={() => setIsDragging(false)}
+          onTouchMove={(e) => {
+            const touch = e.touches[0]
+            const el = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement
+            if (el && el.dataset.sheet) {
+              setNoPaper(false)
+              setSheets(Number(el.dataset.sheet))
+            }
+          }}
         >
           {Array.from({ length: TOTAL_SHEETS }).map((_, i) => {
             const sheetNumber = i + 1
@@ -447,6 +461,7 @@ function App() {
             return (
               <button
                 key={sheetNumber}
+                data-sheet={sheetNumber}
                 className={isTorn ? 'sheet torn' : 'sheet'}
                 onClick={() => handleSheetClick(sheetNumber)}
                 onMouseDown={() => {
@@ -456,6 +471,10 @@ function App() {
                 }}
                 onMouseEnter={() => {
                   if (isDragging) setSheets(sheetNumber)
+                }}
+                onTouchStart={() => {
+                  setNoPaper(false)
+                  setSheets(sheetNumber)
                 }}
               >
                 {isTorn ? '💩' : ''}
@@ -478,7 +497,6 @@ function App() {
         <button className="btn-gold next-btn" onClick={saveSession}>
           Сохранить ✅
         </button>
-        <button className="back-btn" onClick={goBack}>← Назад</button>
       </div>
     )
   }
