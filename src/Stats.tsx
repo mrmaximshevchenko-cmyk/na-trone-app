@@ -65,7 +65,10 @@ function Stats({ history }: { history: Session[] }) {
     return new Date(d.getFullYear(), d.getMonth(), 1)
   })
   // Выбранный день (для показа деталей снизу)
-  const [selectedDay, setSelectedDay] = useState<string | null>(null)
+  const [selectedDay, setSelectedDay] = useState<string | null>(() => {
+    const t = new Date()
+    return `${t.getFullYear()}-${t.getMonth()}-${t.getDate()}`
+  })
 
   const total = history.length
 
@@ -156,8 +159,7 @@ function Stats({ history }: { history: Session[] }) {
       <div className="seg">
         <button className={view === 'numbers' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('numbers')}>Цифры</button>
         <button className={view === 'calendar' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('calendar')}>Календарь</button>
-        <button className={view === 'list' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('list')}>История</button>
-        <button className={view === 'rating' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('rating')}>🏆</button>
+        <button className={view === 'rating' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('rating')}>🏆 Рейтинг</button>
       </div>
 
       {/* ВИД: ЦИФРЫ */}
@@ -247,27 +249,7 @@ function Stats({ history }: { history: Session[] }) {
         </div>
       )}
 
-      {/* ВИД: ИСТОРИЯ */}
-      {view === 'list' && (
-        <>
-          {total === 0 && <p className="subtitle">Пока пусто. Запиши первый сеанс!</p>}
-          <div className="history-list">
-            {history.map((s) => (
-              <div key={s.id} className="history-card">
-                <div className="history-top">
-                  <span className="history-rating">{s.rating > 0 ? `${s.rating}/10` : '—'}</span>
-                  <span className="history-date">{s.date}</span>
-                </div>
-                <div className="history-tags">
-                  {s.amount && <span className="tag">{s.amount}</span>}
-                  {s.consistency && <span className="tag">{s.consistency}</span>}
-                  <span className="tag">{s.noPaper ? 'Без бумаги' : `🧻 ${s.sheets}`}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+
 
       {/* ВИД: РЕЙТИНГ */}
       {view === 'rating' && (
