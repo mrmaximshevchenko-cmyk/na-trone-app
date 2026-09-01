@@ -72,4 +72,20 @@ export function getTelegramUser() {
     firstName: tgUser.first_name || '',
     lastName: tgUser.last_name || '',
   }
+}// Регистрируем/обновляем пользователя на сервере (при входе)
+export async function registerUser() {
+  const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
+  const user_id = getUserId()
+  const username = tgUser?.username || ''
+  const first_name = tgUser?.first_name || ''
+  const avatar = localStorage.getItem('throne_avatar') || 'king'
+  try {
+    await fetch(`${API_URL}/user`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id, username, first_name, avatar }),
+    })
+  } catch (err) {
+    console.log('Не удалось зарегистрировать юзера:', err)
+  }
 }

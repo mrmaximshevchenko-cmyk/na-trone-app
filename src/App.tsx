@@ -9,7 +9,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser } from './api'
 
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
@@ -185,6 +185,7 @@ function App() {
       tg.ready()
       tg.expand()
     }
+    registerUser()
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
