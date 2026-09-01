@@ -155,6 +155,7 @@ function App() {
   })
 
   const [popupAch, setPopupAch] = useState<typeof ACHIEVEMENTS>([])
+  const [pendingAch, setPendingAch] = useState<typeof ACHIEVEMENTS>([])
 
   const TOTAL_SHEETS = 10
 
@@ -265,7 +266,7 @@ function App() {
     if (freshIds.length > 0) {
       setUnlocked([...unlocked, ...freshIds])
       const freshAch = ACHIEVEMENTS.filter((a) => freshIds.includes(a.id))
-      setPopupAch(freshAch)
+      setPendingAch(freshAch)
     }
 
     setStep('result')
@@ -306,7 +307,7 @@ function App() {
             </div>
           ))}
         </div>
-        <button className="btn-gold" onClick={() => setPopupAch([])}>
+        <button className="btn-gold" onClick={() => { setPopupAch([]); closeFlow() }}>
           Круто! 🎉
         </button>
       </div>
@@ -345,7 +346,14 @@ function App() {
           <img src={resultMascot} className="mascot-img" alt="Результат" />
           <h2 className="record-title">{resultTitle}</h2>
           {resultTip && <p className="result-tip">💡 {resultTip}</p>}
-          <button className="btn-gold next-btn result-main-btn" onClick={closeFlow}>
+          <button className="btn-gold next-btn result-main-btn" onClick={() => {
+            if (pendingAch.length > 0) {
+              setPopupAch(pendingAch)
+              setPendingAch([])
+            } else {
+              closeFlow()
+            }
+          }}>
             Готово
           </button>
           {achPopup}
