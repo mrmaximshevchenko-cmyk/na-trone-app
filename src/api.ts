@@ -169,4 +169,13 @@ export async function acceptInvite(inviterId: string) {
       body: JSON.stringify({ me: getUserId(), target: inviterId }),
     })
   } catch (err) { console.log('Ошибка инвайта:', err) }
+}// Статистика конкретного юзера (чужой профиль)
+export async function loadUserStats(userId: string) {
+  try {
+    const res = await fetch(`${API_URL}/stats/${userId}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки чужой статы:', err)
+    return { ok: false }
+  }
 }

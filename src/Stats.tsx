@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends } from './api'
+import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends, loadUserStats } from './api'
 
 // Карта аватарок (те же, что в профиле)
 import avKing from './assets/avatars/free/king.png'
@@ -44,6 +44,13 @@ function Stats({ history }: { history: Session[] }) {
   const [lbScope, setLbScope] = useState<'global' | 'friends'>('friends')
   const [lbData, setLbData] = useState<any[]>([])
   const [lbLoading, setLbLoading] = useState(false)
+  const [viewUser, setViewUser] = useState<any | null>(null)
+
+  const openUserStats = async (u: any) => {
+    setViewUser({ loading: true, base: u })
+    const data = await loadUserStats(u.user_id)
+    setViewUser({ loading: false, base: u, stats: data })
+  }
 
   // Мой user_id (чтобы подсветить себя)
   const myId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
@@ -286,7 +293,8 @@ function Stats({ history }: { history: Session[] }) {
                 const value = lbPeriod === 'week' ? u.count : u.streak
                 const unit = lbPeriod === 'week' ? '' : ' дн.'
                 return (
-                  <div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}>
+                  <div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}
+                    onClick={() => { if (!isMe) openUserStats(u) }}>
                     <span className="lb-rank">{i + 1}</span>
                     <img src={LB_AVATARS[u.avatar] || avKing} className="lb-avatar" alt="" />
                     <span className="lb-name">{name}{isMe ? ' (ты)' : ''}</span>
@@ -296,6 +304,28 @@ function Stats({ history }: { history: Session[] }) {
               })}
             </div>
           )}
+        </div>
+      )}
+
+      {viewUser && (
+        <div className="ach-popup-overlay" onClick={() => setViewUser(null)}>
+          <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="ach-close-btn" onClick={() => setViewUser(null)}>✕</button>
+            <img src={LB_AVATARS[viewUser.base.avatar] || avKing} className="profile-avatar-img" alt="" />
+            <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
+            {viewUser.loading ? (
+              <p className="subtitle">Загрузка…</p>
+            ) : viewUser.stats?.ok ? (
+              <div className="stats-grid" style={{ marginTop: 12 }}>
+                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">сеансов</div></div>
+                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">средняя</div></div>
+                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">листов</div></div>
+                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">лучший стрик</div></div>
+              </div>
+            ) : (
+              <p className="subtitle">Нет данных</p>
+            )}
+          </div>
         </div>
       )}
     </div>
