@@ -108,4 +108,13 @@ export async function loadLeaderboardMonth() {
     console.log('Ошибка загрузки рейтинга (месяц):', err)
     return []
   }
+}// Поиск юзера по нику
+export async function searchUser(nick: string) {
+  try {
+    const res = await fetch(`${API_URL}/search/${encodeURIComponent(nick)}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка поиска:', err)
+    return []
+  }
 }

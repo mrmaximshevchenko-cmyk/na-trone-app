@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getTelegramUser } from './api'
+import { getTelegramUser, searchUser } from './api'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -63,6 +63,18 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(nick)
   const [error, setError] = useState('')
+
+  // Поиск друзей
+  const [searchNick, setSearchNick] = useState('')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [searched, setSearched] = useState(false)
+
+  const doSearch = async () => {
+    if (!searchNick.trim()) return
+    const results = await searchUser(searchNick.trim())
+    setSearchResults(Array.isArray(results) ? results : [])
+    setSearched(true)
+  }
 
   const saveNick = () => {
     const err = validateNick(draft)
@@ -155,12 +167,33 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         ))}
       </div>
 
-      {/* Друзья (заготовка) */}
+      {/* Друзья */}
       <p className="field-label ach-block-title">Друзья</p>
-      <div className="soon-card">
-        <span>🔍 Найти друзей по нику</span>
-        <span className="soon-badge">скоро</span>
+      <div className="friend-search">
+        <input
+          className="nick-input"
+          value={searchNick}
+          onChange={(e) => setSearchNick(e.target.value)}
+          placeholder="Найти по нику"
+          onKeyDown={(e) => { if (e.key === 'Enter') doSearch() }}
+        />
+        <button className="btn-gold small" onClick={doSearch}>🔍</button>
       </div>
+
+      {searched && searchResults.length === 0 && (
+        <p className="subtitle">Никого не нашли 🤷</p>
+      )}
+      {searchResults.map((u) => {
+        const isMe = u.username === (tgUser?.username || '')
+        return (
+          <div key={u.user_id} className="friend-found">
+            <img src={AVATAR_MAP[u.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt="" />
+            <span className="friend-name">@{u.username || u.first_name}</span>
+            {!isMe && <button className="btn-gold small" onClick={() => window.alert('Добавление в друзья скоро 👥')}>＋</button>}
+          </div>
+        )
+      })}
+
       <div className="soon-card">
         <span>➕ Пригласить друга</span>
         <span className="soon-badge">скоро</span>

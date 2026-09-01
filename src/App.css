@@ -593,4 +593,25 @@ body { font-family: var(--font-body); }
 .lb-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .lb-name { flex: 1; text-align: left; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lb-value { font-weight: 800; color: var(--gold); flex-shrink: 0; }
-.seg-rating:not(.active) { color: var(--gold); font-weight: 800; }
+.seg-rating:not(.active) { color: var(--gold); font-weight: 800; }.friend-search {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  margin: 6px auto 10px;
+}
+.friend-search .nick-input { flex: 1; }
+.friend-found {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 6px auto;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-border);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.friend-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.friend-name { flex: 1; text-align: left; font-weight: 600; color: var(--text); }
