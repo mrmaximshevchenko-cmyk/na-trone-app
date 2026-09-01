@@ -117,4 +117,35 @@ export async function searchUser(nick: string) {
     console.log('Ошибка поиска:', err)
     return []
   }
+}// Добавить в друзья
+export async function followUser(target: string) {
+  try {
+    await fetch(`${API_URL}/follow`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ me: getUserId(), target }),
+    })
+  } catch (err) { console.log('Ошибка follow:', err) }
+}
+
+// Удалить из друзей
+export async function unfollowUser(target: string) {
+  try {
+    await fetch(`${API_URL}/unfollow`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ me: getUserId(), target }),
+    })
+  } catch (err) { console.log('Ошибка unfollow:', err) }
+}
+
+// Список друзей
+export async function loadFriends() {
+  try {
+    const res = await fetch(`${API_URL}/friends/${getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки друзей:', err)
+    return []
+  }
 }

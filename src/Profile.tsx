@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { getTelegramUser, searchUser } from './api'
+import { useState, useEffect } from 'react'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends } from './api'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -74,6 +74,25 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     const results = await searchUser(searchNick.trim())
     setSearchResults(Array.isArray(results) ? results : [])
     setSearched(true)
+  }
+
+  // Друзья
+  const [friends, setFriends] = useState<any[]>([])
+
+  useEffect(() => {
+    loadFriends().then((list) => setFriends(Array.isArray(list) ? list : []))
+  }, [])
+
+  const isFriend = (userId: string) => friends.some((f) => f.user_id === userId)
+
+  const addFriend = async (u: any) => {
+    await followUser(u.user_id)
+    setFriends((prev) => [...prev, u])
+  }
+
+  const removeFriend = async (userId: string) => {
+    await unfollowUser(userId)
+    setFriends((prev) => prev.filter((f) => f.user_id !== userId))
   }
 
   const saveNick = () => {
@@ -189,10 +208,26 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
           <div key={u.user_id} className="friend-found">
             <img src={AVATAR_MAP[u.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt="" />
             <span className="friend-name">@{u.username || u.first_name}</span>
-            {!isMe && <button className="btn-gold small" onClick={() => window.alert('Добавление в друзья скоро 👥')}>＋</button>}
+            {isMe ? null : isFriend(u.user_id)
+              ? <span className="friend-added">✓</span>
+              : <button className="btn-gold small" onClick={() => addFriend(u)}>＋</button>}
           </div>
         )
       })}
+
+      {/* Список друзей */}
+      {friends.length > 0 && (
+        <>
+          <p className="field-label ach-block-title">Мои друзья ({friends.length})</p>
+          {friends.map((f) => (
+            <div key={f.user_id} className="friend-found">
+              <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt="" />
+              <span className="friend-name">@{f.username || f.first_name}</span>
+              <button className="friend-remove" onClick={() => removeFriend(f.user_id)}>✕</button>
+            </div>
+          ))}
+        </>
+      )}
 
       <div className="soon-card">
         <span>➕ Пригласить друга</span>
