@@ -1,7 +1,43 @@
 import { useState } from 'react'
 import { getTelegramUser } from './api'
 
-const AVATARS = ['💩', '👑', '🚽', '🧻', '🦠', '🍑', '💎', '🔥', '🌟', '🎯']
+// Бесплатные аватарки (картинки без фона)
+import avKing from './assets/avatars/free/king.png'
+import avGym from './assets/avatars/free/gym.png'
+import avCool from './assets/avatars/free/cool.png'
+import avGamer from './assets/avatars/free/gamer.png'
+import avZen from './assets/avatars/free/zen.png'
+
+// Премиум аватарки (картинки с цветным фоном)
+import avChad from './assets/avatars/premium/chad.jpg'
+import avNeo from './assets/avatars/premium/neo.jpg'
+import avRap from './assets/avatars/premium/rap.jpg'
+import av67 from './assets/avatars/premium/s67.jpg'
+import avLux from './assets/avatars/premium/lux.jpg'
+
+// Список бесплатных: id + картинка
+const FREE_AVATARS = [
+  { id: 'king', img: avKing },
+  { id: 'gym', img: avGym },
+  { id: 'cool', img: avCool },
+  { id: 'gamer', img: avGamer },
+  { id: 'zen', img: avZen },
+]
+
+// Список премиум: id + картинка + цена в звёздах
+const PREMIUM_AVATARS = [
+  { id: 'chad', img: avChad, price: 10 },
+  { id: 'neo', img: avNeo, price: 50 },
+  { id: 'rap', img: avRap, price: 499 },
+  { id: 's67', img: av67, price: 999 },
+  { id: 'lux', img: avLux, price: 9999 },
+]
+
+// Карта id -> картинка (для показа выбранной авы в шапке)
+const AVATAR_MAP: Record<string, string> = {
+  king: avKing, gym: avGym, cool: avCool, gamer: avGamer, zen: avZen,
+  chad: avChad, neo: avNeo, rap: avRap, s67: av67, lux: avLux,
+}
 
 // Проверка ника: латиница, цифры, _ ; без пробелов и спецсимволов; 3-20 символов
 function validateNick(nick: string): string {
@@ -19,7 +55,13 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     if (tgUser?.firstName) return tgUser.firstName
     return localStorage.getItem('throne_nick') || 'throne_user'
   })
-  const [avatar, setAvatar] = useState(() => localStorage.getItem('throne_avatar') || '💩')
+
+  // Аватар хранит id (king/gym/...). Старые эмодзи-авы -> откат на короля
+  const [avatar, setAvatar] = useState(() => {
+    const saved = localStorage.getItem('throne_avatar') || 'king'
+    return AVATAR_MAP[saved] ? saved : 'king'
+  })
+
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(nick)
   const [error, setError] = useState('')
@@ -36,9 +78,14 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     setEditing(false)
   }
 
-  const chooseAvatar = (a: string) => {
-    setAvatar(a)
-    localStorage.setItem('throne_avatar', a)
+  const chooseAvatar = (id: string) => {
+    setAvatar(id)
+    localStorage.setItem('throne_avatar', id)
+  }
+
+  const buyPremium = (price: number) => {
+    // Оплата через Telegram Stars появится позже
+    window.alert(`Премиум-аватар за ${price} ⭐\n\nПокупка за звёзды скоро появится 👑`)
   }
 
   const confirmClear = () => {
@@ -52,7 +99,9 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       <h2 className="record-title">Профиль 👤</h2>
 
       {/* Шапка */}
-      <div className="profile-avatar">{avatar}</div>
+      <div className="profile-avatar">
+        <img src={AVATAR_MAP[avatar]} className="profile-avatar-img" alt="аватар" />
+      </div>
       {!editing ? (
         <div className="profile-nick-row">
           <span className="profile-nick">@{nick}</span>
@@ -77,16 +126,32 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         </div>
       )}
 
-      {/* Выбор аватара */}
+      {/* Обычные аватары */}
       <p className="field-label ach-block-title">Аватар</p>
       <div className="avatar-grid">
-        {AVATARS.map((a) => (
+        {FREE_AVATARS.map((a) => (
           <button
-            key={a}
-            className={avatar === a ? 'avatar-btn active' : 'avatar-btn'}
-            onClick={() => chooseAvatar(a)}
+            key={a.id}
+            className={avatar === a.id ? 'avatar-btn active' : 'avatar-btn'}
+            onClick={() => chooseAvatar(a.id)}
           >
-            {a}
+            <img src={a.img} className="avatar-img" alt={a.id} />
+          </button>
+        ))}
+      </div>
+
+      {/* Премиум аватары */}
+      <p className="field-label ach-block-title">Премиум ⭐</p>
+      <div className="avatar-grid">
+        {PREMIUM_AVATARS.map((a) => (
+          <button
+            key={a.id}
+            className="avatar-btn premium locked"
+            onClick={() => buyPremium(a.price)}
+          >
+            <img src={a.img} className="avatar-img" alt={a.id} />
+            <span className="avatar-price">{a.price} ⭐</span>
+            <span className="avatar-lock">🔒</span>
           </button>
         ))}
       </div>
