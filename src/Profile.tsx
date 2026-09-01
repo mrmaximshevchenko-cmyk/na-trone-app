@@ -26,11 +26,9 @@ const FREE_AVATARS = [
 
 // Список премиум: id + картинка + цена в звёздах
 const PREMIUM_AVATARS = [
-  { id: 'chad', img: avChad, price: 10 },
-  { id: 'neo', img: avNeo, price: 50 },
-  { id: 'rap', img: avRap, price: 499 },
-  { id: 's67', img: av67, price: 999 },
-  { id: 'lux', img: avLux, price: 9999 },
+  { id: 'chad', img: avChad, price: 199 },
+  { id: 's67', img: av67, price: 499 },
+  { id: 'lux', img: avLux, price: 999 },
 ]
 
 // Карта id -> картинка (для показа выбранной авы в шапке)
@@ -142,17 +140,18 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
 
       {/* Премиум аватары */}
       <p className="field-label ach-block-title">Премиум ⭐</p>
-      <div className="avatar-grid">
+      <div className="avatar-grid premium-grid">
         {PREMIUM_AVATARS.map((a) => (
-          <button
-            key={a.id}
-            className="avatar-btn premium locked"
-            onClick={() => buyPremium(a.price)}
-          >
-            <img src={a.img} className="avatar-img" alt={a.id} />
-            <span className="avatar-price">{a.price} ⭐</span>
-            <span className="avatar-lock">🔒</span>
-          </button>
+          <div key={a.id} className="premium-cell">
+            <button
+              className="avatar-btn premium locked"
+              onClick={() => buyPremium(a.price)}
+            >
+              <img src={a.img} className="avatar-img" alt={a.id} />
+              <span className="avatar-lock">🔒</span>
+            </button>
+            <span className="premium-price-label">{a.price} ⭐</span>
+          </div>
         ))}
       </div>
 

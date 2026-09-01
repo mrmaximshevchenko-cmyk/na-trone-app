@@ -541,17 +541,24 @@ body { font-family: var(--font-body); }
 .avatar-btn.premium {
   cursor: pointer;
 }
-.avatar-price {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
+.avatar-grid.premium-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 320px;
+}
+.premium-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.premium-cell .avatar-btn {
+  width: 100%;
+}
+.premium-price-label {
+  font-size: 15px;
   font-weight: 700;
-  color: #fff;
-  background: rgba(0,0,0,0.6);
-  padding: 2px 6px;
-  border-radius: 8px;
+  color: var(--gold);
   white-space: nowrap;
 }
 .avatar-lock {
