@@ -316,7 +316,10 @@ function App() {
           {popupAch.map((a) => (
             <div key={a.id} className="ach-popup-item">
               <span className="ach-popup-emoji">{a.emoji}</span>
-              <span className="ach-popup-name">{a.name}</span>
+              <div className="ach-popup-text">
+                <span className="ach-popup-name">{a.name}</span>
+                <span className="ach-popup-cond">{a.condition}</span>
+              </div>
             </div>
           ))}
         </div>
