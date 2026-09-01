@@ -201,7 +201,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'zen', emoji: '🧘', name: 'Мастер дзена', condition: 'Оценка 10 три раза подряд', secret: true, wave: 1,
     check: (h) => hasStreakOf(h, 3, (s) => s.rating === 10) },
   // "Ты дочитал до конца" — особая, проверяется на экране, не по истории
-  { id: 'reader', emoji: '🫡', name: 'Ты дочитал до конца', condition: 'Пролистать все ачивки', secret: true, wave: 1,
+  { id: 'reader', emoji: '🏁', name: 'Конец есть!', condition: 'Пролистать все ачивки', secret: true, wave: 1,
     check: () => false },
 ]
 

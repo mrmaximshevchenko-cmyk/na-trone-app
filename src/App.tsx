@@ -528,7 +528,7 @@ function App() {
 
             <div className="newbie-features">
               <div className="feature-row"><span className="feature-ico">✅</span> Веди дневник походов</div>
-              <div className="feature-row"><span className="feature-ico">💚</span> Следи за здоровьем ЖКТ</div>
+              <div className="feature-row"><span className="feature-ico">❤️</span> Следи за здоровьем ЖКТ</div>
               <div className="feature-row"><span className="feature-ico">🏆</span> Зарабатывай достижения</div>
               <div className="feature-row"><span className="feature-ico">🔥</span> Ставь рекорды и делись с друзьями</div>
             </div>
