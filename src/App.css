@@ -593,3 +593,4 @@ body { font-family: var(--font-body); }
 .lb-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .lb-name { flex: 1; text-align: left; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lb-value { font-weight: 800; color: var(--gold); flex-shrink: 0; }
+.seg-rating:not(.active) { color: var(--gold); font-weight: 800; }
