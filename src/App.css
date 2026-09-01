@@ -521,8 +521,8 @@ body { font-family: var(--font-body); }
 .ach-card.got {
   cursor: pointer;
 }.profile-avatar-img {
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   object-fit: contain;
   border-radius: 50%;
 }
