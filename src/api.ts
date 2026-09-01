@@ -88,4 +88,24 @@ export async function registerUser() {
   } catch (err) {
     console.log('Не удалось зарегистрировать юзера:', err)
   }
+}// Загрузить недельный рейтинг (по сеансам)
+export async function loadLeaderboardWeek() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/week`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки рейтинга (неделя):', err)
+    return []
+  }
+}
+
+// Загрузить месячный рейтинг (по стрикам)
+export async function loadLeaderboardMonth() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/month`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки рейтинга (месяц):', err)
+    return []
+  }
 }

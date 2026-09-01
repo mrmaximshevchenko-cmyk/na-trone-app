@@ -580,4 +580,16 @@ body { font-family: var(--font-body); }
   font-size: 12px;
   color: var(--text-dim);
   text-align: left;
+}.lb-seg { margin-bottom: 8px; }
+.lb-hint { text-align: center; color: var(--text-dim); font-size: 13px; margin: 4px 0 12px; }
+.lb-list { display: flex; flex-direction: column; gap: 8px; }
+.lb-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--gold-soft); border: 1px solid var(--gold-border);
+  border-radius: 12px; padding: 8px 12px;
 }
+.lb-row.me { border-color: var(--gold); background: rgba(232,200,122,0.18); }
+.lb-rank { font-weight: 800; color: var(--gold); width: 24px; text-align: center; flex-shrink: 0; }
+.lb-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.lb-name { flex: 1; text-align: left; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-value { font-weight: 800; color: var(--gold); flex-shrink: 0; }

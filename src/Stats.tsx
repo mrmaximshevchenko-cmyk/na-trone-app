@@ -1,4 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { loadLeaderboardWeek, loadLeaderboardMonth } from './api'
+
+// Карта аватарок (те же, что в профиле)
+import avKing from './assets/avatars/free/king.png'
+import avGym from './assets/avatars/free/gym.png'
+import avCool from './assets/avatars/free/cool.png'
+import avGamer from './assets/avatars/free/gamer.png'
+import avZen from './assets/avatars/free/zen.png'
+import avChad from './assets/avatars/premium/chad.jpg'
+import av67 from './assets/avatars/premium/s67.jpg'
+import avLux from './assets/avatars/premium/lux.jpg'
+
+const LB_AVATARS: Record<string, string> = {
+  king: avKing, gym: avGym, cool: avCool, gamer: avGamer, zen: avZen,
+  chad: avChad, s67: av67, lux: avLux,
+}
 
 type Session = {
   id: number
@@ -22,6 +38,27 @@ function dayColor(sessions: Session[]) {
 
 function Stats({ history }: { history: Session[] }) {
   const [view, setView] = useState('numbers')
+
+  // Рейтинг
+  const [lbPeriod, setLbPeriod] = useState<'week' | 'month'>('week')
+  const [lbScope, setLbScope] = useState<'global' | 'friends'>('global')
+  const [lbData, setLbData] = useState<any[]>([])
+  const [lbLoading, setLbLoading] = useState(false)
+
+  // Мой user_id (чтобы подсветить себя)
+  const myId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
+    ? 'tg_' + (window as any).Telegram.WebApp.initDataUnsafe.user.id
+    : (localStorage.getItem('throne_nick') || 'throne_user')
+
+  useEffect(() => {
+    if (view !== 'rating') return
+    setLbLoading(true)
+    const loader = lbPeriod === 'week' ? loadLeaderboardWeek : loadLeaderboardMonth
+    loader().then((data) => {
+      setLbData(Array.isArray(data) ? data : [])
+      setLbLoading(false)
+    })
+  }, [view, lbPeriod])
   // Какой месяц показываем в календаре
   const [calMonth, setCalMonth] = useState(() => {
     const d = new Date()
@@ -120,6 +157,7 @@ function Stats({ history }: { history: Session[] }) {
         <button className={view === 'numbers' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('numbers')}>Цифры</button>
         <button className={view === 'calendar' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('calendar')}>Календарь</button>
         <button className={view === 'list' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('list')}>История</button>
+        <button className={view === 'rating' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('rating')}>🏆</button>
       </div>
 
       {/* ВИД: ЦИФРЫ */}
@@ -229,6 +267,49 @@ function Stats({ history }: { history: Session[] }) {
             ))}
           </div>
         </>
+      )}
+
+      {/* ВИД: РЕЙТИНГ */}
+      {view === 'rating' && (
+        <div className="lb">
+          <div className="seg lb-seg">
+            <button className={lbPeriod === 'week' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbPeriod('week')}>Неделя</button>
+            <button className={lbPeriod === 'month' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbPeriod('month')}>Месяц</button>
+          </div>
+          <div className="seg lb-seg">
+            <button className={lbScope === 'global' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('global')}>Глобально</button>
+            <button className={lbScope === 'friends' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('friends')}>Друзья</button>
+          </div>
+
+          <p className="lb-hint">
+            {lbPeriod === 'week' ? 'Сеансов за неделю' : 'Лучший стрик за месяц'}
+          </p>
+
+          {lbScope === 'friends' ? (
+            <p className="subtitle">Друзья скоро появятся 👥</p>
+          ) : lbLoading ? (
+            <p className="subtitle">Загрузка…</p>
+          ) : lbData.length === 0 ? (
+            <p className="subtitle">Пока пусто. Будь первым! 👑</p>
+          ) : (
+            <div className="lb-list">
+              {lbData.map((u, i) => {
+                const isMe = u.user_id === myId
+                const name = u.username || u.first_name || 'Аноним'
+                const value = lbPeriod === 'week' ? u.count : u.streak
+                const unit = lbPeriod === 'week' ? '' : ' дн.'
+                return (
+                  <div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}>
+                    <span className="lb-rank">{i + 1}</span>
+                    <img src={LB_AVATARS[u.avatar] || avKing} className="lb-avatar" alt="" />
+                    <span className="lb-name">{name}{isMe ? ' (ты)' : ''}</span>
+                    <span className="lb-value">{value}{unit}</span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
       )}
     </div>
   )
