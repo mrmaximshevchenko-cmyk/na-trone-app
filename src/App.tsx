@@ -156,6 +156,19 @@ function App() {
 
   const [popupAch, setPopupAch] = useState<typeof ACHIEVEMENTS>([])
   const [pendingAch, setPendingAch] = useState<typeof ACHIEVEMENTS>([])
+  const [viewAch, setViewAch] = useState<typeof ACHIEVEMENTS[number] | null>(null)
+
+  const shareAch = (a: typeof ACHIEVEMENTS[number]) => {
+    const text = `🏆 Новое достижение на троне: «${a.name}»!`
+    const url = 'https://t.me/natrone_bot/throne'
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
+    const tg = (window as any).Telegram?.WebApp
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(shareUrl)
+    } else {
+      window.open(shareUrl, '_blank')
+    }
+  }
 
   const TOTAL_SHEETS = 10
 
@@ -309,6 +322,20 @@ function App() {
         </div>
         <button className="btn-gold" onClick={() => { setPopupAch([]); closeFlow() }}>
           Круто! 🎉
+        </button>
+      </div>
+    </div>
+  )
+
+  const achViewModal = viewAch && (
+    <div className="ach-popup-overlay" onClick={() => setViewAch(null)}>
+      <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+        <button className="ach-close-btn" onClick={() => setViewAch(null)}>✕</button>
+        <div className="ach-view-emoji">{viewAch.emoji}</div>
+        <div className="ach-popup-title">{viewAch.name}</div>
+        <div className="ach-view-cond">{viewAch.condition}</div>
+        <button className="btn-gold" onClick={() => shareAch(viewAch)}>
+          Похвастаться 📤
         </button>
       </div>
     </div>
@@ -602,6 +629,8 @@ function App() {
     const unlockReader = () => {
       if (!unlocked.includes('reader')) {
         setUnlocked((prev) => Array.from(new Set([...prev, 'reader'])))
+        const readerAch = ACHIEVEMENTS.filter((a) => a.id === 'reader')
+        setPopupAch(readerAch)
       }
     }
 
@@ -615,7 +644,8 @@ function App() {
           {visible.map((a) => {
             const got = unlocked.includes(a.id)
             return (
-              <div key={a.id} className={got ? 'ach-card got' : 'ach-card locked'}>
+              <div key={a.id} className={got ? 'ach-card got' : 'ach-card locked'}
+                onClick={() => { if (got) setViewAch(a) }}>
                 <div className="ach-emoji">{got ? a.emoji : '🔒'}</div>
                 <div className="ach-name">{a.name}</div>
                 <div className="ach-cond">{a.condition}</div>
@@ -629,7 +659,8 @@ function App() {
           {secret.map((a) => {
             const got = unlocked.includes(a.id)
             return (
-              <div key={a.id} className={got ? 'ach-card got' : 'ach-card secret'}>
+              <div key={a.id} className={got ? 'ach-card got' : 'ach-card secret'}
+                onClick={() => { if (got) setViewAch(a) }}>
                 <div className="ach-emoji">{got ? a.emoji : '❓'}</div>
                 <div className="ach-name">{got ? a.name : '???'}</div>
                 {got && <div className="ach-cond">{a.condition}</div>}
@@ -685,6 +716,7 @@ function App() {
       </nav>
 
       {achPopup}
+      {achViewModal}
     </div>
   )
 }
