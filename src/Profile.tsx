@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends } from './api'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats } from './api'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -95,6 +95,13 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     setFriends((prev) => prev.filter((f) => f.user_id !== userId))
   }
 
+    const [viewUser, setViewUser] = useState<any | null>(null)
+
+  const openUserStats = async (u: any) => {
+    setViewUser({ loading: true, base: u })
+    const data = await loadUserStats(u.user_id)
+    setViewUser({ loading: false, base: u, stats: data })
+  }
   const inviteFriend = () => {
     const myId = getTelegramUser()?.id
     const ref = myId ? `ref_${myId}` : ''
@@ -232,8 +239,9 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
           <p className="field-label ach-block-title">Мои друзья ({friends.length})</p>
           {friends.map((f) => (
             <div key={f.user_id} className="friend-found">
-              <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt="" />
-              <span className="friend-name">@{f.username || f.first_name}</span>
+              <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt=""
+                onClick={() => openUserStats(f)} style={{ cursor: 'pointer' }} />
+              <span className="friend-name" onClick={() => openUserStats(f)} style={{ cursor: 'pointer' }}>@{f.username || f.first_name}</span>
               <button className="friend-remove" onClick={() => removeFriend(f.user_id)}>✕</button>
             </div>
           ))}
@@ -259,6 +267,28 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
 
       {/* О приложении */}
       <p className="profile-about">На троне · версия 0.1</p>
+
+      {viewUser && (
+        <div className="ach-popup-overlay" onClick={() => setViewUser(null)}>
+          <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="ach-close-btn" onClick={() => setViewUser(null)}>✕</button>
+            <img src={AVATAR_MAP[viewUser.base.avatar] || AVATAR_MAP['king']} className="profile-avatar-img" alt="" />
+            <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
+            {viewUser.loading ? (
+              <p className="subtitle">Загрузка…</p>
+            ) : viewUser.stats?.ok ? (
+              <div className="stats-grid" style={{ marginTop: 12 }}>
+                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">сеансов</div></div>
+                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">средняя</div></div>
+                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">листов</div></div>
+                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">лучший стрик</div></div>
+              </div>
+            ) : (
+              <p className="subtitle">Нет данных</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
