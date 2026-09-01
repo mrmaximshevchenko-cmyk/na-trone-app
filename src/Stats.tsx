@@ -41,7 +41,7 @@ function Stats({ history }: { history: Session[] }) {
 
   // Рейтинг
   const [lbPeriod, setLbPeriod] = useState<'week' | 'month'>('week')
-  const [lbScope, setLbScope] = useState<'global' | 'friends'>('global')
+  const [lbScope, setLbScope] = useState<'global' | 'friends'>('friends')
   const [lbData, setLbData] = useState<any[]>([])
   const [lbLoading, setLbLoading] = useState(false)
 
@@ -259,8 +259,8 @@ function Stats({ history }: { history: Session[] }) {
             <button className={lbPeriod === 'month' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbPeriod('month')}>Месяц</button>
           </div>
           <div className="seg lb-seg">
-            <button className={lbScope === 'global' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('global')}>Глобально</button>
             <button className={lbScope === 'friends' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('friends')}>Друзья</button>
+            <button className={lbScope === 'global' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('global')}>Глобально</button>
           </div>
 
           <p className="lb-hint">
