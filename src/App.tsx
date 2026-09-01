@@ -301,9 +301,15 @@ function App() {
   const isNewbie = total === 0
 
   const shareText = () => {
-    const text = `Я на троне уже ${total} раз! Средняя оценка ${avgRating}/10, стрик ${streak} дней 🔥🚽 На троне`
-    navigator.clipboard.writeText(text)
-    alert('Скопировано! Вставь куда хочешь 📤\n\n' + text)
+    const text = `👑 Я на троне уже ${total} раз! Средняя ${avgRating}/10, стрик ${streak} дней 🔥 Кто больше? 💩`
+    const url = 'https://t.me/natrone_bot/throne'
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
+    const tg = (window as any).Telegram?.WebApp
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(shareUrl)
+    } else {
+      window.open(shareUrl, '_blank')
+    }
   }
 
   const achPopup = popupAch.length > 0 && (
