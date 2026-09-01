@@ -160,6 +160,8 @@ function Stats({ history }: { history: Session[] }) {
         <button className={view === 'numbers' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('numbers')}>Цифры</button>
         <button className={view === 'calendar' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('calendar')}>Календарь</button>
         <button className={view === 'rating' ? 'seg-btn active seg-rating' : 'seg-btn seg-rating'} onClick={() => setView('rating')}>Рейтинг</button>
+      </div>
+
       {/* ВИД: ЦИФРЫ */}
       {view === 'numbers' && (
         <>
