@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats } from './api'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy } from './api'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -96,6 +96,15 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
   }
 
     const [viewUser, setViewUser] = useState<any | null>(null)
+  const [isPrivate, setIsPrivate] = useState(() => localStorage.getItem('throne_private') === '1')
+  const [showPrivacyHelp, setShowPrivacyHelp] = useState(false)
+
+  const togglePrivacy = () => {
+    const next = !isPrivate
+    setIsPrivate(next)
+    localStorage.setItem('throne_private', next ? '1' : '0')
+    setPrivacy(next)
+  }
 
   const openUserStats = async (u: any) => {
     setViewUser({ loading: true, base: u })
@@ -252,11 +261,19 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         ➕ Пригласить друга
       </button>
 
-      {/* Приватность (заготовка) */}
-      <p className="field-label ach-block-title">Приватность</p>
-      <div className="soon-card">
+      {/* Приватность */}
+      <p className="field-label ach-block-title">
+        Приватность
+        <button className="help-btn" onClick={() => setShowPrivacyHelp(true)}>?</button>
+      </p>
+      <div className="privacy-row">
         <span>🔒 Приватный аккаунт</span>
-        <span className="soon-badge">скоро</span>
+        <button
+          className={isPrivate ? 'toggle on' : 'toggle'}
+          onClick={togglePrivacy}
+        >
+          <span className="toggle-knob" />
+        </button>
       </div>
 
       {/* Данные */}
@@ -268,6 +285,22 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       {/* О приложении */}
       <p className="profile-about">На троне · версия 0.1</p>
 
+      {showPrivacyHelp && (
+        <div className="ach-popup-overlay" onClick={() => setShowPrivacyHelp(false)}>
+          <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="ach-close-btn" onClick={() => setShowPrivacyHelp(false)}>✕</button>
+            <div className="ach-popup-title">Приватный аккаунт 🔒</div>
+            <p className="privacy-help-text">
+              Если включить:<br /><br />
+              • Тебя не видно в глобальном рейтинге<br />
+              • Тебя нельзя найти по нику<br />
+              • Друзья по-прежнему видят тебя и твою статистику<br />
+              • Ты сам видишь все свои данные<br /><br />
+              Выключишь — снова станешь виден всем.
+            </p>
+          </div>
+        </div>
+      )}
       {viewUser && (
         <div className="ach-popup-overlay" onClick={() => setViewUser(null)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>

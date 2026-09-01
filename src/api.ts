@@ -178,4 +178,13 @@ export async function loadUserStats(userId: string) {
     console.log('Ошибка загрузки чужой статы:', err)
     return { ok: false }
   }
+}// Переключить приватность
+export async function setPrivacy(isPrivate: boolean) {
+  try {
+    await fetch(`${API_URL}/privacy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), is_private: isPrivate }),
+    })
+  } catch (err) { console.log('Ошибка приватности:', err) }
 }
