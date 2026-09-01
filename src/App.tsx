@@ -174,6 +174,9 @@ function App() {
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
+        // Пересчитываем ачивки из серверной истории (чтобы на новом устройстве они подтянулись)
+        const idsFromServer = getUnlockedIds(serverHistory)
+        setUnlocked((prev) => Array.from(new Set([...prev, ...idsFromServer])))
       }
     })
   }, [])
