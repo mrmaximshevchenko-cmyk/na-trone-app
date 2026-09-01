@@ -160,4 +160,13 @@ export async function loadLeaderboardMonthFriends() {
     const res = await fetch(`${API_URL}/leaderboard/month/friends/${getUserId()}`)
     return await res.json()
   } catch (err) { console.log('Ошибка (друзья, месяц):', err); return [] }
+}// Принять инвайт — стать взаимными друзьями с пригласившим
+export async function acceptInvite(inviterId: string) {
+  try {
+    await fetch(`${API_URL}/follow`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ me: getUserId(), target: inviterId }),
+    })
+  } catch (err) { console.log('Ошибка инвайта:', err) }
 }

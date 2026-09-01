@@ -95,6 +95,17 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     setFriends((prev) => prev.filter((f) => f.user_id !== userId))
   }
 
+  const inviteFriend = () => {
+    const myId = getTelegramUser()?.id
+    const ref = myId ? `ref_${myId}` : ''
+    const link = `https://t.me/natrone_bot/throne?startapp=${ref}`
+    const text = '👑 Го на трон — следи за моими дропами 💩 Кто больше?'
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`
+    const tg = (window as any).Telegram?.WebApp
+    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl)
+    else window.open(shareUrl, '_blank')
+  }
+
   const saveNick = () => {
     const err = validateNick(draft)
     if (err) {
@@ -229,10 +240,9 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         </>
       )}
 
-      <div className="soon-card">
-        <span>➕ Пригласить друга</span>
-        <span className="soon-badge">скоро</span>
-      </div>
+      <button className="btn-gold invite-btn" onClick={inviteFriend}>
+        ➕ Пригласить друга
+      </button>
 
       {/* Приватность (заготовка) */}
       <p className="field-label ach-block-title">Приватность</p>

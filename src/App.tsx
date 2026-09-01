@@ -9,7 +9,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId } from './api'
 
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
@@ -185,7 +185,16 @@ function App() {
       tg.ready()
       tg.expand()
     }
-    registerUser()
+    registerUser().then(() => {
+      // Проверяем, пришёл ли по инвайт-ссылке (?startapp=ref_XXX)
+      const startParam = tg?.initDataUnsafe?.start_param
+      if (startParam && startParam.startsWith('ref_')) {
+        const inviterId = 'tg_' + startParam.replace('ref_', '')
+        if (inviterId !== getUserId()) {
+          acceptInvite(inviterId)
+        }
+      }
+    })
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
