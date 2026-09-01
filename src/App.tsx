@@ -591,6 +591,12 @@ function App() {
     const secret = ACHIEVEMENTS.filter((a) => a.secret)
     const gotCount = ACHIEVEMENTS.filter((a) => unlocked.includes(a.id)).length
 
+    const unlockReader = () => {
+      if (!unlocked.includes('reader')) {
+        setUnlocked((prev) => Array.from(new Set([...prev, 'reader'])))
+      }
+    }
+
     content = (
       <div className="tab-content ach-screen">
         <h2 className="record-title">Достижения 🏆</h2>
@@ -623,6 +629,7 @@ function App() {
             )
           })}
         </div>
+        <button className="ach-end-marker" onClick={unlockReader}>Ты долистал до самого низа 🫡</button>
       </div>
     )
   }

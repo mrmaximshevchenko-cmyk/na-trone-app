@@ -486,4 +486,14 @@ body { font-family: var(--font-body); }
 .back-arrow-placeholder {
   width: 44px;
   flex-shrink: 0;
+}.ach-end-marker {
+  margin: 20px auto 8px;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
 }
