@@ -187,4 +187,22 @@ export async function setPrivacy(isPrivate: boolean) {
       body: JSON.stringify({ user_id: getUserId(), is_private: isPrivate }),
     })
   } catch (err) { console.log('Ошибка приватности:', err) }
+}// Отправить картинку ачивки через бота (Путь Б)
+export async function shareAchievementImage(achId: string, achName: string) {
+  const chatId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
+  if (!chatId) {
+    console.log('Нет chat_id (не в Telegram)')
+    return false
+  }
+  try {
+    await fetch(`${API_URL}/share-achievement`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, ach_id: achId, ach_name: achName }),
+    })
+    return true
+  } catch (err) {
+    console.log('Ошибка шаринга картинки:', err)
+    return false
+  }
 }
