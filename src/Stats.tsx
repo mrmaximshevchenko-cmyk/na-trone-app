@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { loadLeaderboardWeek, loadLeaderboardMonth } from './api'
+import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends } from './api'
 
 // Карта аватарок (те же, что в профиле)
 import avKing from './assets/avatars/free/king.png'
@@ -53,12 +53,17 @@ function Stats({ history }: { history: Session[] }) {
   useEffect(() => {
     if (view !== 'rating') return
     setLbLoading(true)
-    const loader = lbPeriod === 'week' ? loadLeaderboardWeek : loadLeaderboardMonth
+    let loader
+    if (lbScope === 'friends') {
+      loader = lbPeriod === 'week' ? loadLeaderboardWeekFriends : loadLeaderboardMonthFriends
+    } else {
+      loader = lbPeriod === 'week' ? loadLeaderboardWeek : loadLeaderboardMonth
+    }
     loader().then((data) => {
       setLbData(Array.isArray(data) ? data : [])
       setLbLoading(false)
     })
-  }, [view, lbPeriod])
+  }, [view, lbPeriod, lbScope])
   // Какой месяц показываем в календаре
   const [calMonth, setCalMonth] = useState(() => {
     const d = new Date()
@@ -267,12 +272,12 @@ function Stats({ history }: { history: Session[] }) {
             {lbPeriod === 'week' ? 'Сеансов за неделю' : 'Лучший стрик за месяц'}
           </p>
 
-          {lbScope === 'friends' ? (
-            <p className="subtitle">Друзья скоро появятся 👥</p>
-          ) : lbLoading ? (
+          {lbLoading ? (
             <p className="subtitle">Загрузка…</p>
           ) : lbData.length === 0 ? (
-            <p className="subtitle">Пока пусто. Будь первым! 👑</p>
+            <p className="subtitle">
+              {lbScope === 'friends' ? 'Добавь друзей в профиле 👥' : 'Пока пусто. Будь первым! 👑'}
+            </p>
           ) : (
             <div className="lb-list">
               {lbData.map((u, i) => {

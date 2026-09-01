@@ -148,4 +148,16 @@ export async function loadFriends() {
     console.log('Ошибка загрузки друзей:', err)
     return []
   }
+}// Рейтинг среди друзей
+export async function loadLeaderboardWeekFriends() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/week/friends/${getUserId()}`)
+    return await res.json()
+  } catch (err) { console.log('Ошибка (друзья, неделя):', err); return [] }
+}
+export async function loadLeaderboardMonthFriends() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/month/friends/${getUserId()}`)
+    return await res.json()
+  } catch (err) { console.log('Ошибка (друзья, месяц):', err); return [] }
 }
