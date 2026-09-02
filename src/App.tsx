@@ -703,30 +703,36 @@ function App() {
 
         <p className="field-label ach-block-title">🎯 Задания</p>
         <div className="ach-grid">
-          {visible.map((a) => {
+          {visible.map((a, i) => {
             const got = unlocked.includes(a.id)
             return (
-              <div key={a.id} className={got ? 'ach-card got' : 'ach-card locked'}
-                onClick={() => { if (got) setViewAch(a) }}>
+              <motion.div key={a.id} className={got ? 'ach-card got' : 'ach-card locked'}
+                onClick={() => { if (got) setViewAch(a) }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: Math.min(i * 0.03, 0.5), duration: 0.3 }}>
                 <div className="ach-emoji">{got ? a.emoji : '🔒'}</div>
                 <div className="ach-name">{a.name}</div>
                 <div className="ach-cond">{a.condition}</div>
-              </div>
+              </motion.div>
             )
           })}
         </div>
 
         <p className="field-label ach-block-title">🕵️ Секретные</p>
         <div className="ach-grid">
-          {secret.map((a) => {
+          {secret.map((a, i) => {
             const got = unlocked.includes(a.id)
             return (
-              <div key={a.id} className={got ? 'ach-card got' : 'ach-card secret'}
-                onClick={() => { if (got) setViewAch(a) }}>
+              <motion.div key={a.id} className={got ? 'ach-card got' : 'ach-card secret'}
+                onClick={() => { if (got) setViewAch(a) }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: Math.min(i * 0.03, 0.5), duration: 0.3 }}>
                 <div className="ach-emoji">{got ? a.emoji : '❓'}</div>
                 <div className="ach-name">{got ? a.name : '???'}</div>
                 {got && <div className="ach-cond">{a.condition}</div>}
-              </div>
+              </motion.div>
             )
           })}
         </div>
