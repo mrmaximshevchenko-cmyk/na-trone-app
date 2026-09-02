@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
 import { ACHIEVEMENTS, getUnlockedIds } from './achievements'
@@ -763,7 +763,19 @@ function App() {
   // ======================================================
   return (
     <div className="app-shell">
-      <div className="shell-body">{content}</div>
+      <div className="shell-body">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {content}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       <nav className="tabbar">
         <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>
