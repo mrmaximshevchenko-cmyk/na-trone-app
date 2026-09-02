@@ -402,7 +402,11 @@ function App() {
     if (step === 'result') {
       return (
         <div className="app">
-          <img src={resultMascot} className="mascot-img" alt="Результат" />
+          <motion.img
+            src={resultMascot} className="mascot-img" alt="Результат"
+            animate={{ scale: [1, 1.04, 1] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          />
           <h2 className="record-title">{resultTitle}</h2>
           {resultTip && <p className="result-tip">💡 {resultTip}</p>}
           <button className="btn-gold next-btn result-main-btn" onClick={() => {
@@ -599,7 +603,11 @@ function App() {
               <h1 className="brand-title">На троне</h1>
               <p className="brand-sub">Твой личный какашка-трекер</p>
             </div>
-            <img src={mascotMain} className="mascot-img" alt="На троне" />
+            <motion.img
+              src={mascotMain} className="mascot-img" alt="На троне"
+              animate={{ scale: [1, 1.04, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
 
             <div className="newbie-features">
               <div className="feature-row"><span className="feature-ico">✅</span> Веди дневник походов</div>
@@ -631,7 +639,11 @@ function App() {
                 : `Сегодня заходов: ${todayCount} ${'💩'.repeat(Math.min(todayCount, 5))}`}
             </p>
 
-            <img src={streak >= 3 ? mascotStreak : mascotMain} className="mascot-img" alt="Маскот" />
+            <motion.img
+              src={streak >= 3 ? mascotStreak : mascotMain} className="mascot-img" alt="Маскот"
+              animate={{ scale: [1, 1.04, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
 
             <div className="mini-stats">
               {[
