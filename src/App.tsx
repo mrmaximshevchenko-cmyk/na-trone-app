@@ -11,7 +11,7 @@ import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
 import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic } from './api'
-
+import confetti from 'canvas-confetti'
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
 const PRAISE = [
@@ -239,6 +239,12 @@ function App() {
 
   const saveSession = () => {
     haptic('medium')
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.7 },
+      colors: ['#E8C87A', '#FFD700', '#8B5A2B', '#ffffff'],
+    })
     let title = ''
     let tip = ''
 

@@ -16,7 +16,24 @@ const LB_AVATARS: Record<string, string> = {
   king: avKing, gym: avGym, cool: avCool, gamer: avGamer, zen: avZen,
   chad: avChad, s67: av67, lux: avLux,
 }
-
+// Число прокручивается от 0 до value
+function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const duration = 800
+    const startTime = performance.now()
+    let raf: number
+    const tick = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setDisplay(value * eased)
+      if (progress < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <>{display.toFixed(decimals)}</>
+}
 type Session = {
   id: number
   date: string
@@ -182,9 +199,9 @@ function Stats({ history }: { history: Session[] }) {
           {total > 0 && (
             <div className="stats-grid">
               {[
-                { v: <>📊 {total}</>, l: 'всего сеансов', wide: false },
-                { v: <>⭐ {avgRating}</>, l: 'средняя оценка', wide: false },
-                { v: <>🧻 {totalSheets}</>, l: 'листов всего', wide: false },
+                { v: <>📊 <CountUp value={total} /></>, l: 'всего сеансов', wide: false },
+                { v: <>⭐ {avgRating === '—' ? '—' : <CountUp value={Number(avgRating)} decimals={1} />}</>, l: 'средняя оценка', wide: false },
+                { v: <>🧻 <CountUp value={totalSheets} /></>, l: 'листов всего', wide: false },
                 { v: <>💩 {topCons}</>, l: 'чаще всего', wide: false },
                 { v: <>{topTime}</>, l: 'любимое время', wide: true },
               ].map((c, i) => (
@@ -228,10 +245,13 @@ function Stats({ history }: { history: Session[] }) {
               const colorClass = has ? dayColor(sessions) : ''
               const isToday = key === todayKey
               return (
-                <button
+                <motion.button
                   key={i}
                   className={`cal-cell ${colorClass} ${isToday ? 'today' : ''} ${has ? 'clickable' : ''}`}
                   onClick={() => has && setSelectedDay(key)}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: Math.min(i * 0.015, 0.4), duration: 0.25 }}
                 >
                   <span className="cal-daynum">{d}</span>
                   {has && (
@@ -239,7 +259,7 @@ function Stats({ history }: { history: Session[] }) {
                       💩{sessions.length > 1 ? `×${sessions.length}` : ''}
                     </span>
                   )}
-                </button>
+                </motion.button>
               )
             })}
           </div>
