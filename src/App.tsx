@@ -425,6 +425,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
+          <motion.div key="rating" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Как всё прошло?</h2>
           <p className="subtitle">Оцени сеанс от 1 до 10</p>
           <div className="rating-grid">
@@ -446,6 +447,7 @@ function App() {
             Далее →
           </button>
           <button className="back-btn" onClick={closeFlow}>← Отмена</button>
+          </motion.div>
         </div>
       )
     }
