@@ -675,4 +675,10 @@ body { font-family: var(--font-body); }
   color: var(--gold);
   font-size: 22px;
   font-weight: 700;
+}/* Тактильный отклик на все кнопки */
+button {
+  transition: transform 0.1s ease;
+}
+button:active {
+  transform: scale(0.94);
 }
