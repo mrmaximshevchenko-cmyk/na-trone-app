@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy } from './api'
 
 // Бесплатные аватарки (картинки без фона)
@@ -185,14 +186,17 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       {/* Обычные аватары */}
       <p className="field-label ach-block-title">Аватар</p>
       <div className="avatar-grid">
-        {FREE_AVATARS.map((a) => (
-          <button
+        {FREE_AVATARS.map((a, i) => (
+          <motion.button
             key={a.id}
             className={avatar === a.id ? 'avatar-btn active' : 'avatar-btn'}
             onClick={() => chooseAvatar(a.id)}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.06, duration: 0.3 }}
           >
             <img src={a.img} className="avatar-img" alt={a.id} />
-          </button>
+          </motion.button>
         ))}
       </div>
 

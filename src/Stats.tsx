@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends, loadUserStats } from './api'
 
 // Карта аватарок (те же, что в профиле)
@@ -180,11 +181,24 @@ function Stats({ history }: { history: Session[] }) {
           {total === 0 && <p className="subtitle">Пока нет данных. Запиши первый сеанс!</p>}
           {total > 0 && (
             <div className="stats-grid">
-              <div className="stat-card"><div className="stat-value">📊 {total}</div><div className="stat-label">всего сеансов</div></div>
-              <div className="stat-card"><div className="stat-value">⭐ {avgRating}</div><div className="stat-label">средняя оценка</div></div>
-              <div className="stat-card"><div className="stat-value">🧻 {totalSheets}</div><div className="stat-label">листов всего</div></div>
-              <div className="stat-card"><div className="stat-value">💩 {topCons}</div><div className="stat-label">чаще всего</div></div>
-              <div className="stat-card stat-wide"><div className="stat-value">{topTime}</div><div className="stat-label">любимое время</div></div>
+              {[
+                { v: <>📊 {total}</>, l: 'всего сеансов', wide: false },
+                { v: <>⭐ {avgRating}</>, l: 'средняя оценка', wide: false },
+                { v: <>🧻 {totalSheets}</>, l: 'листов всего', wide: false },
+                { v: <>💩 {topCons}</>, l: 'чаще всего', wide: false },
+                { v: <>{topTime}</>, l: 'любимое время', wide: true },
+              ].map((c, i) => (
+                <motion.div
+                  key={i}
+                  className={c.wide ? 'stat-card stat-wide' : 'stat-card'}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08, duration: 0.35, ease: 'easeOut' }}
+                >
+                  <div className="stat-value">{c.v}</div>
+                  <div className="stat-label">{c.l}</div>
+                </motion.div>
+              ))}
             </div>
           )}
         </>
@@ -293,13 +307,16 @@ function Stats({ history }: { history: Session[] }) {
                 const value = lbPeriod === 'week' ? u.count : u.streak
                 const unit = lbPeriod === 'week' ? '' : ' дн.'
                 return (
-                  <div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}
-                    onClick={() => { if (!isMe) openUserStats(u) }}>
+                  <motion.div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}
+                    onClick={() => { if (!isMe) openUserStats(u) }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: Math.min(i * 0.05, 0.5), duration: 0.3 }}>
                     <span className="lb-rank">{i + 1}</span>
                     <img src={LB_AVATARS[u.avatar] || avKing} className="lb-avatar" alt="" />
                     <span className="lb-name">{name}{isMe ? ' (ты)' : ''}</span>
                     <span className="lb-value">{value}{unit}</span>
-                  </div>
+                  </motion.div>
                 )
               })}
             </div>
