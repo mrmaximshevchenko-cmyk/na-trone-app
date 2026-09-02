@@ -160,8 +160,8 @@ function App() {
 
   const shareAch = (a: typeof ACHIEVEMENTS[number]) => {
     const tg = (window as any).Telegram?.WebApp
-    // Формат запроса: "achId|achName" — сервер по нему отдаёт картинку
-    const query = `${a.id}|${a.name}`
+    // Запрос — только id ачивки (название сервер подставит сам)
+    const query = a.id
     if (tg?.switchInlineQuery) {
       tg.switchInlineQuery(query, ['users', 'groups', 'channels', 'bots'])
     } else {
