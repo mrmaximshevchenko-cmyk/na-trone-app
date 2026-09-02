@@ -10,7 +10,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic } from './api'
 
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
@@ -208,6 +208,7 @@ function App() {
     })
   }, [])
   const handleSheetClick = (sheetNumber: number) => {
+    haptic('light')
     setNoPaper(false)
     setSheets(sheetNumber)
   }
@@ -237,6 +238,7 @@ function App() {
   }
 
   const saveSession = () => {
+    haptic('medium')
     let title = ''
     let tip = ''
 
@@ -293,6 +295,7 @@ function App() {
       setUnlocked([...unlocked, ...freshIds])
       const freshAch = ACHIEVEMENTS.filter((a) => freshIds.includes(a.id))
       setPendingAch(freshAch)
+      haptic('success')
       // Тихо шлём картинки полученных ачивок в чат с ботом
       freshAch.forEach((a) => notifyAchievement(a.id, a.name))
     }
@@ -444,7 +447,7 @@ function App() {
               <button
                 key={n}
                 className={rating === n ? 'rating-btn active' : 'rating-btn'}
-                onClick={() => setRating(n)}
+                onClick={() => { haptic('light'); setRating(n) }}
               >
                 {n}
               </button>
@@ -476,7 +479,7 @@ function App() {
               <button
                 key={opt}
                 className={amount === opt ? 'big-option active' : 'big-option'}
-                onClick={() => setAmount(opt)}
+                onClick={() => { haptic('light'); setAmount(opt) }}
               >
                 <span className="opt-ico">{ico}</span> {opt}
               </button>
@@ -507,7 +510,7 @@ function App() {
               <button
                 key={opt}
                 className={consistency === opt ? 'big-option active' : 'big-option'}
-                onClick={() => setConsistency(opt)}
+                onClick={() => { haptic('light'); setConsistency(opt) }}
               >
                 <span className="opt-ico">{ico}</span> {opt}
               </button>

@@ -216,4 +216,15 @@ export async function notifyAchievement(achId: string, achName: string) {
       body: JSON.stringify({ chat_id: chatId, ach_id: achId, ach_name: achName }),
     })
   } catch (err) { console.log('Ошибка notifyAchievement:', err) }
+}// Тактильная отдача (вибро). type: 'light' | 'medium' | 'heavy' | 'success' | 'error' | 'warning'
+export function haptic(type: 'light' | 'medium' | 'heavy' | 'success' | 'error' | 'warning' = 'light') {
+  const hf = (window as any).Telegram?.WebApp?.HapticFeedback
+  if (!hf) return
+  try {
+    if (type === 'success' || type === 'error' || type === 'warning') {
+      hf.notificationOccurred(type)
+    } else {
+      hf.impactOccurred(type)
+    }
+  } catch {}
 }
