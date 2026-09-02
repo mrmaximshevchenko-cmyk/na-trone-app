@@ -329,7 +329,13 @@ function App() {
 
   const achPopup = popupAch.length > 0 && (
     <div className="ach-popup-overlay" onClick={() => setPopupAch([])}>
-      <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+      <motion.div
+        className="ach-popup"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+      >
         <div className="ach-popup-title">
           {popupAch.length === 1 ? 'Достижение получено!' : `Получено ${popupAch.length} достижения!`}
         </div>
@@ -355,7 +361,7 @@ function App() {
             Поделиться 📤
           </button>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 
