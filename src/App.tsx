@@ -9,7 +9,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, shareAchievementImage } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId } from './api'
 
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
