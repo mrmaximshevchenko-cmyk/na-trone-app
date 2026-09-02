@@ -650,7 +650,12 @@ body { font-family: var(--font-body); }
 .toggle.on .toggle-knob { left: 23px; }
 .privacy-help-text {
   color: var(--text); font-size: 14px; text-align: left; line-height: 1.5;
-}.btn-share-soft {
+}
+
+.ach-popup .btn-gold {
+  width: 100%;
+}
+.btn-share-soft {
   width: 100%;
   margin-top: 10px;
   padding: 12px;
@@ -681,4 +686,9 @@ button {
 }
 button:active {
   transform: scale(0.94);
+}.step-motion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

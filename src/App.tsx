@@ -426,6 +426,7 @@ function App() {
             Готово
           </button>
           {achPopup}
+          {achViewModal}
         </div>
       )
     }
@@ -435,7 +436,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
-          <motion.div key="rating" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
+          <motion.div className="step-motion" key="rating" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Как всё прошло?</h2>
           <p className="subtitle">Оцени сеанс от 1 до 10</p>
           <div className="rating-grid">
@@ -467,7 +468,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
-          <motion.div key="amount" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
+          <motion.div className="step-motion" key="amount" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Сколько добра?</h2>
           <p className="subtitle">Оцени объём</p>
           <div className="big-options">
@@ -498,7 +499,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
-          <motion.div key="consistency" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
+          <motion.div className="step-motion" key="consistency" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Какая консистенция?</h2>
           <p className="subtitle">Выбери, что ближе</p>
           <div className="big-options">
@@ -528,7 +529,7 @@ function App() {
     return (
       <div className="app app-scroll">
         {progress}
-        <motion.div key="paper" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
+        <motion.div className="step-motion" key="paper" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
         <h2 className="record-title">Сколько бумаги ушло?</h2>
         <p className="subtitle">Тапни по листам или проведи пальцем</p>
 
