@@ -158,24 +158,17 @@ function App() {
   const [pendingAch, setPendingAch] = useState<typeof ACHIEVEMENTS>([])
   const [viewAch, setViewAch] = useState<typeof ACHIEVEMENTS[number] | null>(null)
 
-  const shareAch = async (a: typeof ACHIEVEMENTS[number]) => {
-    const ok = await shareAchievementImage(a.id, a.name)
+  const shareAch = (a: typeof ACHIEVEMENTS[number]) => {
     const tg = (window as any).Telegram?.WebApp
-    if (ok) {
-      // Картинка отправлена в чат с ботом — подсказываем юзеру
-      if (tg?.showAlert) {
-        tg.showAlert('Картинка отправлена в чат с ботом 📤 Перешли её другу!')
-      } else {
-        alert('Картинка отправлена в чат с ботом 📤 Перешли её другу!')
-      }
-      if (tg?.close) tg.close()
+    // Формат запроса: "achId|achName" — сервер по нему отдаёт картинку
+    const query = `${a.id}|${a.name}`
+    if (tg?.switchInlineQuery) {
+      tg.switchInlineQuery(query, ['users', 'groups', 'channels', 'bots'])
     } else {
-      // Запасной вариант — текстовый шаринг
+      // Запасной вариант вне Telegram
       const text = `🏆 Новое достижение на троне: «${a.name}»!`
       const url = 'https://t.me/natrone_bot/throne'
-      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
-      if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl)
-      else window.open(shareUrl, '_blank')
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank')
     }
   }
 
