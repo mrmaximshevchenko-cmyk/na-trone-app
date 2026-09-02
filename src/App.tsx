@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
 import { ACHIEVEMENTS, getUnlockedIds } from './achievements'
@@ -625,18 +626,22 @@ function App() {
             <img src={streak >= 3 ? mascotStreak : mascotMain} className="mascot-img" alt="Маскот" />
 
             <div className="mini-stats">
-              <div className="mini-card">
-                <div className="mini-value">⭐ {avgRating}<span className="mini-unit">/10</span></div>
-                <div className="mini-label">средняя</div>
-              </div>
-              <div className="mini-card">
-                <div className="mini-value">📊 {total}</div>
-                <div className="mini-label">сеансов</div>
-              </div>
-              <div className="mini-card">
-                <div className="mini-value">🧻 {totalSheets}</div>
-                <div className="mini-label">бумаги всего</div>
-              </div>
+              {[
+                { v: <>⭐ {avgRating}<span className="mini-unit">/10</span></>, l: 'средняя' },
+                { v: <>📊 {total}</>, l: 'сеансов' },
+                { v: <>🧻 {totalSheets}</>, l: 'бумаги всего' },
+              ].map((c, i) => (
+                <motion.div
+                  key={i}
+                  className="mini-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.4, ease: 'easeOut' }}
+                >
+                  <div className="mini-value">{c.v}</div>
+                  <div className="mini-label">{c.l}</div>
+                </motion.div>
+              ))}
             </div>
 
             <button className="share-btn" onClick={shareText}>
