@@ -457,6 +457,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
+          <motion.div key="amount" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Сколько добра?</h2>
           <p className="subtitle">Оцени объём</p>
           <div className="big-options">
@@ -477,6 +478,7 @@ function App() {
           >
             Далее →
           </button>
+          </motion.div>
         </div>
       )
     }
@@ -486,6 +488,7 @@ function App() {
       return (
         <div className="app app-scroll">
           {progress}
+          <motion.div key="consistency" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
           <h2 className="record-title">Какая консистенция?</h2>
           <p className="subtitle">Выбери, что ближе</p>
           <div className="big-options">
@@ -506,6 +509,7 @@ function App() {
           >
             Далее →
           </button>
+          </motion.div>
         </div>
       )
     }
@@ -514,6 +518,7 @@ function App() {
     return (
       <div className="app app-scroll">
         {progress}
+        <motion.div key="paper" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
         <h2 className="record-title">Сколько бумаги ушло?</h2>
         <p className="subtitle">Тапни по листам или проведи пальцем</p>
 
@@ -574,6 +579,7 @@ function App() {
         <button className="btn-gold next-btn" onClick={saveSession}>
           Сохранить ✅
         </button>
+        </motion.div>
       </div>
     )
   }
