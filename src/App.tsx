@@ -785,22 +785,22 @@ function App() {
 
       <nav className="tabbar">
         <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>
-          <span className="tab-icon">🏠</span>
+          <motion.span className="tab-icon" animate={tab === 'home' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>🏠</motion.span>
           <span className="tab-text">Главная</span>
         </button>
         <button className={tab === 'stats' ? 'tab active' : 'tab'} onClick={() => setTab('stats')}>
-          <span className="tab-icon">📊</span>
+          <motion.span className="tab-icon" animate={tab === 'stats' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>📊</motion.span>
           <span className="tab-text">Стата</span>
         </button>
         <button className="tab tab-center" onClick={startRecord}>
           <span className="tab-toilet">🚽</span>
         </button>
         <button className={tab === 'achievements' ? 'tab active' : 'tab'} onClick={() => setTab('achievements')}>
-          <span className="tab-icon">🏆</span>
+          <motion.span className="tab-icon" animate={tab === 'achievements' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>🏆</motion.span>
           <span className="tab-text">Ачивки</span>
         </button>
         <button className={tab === 'profile' ? 'tab active' : 'tab'} onClick={() => setTab('profile')}>
-          <span className="tab-icon">👤</span>
+          <motion.span className="tab-icon" animate={tab === 'profile' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>👤</motion.span>
           <span className="tab-text">Профиль</span>
         </button>
       </nav>
