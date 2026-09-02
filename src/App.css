@@ -650,4 +650,29 @@ body { font-family: var(--font-body); }
 .toggle.on .toggle-knob { left: 23px; }
 .privacy-help-text {
   color: var(--text); font-size: 14px; text-align: left; line-height: 1.5;
+}.btn-share-soft {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: none;
+  border: 1px solid var(--gold-border);
+  border-radius: 14px;
+  color: var(--gold);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.ach-popup-item.clickable {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ach-popup-item.clickable:active {
+  background: rgba(232,200,122,0.15);
+}
+.ach-popup-arrow {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 22px;
+  font-weight: 700;
 }

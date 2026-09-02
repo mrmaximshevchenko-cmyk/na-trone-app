@@ -334,18 +334,26 @@ function App() {
         </div>
         <div className="ach-popup-list">
           {popupAch.map((a) => (
-            <div key={a.id} className="ach-popup-item">
+            <div key={a.id}
+              className={popupAch.length > 1 ? 'ach-popup-item clickable' : 'ach-popup-item'}
+              onClick={() => { if (popupAch.length > 1) setViewAch(a) }}>
               <span className="ach-popup-emoji">{a.emoji}</span>
               <div className="ach-popup-text">
                 <span className="ach-popup-name">{a.name}</span>
                 <span className="ach-popup-cond">{a.condition}</span>
               </div>
+              {popupAch.length > 1 && <span className="ach-popup-arrow">›</span>}
             </div>
           ))}
         </div>
         <button className="btn-gold" onClick={() => { setPopupAch([]); closeFlow() }}>
           Круто! 🎉
         </button>
+        {popupAch.length === 1 && (
+          <button className="btn-share-soft" onClick={() => shareAch(popupAch[0])}>
+            Поделиться 📤
+          </button>
+        )}
       </div>
     </div>
   )
