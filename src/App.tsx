@@ -9,7 +9,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement } from './api'
 
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
@@ -292,6 +292,8 @@ function App() {
       setUnlocked([...unlocked, ...freshIds])
       const freshAch = ACHIEVEMENTS.filter((a) => freshIds.includes(a.id))
       setPendingAch(freshAch)
+      // Тихо шлём картинки полученных ачивок в чат с ботом
+      freshAch.forEach((a) => notifyAchievement(a.id, a.name))
     }
 
     setStep('result')

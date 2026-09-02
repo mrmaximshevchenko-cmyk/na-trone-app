@@ -205,4 +205,15 @@ export async function shareAchievementImage(achId: string, achName: string) {
     console.log('Ошибка шаринга картинки:', err)
     return false
   }
+}// Тихо прислать картинку полученной ачивки в чат с ботом
+export async function notifyAchievement(achId: string, achName: string) {
+  const chatId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
+  if (!chatId) return
+  try {
+    await fetch(`${API_URL}/notify-achievement`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, ach_id: achId, ach_name: achName }),
+    })
+  } catch (err) { console.log('Ошибка notifyAchievement:', err) }
 }
