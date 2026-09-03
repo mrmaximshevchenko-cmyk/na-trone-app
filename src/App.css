@@ -209,21 +209,21 @@ body { font-family: var(--font-body); }
 }
 
 /* ===== РУЛОН ===== */
-.roll-top { font-size: 52px; margin: 4px 0 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.roll-top { font-size: 52px; margin: 4px 0 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
 .paper-roll {
-  display: flex; flex-direction: column; gap: 2px; margin: 0 0 12px;
-  background: var(--gold-soft); padding: 8px; border-radius: 12px;
+  display: flex; flex-direction: column; gap: 0; margin: 0 0 12px;
+  background: var(--gold-soft); padding: 6px; border-radius: 12px;
   touch-action: none;
 }
 .sheet {
-  width: 150px; height: 26px; border: none;
-  border-bottom: 2px dashed rgba(232,200,122,0.3); background: #fdfdfa;
+  width: 160px; height: 26px; border: none;
+  border-bottom: 2px dashed rgba(150,120,70,0.45); background: #fdfdfa;
   cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
   transition: background 0.15s ease;
 }
 .sheet:first-child { border-radius: 8px 8px 0 0; }
 .sheet:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
-.sheet.torn { background: #a9703f; }
+.sheet.torn { background: #a9703f; border-bottom-color: rgba(255,255,255,0.25); }
 .sheets-count { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
 
 /* ===== НИЖНЕЕ МЕНЮ ===== */

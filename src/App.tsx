@@ -568,7 +568,7 @@ function App() {
             const sheetNumber = i + 1
             const isTorn = !noPaper && sheetNumber <= sheets
             return (
-              <button
+              <motion.button
                 key={sheetNumber}
                 data-sheet={sheetNumber}
                 className={isTorn ? 'sheet torn' : 'sheet'}
@@ -585,9 +585,11 @@ function App() {
                   setNoPaper(false)
                   setSheets(sheetNumber)
                 }}
+                animate={isTorn ? { x: [0, -3, 3, 0] } : { x: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 {isTorn ? '💩' : ''}
-              </button>
+              </motion.button>
             )
           })}
         </div>
