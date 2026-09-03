@@ -326,6 +326,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
           </div>
         </div>
       )}
+      {showPrivacyHelp && (
         <div className="ach-popup-overlay" onClick={() => setShowPrivacyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setShowPrivacyHelp(false)}>✕</button>
