@@ -544,6 +544,13 @@ function App() {
 
         <div className="roll-top">🧻</div>
 
+        <button
+          className={noPaper ? 'option-btn no-paper-btn active' : 'option-btn no-paper-btn'}
+          onClick={() => { setNoPaper(true); setSheets(0) }}
+        >
+          💩 Без бумаги 🚿
+        </button>
+
         <div
           className="paper-roll"
           onMouseLeave={() => setIsDragging(false)}
@@ -588,13 +595,6 @@ function App() {
         <p className="sheets-count">
           {noPaper ? 'Без бумаги' : sheets === 0 ? 'Ещё не выбрано' : `Оторвано: ${sheets} 🧻`}
         </p>
-
-        <button
-          className={noPaper ? 'option-btn no-paper-btn active' : 'option-btn no-paper-btn'}
-          onClick={() => { setNoPaper(true); setSheets(0) }}
-        >
-          💩 Без бумаги 🚿
-        </button>
 
         <button className="btn-gold next-btn" onClick={saveSession}>
           Сохранить ✅
