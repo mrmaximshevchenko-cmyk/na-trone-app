@@ -542,14 +542,14 @@ function App() {
         <h2 className="record-title">Сколько бумаги ушло?</h2>
         <p className="subtitle">Тапни по листам или проведи пальцем</p>
 
-        <div className="roll-top">🧻</div>
-
         <button
           className={noPaper ? 'option-btn no-paper-btn active' : 'option-btn no-paper-btn'}
           onClick={() => { setNoPaper(true); setSheets(0) }}
         >
           💩 Без бумаги 🚿
         </button>
+
+        <div className="roll-top">🧻</div>
 
         <div
           className="paper-roll"
