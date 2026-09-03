@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy } from './api'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify } from './api'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -105,6 +105,16 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     setIsPrivate(next)
     localStorage.setItem('throne_private', next ? '1' : '0')
     setPrivacy(next)
+  }
+
+  const [notifyOn, setNotifyOn] = useState(() => localStorage.getItem('throne_notify') !== '0')
+  const [showNotifyHelp, setShowNotifyHelp] = useState(false)
+
+  const toggleNotify = () => {
+    const next = !notifyOn
+    setNotifyOn(next)
+    localStorage.setItem('throne_notify', next ? '1' : '0')
+    setNotify(next)
   }
 
   const openUserStats = async (u: any) => {
@@ -265,6 +275,21 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         ➕ Пригласить друга
       </button>
 
+      {/* Уведомления */}
+      <p className="field-label ach-block-title">
+        Уведомления
+        <button className="help-btn" onClick={() => setShowNotifyHelp(true)}>?</button>
+      </p>
+      <div className="privacy-row">
+        <span>🔔 Уведомления о друзьях</span>
+        <button
+          className={notifyOn ? 'toggle on' : 'toggle'}
+          onClick={toggleNotify}
+        >
+          <span className="toggle-knob" />
+        </button>
+      </div>
+
       {/* Приватность */}
       <p className="field-label ach-block-title">
         Приватность
@@ -289,7 +314,18 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       {/* О приложении */}
       <p className="profile-about">На троне · версия 0.1</p>
 
-      {showPrivacyHelp && (
+      {showNotifyHelp && (
+        <div className="ach-popup-overlay" onClick={() => setShowNotifyHelp(false)}>
+          <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="ach-close-btn" onClick={() => setShowNotifyHelp(false)}>✕</button>
+            <div className="ach-popup-title">Уведомления о друзьях 🔔</div>
+            <p className="privacy-help-text">
+              Когда включено, тебе будут приходить уведомления о походах твоих друзей на трон.<br /><br />
+              Выключишь — не будешь получать эти уведомления.
+            </p>
+          </div>
+        </div>
+      )}
         <div className="ach-popup-overlay" onClick={() => setShowPrivacyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setShowPrivacyHelp(false)}>✕</button>

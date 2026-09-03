@@ -227,4 +227,13 @@ export function haptic(type: 'light' | 'medium' | 'heavy' | 'success' | 'error' 
       hf.impactOccurred(type)
     }
   } catch {}
+}// Вкл/выкл уведомления о друзьях
+export async function setNotify(enabled: boolean) {
+  try {
+    await fetch(`${API_URL}/notify-setting`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), notify: enabled }),
+    })
+  } catch (err) { console.log('Ошибка настройки уведомлений:', err) }
 }
