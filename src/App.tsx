@@ -746,6 +746,10 @@ function App() {
                 <div className="ach-emoji">{got ? a.emoji : '🔒'}</div>
                 <div className="ach-name">{a.name}</div>
                 <div className="ach-cond">{a.condition}</div>
+                <div className={got ? 'ach-coins got' : 'ach-coins'}>
+                  <img src={coinImg} className="ach-coin-icon" alt="🪙" />
+                  {got ? '+' : ''}{a.coins}
+                </div>
               </motion.div>
             )
           })}
@@ -764,6 +768,10 @@ function App() {
                 <div className="ach-emoji">{got ? a.emoji : '❓'}</div>
                 <div className="ach-name">{got ? a.name : '???'}</div>
                 {got && <div className="ach-cond">{a.condition}</div>}
+                <div className={got ? 'ach-coins got' : 'ach-coins'}>
+                  <img src={coinImg} className="ach-coin-icon" alt="🪙" />
+                  {got ? '+' + a.coins : '???'}
+                </div>
               </motion.div>
             )
           })}

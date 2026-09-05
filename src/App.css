@@ -750,4 +750,21 @@ button:active {
 .coin-onboard-row span:last-child { color: var(--gold); font-weight: 800; }
 .coin-onboard-hint {
   font-size: 14px; color: var(--text-dim); margin-bottom: 16px; text-align: center;
+}.ach-coins {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gold);
+  opacity: 0.6;
+}
+.ach-coins.got {
+  opacity: 1;
+}
+.ach-coin-icon {
+  width: 16px;
+  height: 16px;
 }

@@ -17,6 +17,7 @@ export type Achievement = {
   condition: string   // текст условия (для видимых)
   secret: boolean     // секретная?
   wave: number        // волна (для будущих "сундуков")
+  coins: number       // награда в какакоинах
   check: (history: Session[]) => boolean  // проверка по всей истории
 }
 
@@ -105,57 +106,57 @@ function hasAllDayparts(history: Session[]): boolean {
 
 export const ACHIEVEMENTS: Achievement[] = [
   // ---------- ВОЛНА 1: ВИДИМЫЕ ----------
-  { id: 'first', emoji: '🚽', name: 'Первое приземление', condition: 'Первый сеанс', secret: false, wave: 1,
+  { id: 'first', emoji: '🚽', name: 'Первое приземление', condition: 'Первый сеанс', secret: false, wave: 1, coins: 50,
     check: (h) => h.length >= 1 },
-  { id: 'five', emoji: '🖐️', name: 'Пятёрочка', condition: '5 сеансов всего', secret: false, wave: 1,
+  { id: 'five', emoji: '🖐️', name: 'Пятёрочка', condition: '5 сеансов всего', secret: false, wave: 1, coins: 50,
     check: (h) => h.length >= 5 },
-  { id: 'ten', emoji: '🔟', name: 'Десятка сходов', condition: '10 сеансов всего', secret: false, wave: 1,
+  { id: 'ten', emoji: '🔟', name: 'Десятка сходов', condition: '10 сеансов всего', secret: false, wave: 1, coins: 100,
     check: (h) => h.length >= 10 },
-  { id: 'hundred', emoji: '💯', name: 'Центурион', condition: '100 сеансов всего', secret: false, wave: 1,
+  { id: 'hundred', emoji: '💯', name: 'Центурион', condition: '100 сеансов всего', secret: false, wave: 1, coins: 200,
     check: (h) => h.length >= 100 },
-  { id: 'perfect', emoji: '💎', name: 'Идеальный дроп', condition: 'Оценка 10 + «Колбаска»', secret: false, wave: 1,
+  { id: 'perfect', emoji: '💎', name: 'Идеальный дроп', condition: 'Оценка 10 + «Колбаска»', secret: false, wave: 1, coins: 200,
     check: (h) => h.some((s) => s.rating === 10 && s.consistency === 'Колбаска') },
-  { id: 'paperking', emoji: '👑', name: 'Бумажный король', condition: 'Больше 10 листов за раз', secret: false, wave: 1,
+  { id: 'paperking', emoji: '👑', name: 'Бумажный король', condition: 'Больше 10 листов за раз', secret: false, wave: 1, coins: 100,
     check: (h) => h.some((s) => !s.noPaper && s.sheets > 10) },
-  { id: 'ecoguard', emoji: '🌿', name: 'Страж природы', condition: '2 листа или меньше', secret: false, wave: 1,
+  { id: 'ecoguard', emoji: '🌿', name: 'Страж природы', condition: '2 листа или меньше', secret: false, wave: 1, coins: 100,
     check: (h) => h.some((s) => !s.noPaper && s.sheets > 0 && s.sheets <= 2) },
-  { id: 'survival', emoji: '🏜️', name: 'Режим выживания', condition: 'Ровно 1 лист', secret: false, wave: 1,
+  { id: 'survival', emoji: '🏜️', name: 'Режим выживания', condition: 'Ровно 1 лист', secret: false, wave: 1, coins: 100,
     check: (h) => h.some((s) => !s.noPaper && s.sheets === 1) },
-  { id: 'aqua', emoji: '🧴', name: 'Аквавоин', condition: 'Отметить «Без бумаги»', secret: false, wave: 1,
+  { id: 'aqua', emoji: '🧴', name: 'Аквавоин', condition: 'Отметить «Без бумаги»', secret: false, wave: 1, coins: 50,
     check: (h) => h.some((s) => s.noPaper) },
-  { id: 'earlybird', emoji: '🌅', name: 'Ранняя пташка', condition: 'Сеанс до 7 утра', secret: false, wave: 1,
+  { id: 'earlybird', emoji: '🌅', name: 'Ранняя пташка', condition: 'Сеанс до 7 утра', secret: false, wave: 1, coins: 50,
     check: (h) => h.some((s) => hourOf(s) >= 5 && hourOf(s) < 7) },
-  { id: 'midnight', emoji: '🌙', name: 'Полуночник', condition: 'Сеанс после полуночи', secret: false, wave: 1,
+  { id: 'midnight', emoji: '🌙', name: 'Полуночник', condition: 'Сеанс после полуночи', secret: false, wave: 1, coins: 50,
     check: (h) => h.some((s) => hourOf(s) >= 0 && hourOf(s) < 5) },
-  { id: 'double', emoji: '🎳', name: 'Дубль', condition: '2 сеанса за один день', secret: false, wave: 1,
+  { id: 'double', emoji: '🎳', name: 'Дубль', condition: '2 сеанса за один день', secret: false, wave: 1, coins: 100,
     check: (h) => maxPerDay(h) >= 2 },
-  { id: 'hattrick', emoji: '🎯', name: 'Хет-трик', condition: '3 сеанса за один день', secret: false, wave: 1,
+  { id: 'hattrick', emoji: '🎯', name: 'Хет-трик', condition: '3 сеанса за один день', secret: false, wave: 1, coins: 200,
     check: (h) => maxPerDay(h) >= 3 },
-  { id: 'streak3', emoji: '🔥', name: 'Разогрев', condition: 'Стрик 3 дня подряд', secret: false, wave: 1,
+  { id: 'streak3', emoji: '🔥', name: 'Разогрев', condition: 'Стрик 3 дня подряд', secret: false, wave: 1, coins: 100,
     check: (h) => calcStreak(h) >= 3 },
-  { id: 'streak7', emoji: '📅', name: 'Неделя дисциплины', condition: 'Стрик 7 дней подряд', secret: false, wave: 1,
+  { id: 'streak7', emoji: '📅', name: 'Неделя дисциплины', condition: 'Стрик 7 дней подряд', secret: false, wave: 1, coins: 200,
     check: (h) => calcStreak(h) >= 7 },
-  { id: 'loose', emoji: '🌊', name: 'Прорыв плотины', condition: 'Консистенция «Жидко»', secret: false, wave: 1,
+  { id: 'loose', emoji: '🌊', name: 'Прорыв плотины', condition: 'Консистенция «Жидко»', secret: false, wave: 1, coins: 50,
     check: (h) => h.some((s) => s.consistency === 'Жидко') },
-  { id: 'hard', emoji: '🪨', name: 'Каменная кладка', condition: 'Консистенция «Сухари»', secret: false, wave: 1,
+  { id: 'hard', emoji: '🪨', name: 'Каменная кладка', condition: 'Консистенция «Сухари»', secret: false, wave: 1, coins: 100,
     check: (h) => h.some((s) => s.consistency === 'Сухари') },
-  { id: 'sausage10', emoji: '🌭', name: 'Идеальная форма', condition: '«Колбаска» 10 раз', secret: false, wave: 1,
+  { id: 'sausage10', emoji: '🌭', name: 'Идеальная форма', condition: '«Колбаска» 10 раз', secret: false, wave: 1, coins: 200,
     check: (h) => h.filter((s) => s.consistency === 'Колбаска').length >= 10 },
-  { id: 'spectrum', emoji: '🌈', name: 'Полный спектр', condition: 'Все 4 консистенции хоть раз', secret: false, wave: 1,
+  { id: 'spectrum', emoji: '🌈', name: 'Полный спектр', condition: 'Все 4 консистенции хоть раз', secret: false, wave: 1, coins: 200,
     check: (h) => ['Жидко', 'Мягко', 'Колбаска', 'Сухари'].every((c) => h.some((s) => s.consistency === c)) },
-  { id: 'artillery', emoji: '🎖️', name: 'Тяжёлая артиллерия', condition: '«Куча» три раза', secret: false, wave: 1,
+  { id: 'artillery', emoji: '🎖️', name: 'Тяжёлая артиллерия', condition: '«Куча» три раза', secret: false, wave: 1, coins: 100,
     check: (h) => h.filter((s) => s.amount === 'Куча').length >= 3 },
 
   // ---------- ВОЛНА 1: СЕКРЕТНЫЕ ----------
-  { id: 'alien', emoji: '👽', name: 'Контакт с иным разумом', condition: 'Оценка 1 из 10', secret: true, wave: 1,
+  { id: 'alien', emoji: '👽', name: 'Контакт с иным разумом', condition: 'Оценка 1 из 10', secret: true, wave: 1, coins: 300,
     check: (h) => h.some((s) => s.rating === 1) },
-  { id: 'nightwatch', emoji: '🦉', name: 'Страж ночи', condition: 'Сеанс между 2:00 и 4:00', secret: true, wave: 1,
+  { id: 'nightwatch', emoji: '🦉', name: 'Страж ночи', condition: 'Сеанс между 2:00 и 4:00', secret: true, wave: 1, coins: 300,
     check: (h) => h.some((s) => hourOf(s) >= 2 && hourOf(s) < 4) },
-  { id: 'doomsday', emoji: '💀', name: 'Судный день', condition: '5+ сеансов за один день', secret: true, wave: 1,
+  { id: 'doomsday', emoji: '💀', name: 'Судный день', condition: '5+ сеансов за один день', secret: true, wave: 1, coins: 500,
     check: (h) => maxPerDay(h) >= 5 },
-  { id: 'clean', emoji: '⚡', name: 'Чистая работа', condition: 'Оценка 10 + «Без бумаги»', secret: true, wave: 1,
+  { id: 'clean', emoji: '⚡', name: 'Чистая работа', condition: 'Оценка 10 + «Без бумаги»', secret: true, wave: 1, coins: 300,
     check: (h) => h.some((s) => s.rating === 10 && s.noPaper) },
-  { id: 'rollercoaster', emoji: '🎢', name: 'Американские горки', condition: 'За день оценка 10 и оценка 1', secret: true, wave: 1,
+  { id: 'rollercoaster', emoji: '🎢', name: 'Американские горки', condition: 'За день оценка 10 и оценка 1', secret: true, wave: 1, coins: 300,
     check: (h) => {
       const byDay = sessionsByDay(h)
       for (const k in byDay) {
@@ -164,7 +165,7 @@ export const ACHIEVEMENTS: Achievement[] = [
       }
       return false
     } },
-  { id: 'roadworks', emoji: '🚧', name: 'Дорожные работы', condition: '«Осечка» 3 дня подряд', secret: true, wave: 1,
+  { id: 'roadworks', emoji: '🚧', name: 'Дорожные работы', condition: '«Осечка» 3 дня подряд', secret: true, wave: 1, coins: 300,
     check: (h) => {
       // 3 разных дня подряд, в каждом была осечка
       const byDay = sessionsByDay(h)
@@ -182,26 +183,26 @@ export const ACHIEVEMENTS: Achievement[] = [
       }
       return false
     } },
-  { id: 'jackpot', emoji: '🎰', name: 'Джекпот', condition: 'Сеанс в 00:00–00:09', secret: true, wave: 1,
+  { id: 'jackpot', emoji: '🎰', name: 'Джекпот', condition: 'Сеанс в 00:00–00:09', secret: true, wave: 1, coins: 300,
     check: (h) => h.some((s) => { const d = new Date(s.id); return d.getHours() === 0 && d.getMinutes() < 10 }) },
-  { id: 'prophecy', emoji: '🔮', name: 'Пророчество сбылось', condition: 'Оценка 7 семь раз подряд', secret: true, wave: 1,
+  { id: 'prophecy', emoji: '🔮', name: 'Пророчество сбылось', condition: 'Оценка 7 семь раз подряд', secret: true, wave: 1, coins: 500,
     check: (h) => hasStreakOf(h, 7, (s) => s.rating === 7) },
-  { id: 'dragon', emoji: '🐉', name: 'Победитель дракона', condition: '«Куча» + больше 10 листов', secret: true, wave: 1,
+  { id: 'dragon', emoji: '🐉', name: 'Победитель дракона', condition: '«Куча» + больше 10 листов', secret: true, wave: 1, coins: 500,
     check: (h) => h.some((s) => s.amount === 'Куча' && !s.noPaper && s.sheets > 10) },
-  { id: 'ninja', emoji: '🥷', name: 'Бесшумный ниндзя', condition: '«Без бумаги» 5 раз всего', secret: true, wave: 1,
+  { id: 'ninja', emoji: '🥷', name: 'Бесшумный ниндзя', condition: '«Без бумаги» 5 раз всего', secret: true, wave: 1, coins: 300,
     check: (h) => h.filter((s) => s.noPaper).length >= 5 },
-  { id: 'blackstreak', emoji: '📉', name: 'Чёрная полоса', condition: 'Оценка 1–3 три раза подряд', secret: true, wave: 1,
+  { id: 'blackstreak', emoji: '📉', name: 'Чёрная полоса', condition: 'Оценка 1–3 три раза подряд', secret: true, wave: 1, coins: 300,
     check: (h) => hasStreakOf(h, 3, (s) => s.rating >= 1 && s.rating <= 3) },
-  { id: 'goat', emoji: '🐐', name: 'Величайший из всех', condition: 'Оценка 8+ десять раз подряд', secret: true, wave: 1,
+  { id: 'goat', emoji: '🐐', name: 'Величайший из всех', condition: 'Оценка 8+ десять раз подряд', secret: true, wave: 1, coins: 500,
     check: (h) => hasStreakOf(h, 10, (s) => s.rating >= 8) },
-  { id: 'thirty', emoji: '🌗', name: 'Ритуал полнолуния', condition: '30 сеансов всего', secret: true, wave: 1,
+  { id: 'thirty', emoji: '🌗', name: 'Ритуал полнолуния', condition: '30 сеансов всего', secret: true, wave: 1, coins: 300,
     check: (h) => h.length >= 30 },
-  { id: 'timeless', emoji: '♾️', name: 'Вне времени', condition: 'Сеансы во все 4 времени суток', secret: true, wave: 1,
+  { id: 'timeless', emoji: '♾️', name: 'Вне времени', condition: 'Сеансы во все 4 времени суток', secret: true, wave: 1, coins: 300,
     check: (h) => hasAllDayparts(h) },
-  { id: 'zen', emoji: '🧘', name: 'Мастер дзена', condition: 'Оценка 10 три раза подряд', secret: true, wave: 1,
+  { id: 'zen', emoji: '🧘', name: 'Мастер дзена', condition: 'Оценка 10 три раза подряд', secret: true, wave: 1, coins: 500,
     check: (h) => hasStreakOf(h, 3, (s) => s.rating === 10) },
   // "Ты дочитал до конца" — особая, проверяется на экране, не по истории
-  { id: 'reader', emoji: '🏁', name: 'Конец есть!', condition: 'Пролистать все ачивки', secret: true, wave: 1,
+  { id: 'reader', emoji: '🏁', name: 'Конец есть!', condition: 'Пролистать все ачивки', secret: true, wave: 1, coins: 300,
     check: () => false },
 ]
 
