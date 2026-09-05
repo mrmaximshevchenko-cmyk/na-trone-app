@@ -649,7 +649,6 @@ function App() {
             </div>
             <p className="greeting">{getGreeting()}</p>
             <div className="brand-mini">
-              <span className="crown-mini">👑</span>
               <span className="brand-title-mini">На троне</span>
             </div>
 
