@@ -10,7 +10,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
@@ -133,6 +133,7 @@ function calcStreak(history: Session[]) {
 function App() {
   const [tab, setTab] = useState('home')
   const [coins, setCoins] = useState<number>(0)
+  const [coinsOnboard, setCoinsOnboard] = useState<any | null>(null)
   const [flow, setFlow] = useState(false)       // идёт ли запись
   const [step, setStep] = useState('rating')    // текущий шаг записи
 
@@ -201,7 +202,19 @@ function App() {
         }
       }
     })
-    loadCoins().then((data) => setCoins(data.balance || 0))
+    loadCoins().then((data) => {
+      setCoins(data.balance || 0)
+      // Первый вход после обновления — показать салют
+      if (!data.onboarded && data.balance > 0) {
+        // Считаем разбивку из лога
+        const log = data.log || []
+        const achSum = log.filter((l: any) => l.reason.startsWith('ach_')).reduce((a: number, l: any) => a + l.amount, 0)
+        const achCount = log.filter((l: any) => l.reason.startsWith('ach_')).length
+        const bonus = log.filter((l: any) => l.reason === 'oldbie_bonus').reduce((a: number, l: any) => a + l.amount, 0)
+        setCoinsOnboard({ total: data.balance, achSum, achCount, bonus })
+        setTimeout(() => confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 }, colors: ['#E8C87A', '#FFD700', '#8B5A2B', '#ffffff'] }), 300)
+      }
+    })
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
@@ -816,6 +829,33 @@ function App() {
 
       {achPopup}
       {achViewModal}
+
+      {coinsOnboard && (
+        <div className="ach-popup-overlay" onClick={() => {}}>
+          <motion.div
+            className="ach-popup coin-onboard"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+          >
+            <div className="ach-popup-title">🎉 Вам начислено!</div>
+            <div className="coin-onboard-total">
+              <img src={coinImg} className="coin-icon" alt="🪙" />
+              <span>{coinsOnboard.total}</span>
+            </div>
+            <div className="coin-onboard-list">
+              <div className="coin-onboard-row"><span>🏆 Ачивки ({coinsOnboard.achCount})</span><span>+{coinsOnboard.achSum}</span></div>
+              {coinsOnboard.bonus > 0 && (
+                <div className="coin-onboard-row"><span>👑 Бонус старожила</span><span>+{coinsOnboard.bonus}</span></div>
+              )}
+            </div>
+            <p className="coin-onboard-hint">Трать их на редкие скины... или копи 👀</p>
+            <button className="btn-gold" onClick={() => { markCoinsOnboarded(); setCoinsOnboard(null) }}>
+              Забрать 🪙
+            </button>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

@@ -734,4 +734,20 @@ button:active {
 .home-coin-icon {
   width: 22px;
   height: 22px;
+}.coin-onboard-total {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 40px; font-weight: 800; color: var(--gold); margin: 8px 0 16px;
+}
+.coin-onboard-total .coin-icon { width: 44px; height: 44px; }
+.coin-onboard-list {
+  display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;
+}
+.coin-onboard-row {
+  display: flex; justify-content: space-between;
+  background: var(--gold-soft); border-radius: 12px; padding: 10px 14px;
+  font-size: 15px; color: var(--text);
+}
+.coin-onboard-row span:last-child { color: var(--gold); font-weight: 800; }
+.coin-onboard-hint {
+  font-size: 14px; color: var(--text-dim); margin-bottom: 16px; text-align: center;
 }
