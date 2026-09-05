@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins, loadShop, buySkin, selectSkin } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
@@ -13,7 +12,6 @@ const TIER_INFO: Record<string, { name: string; color: string }> = {
   legendary: { name: 'Легендарный', color: '#E8C87A' },
   mythic: { name: 'Мифический', color: '#e0455e' },
 }
-const TIER_RANK: Record<string, number> = { free: 0, common: 1, rare: 2, epic: 3, legendary: 4, mythic: 5 }
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -29,14 +27,7 @@ import avRap from './assets/avatars/premium/rap.jpg'
 import av67 from './assets/avatars/premium/s67.jpg'
 import avLux from './assets/avatars/premium/lux.jpg'
 
-// Список бесплатных: id + картинка
-const FREE_AVATARS = [
-  { id: 'king', img: avKing },
-  { id: 'gym', img: avGym },
-  { id: 'cool', img: avCool },
-  { id: 'gamer', img: avGamer },
-  { id: 'zen', img: avZen },
-]
+
 
 // Список премиум: id + картинка + цена в звёздах
 const PREMIUM_AVATARS = [
@@ -201,15 +192,9 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
     setEditing(false)
   }
 
-  const chooseAvatar = (id: string) => {
-    setAvatar(id)
-    localStorage.setItem('throne_avatar', id)
-  }
 
-  const buyPremium = (price: number) => {
-    // Оплата через Telegram Stars появится позже
-    window.alert(`Премиум-аватар за ${price} ⭐\n\nПокупка за звёзды скоро появится 👑`)
-  }
+
+
 
   const confirmClear = () => {
     if (window.confirm('Удалить всю историю и достижения? Это нельзя отменить.')) {
