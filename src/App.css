@@ -691,4 +691,28 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
+}.coin-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 4px;
+  padding: 10px 20px;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-border);
+  border-radius: 16px;
+  width: fit-content;
+}
+.coin-icon {
+  width: 28px;
+  height: 28px;
+}
+.coin-amount {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gold);
+}
+.coin-label {
+  font-size: 14px;
+  color: var(--text-dim);
 }

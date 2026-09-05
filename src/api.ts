@@ -236,4 +236,24 @@ export async function setNotify(enabled: boolean) {
       body: JSON.stringify({ user_id: getUserId(), notify: enabled }),
     })
   } catch (err) { console.log('Ошибка настройки уведомлений:', err) }
+}// Загрузить баланс какакоинов
+export async function loadCoins() {
+  try {
+    const res = await fetch(`${API_URL}/coins/${getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки монет:', err)
+    return { balance: 0, onboarded: true, log: [] }
+  }
+}
+
+// Отметить онбординг монет показанным
+export async function markCoinsOnboarded() {
+  try {
+    await fetch(`${API_URL}/coins-onboarded`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId() }),
+    })
+  } catch (err) { console.log('Ошибка онбординга монет:', err) }
 }

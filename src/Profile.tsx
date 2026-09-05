@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify } from './api'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins } from './api'
+import coinImg from './assets/coin.png'
 
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
@@ -79,9 +80,11 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
 
   // Друзья
   const [friends, setFriends] = useState<any[]>([])
+  const [coins, setCoins] = useState<number>(0)
 
   useEffect(() => {
     loadFriends().then((list) => setFriends(Array.isArray(list) ? list : []))
+    loadCoins().then((data) => setCoins(data.balance || 0))
   }, [])
 
   const isFriend = (userId: string) => friends.some((f) => f.user_id === userId)
@@ -192,6 +195,13 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
           </div>
         </div>
       )}
+
+      {/* Баланс какакоинов */}
+      <div className="coin-balance">
+        <img src={coinImg} className="coin-icon" alt="какакоин" />
+        <span className="coin-amount">{coins}</span>
+        <span className="coin-label">какакоинов</span>
+      </div>
 
       {/* Обычные аватары */}
       <p className="field-label ach-block-title">Аватар</p>
