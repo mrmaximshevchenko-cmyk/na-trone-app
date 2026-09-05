@@ -256,4 +256,39 @@ export async function markCoinsOnboarded() {
       body: JSON.stringify({ user_id: getUserId() }),
     })
   } catch (err) { console.log('Ошибка онбординга монет:', err) }
+}// Магазин: список скинов + баланс + владение
+export async function loadShop() {
+  try {
+    const res = await fetch(`${API_URL}/shop/${getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка магазина:', err)
+    return { balance: 0, selected: 'king', owned: [], skins: [] }
+  }
+}
+
+// Купить скин
+export async function buySkin(skinId: string) {
+  try {
+    const res = await fetch(`${API_URL}/buy-skin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), skin_id: skinId }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка покупки:', err)
+    return { ok: false }
+  }
+}
+
+// Выбрать активный скин
+export async function selectSkin(skinId: string) {
+  try {
+    await fetch(`${API_URL}/select-skin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), skin_id: skinId }),
+    })
+  } catch (err) { console.log('Ошибка выбора скина:', err) }
 }
