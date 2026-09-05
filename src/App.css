@@ -704,11 +704,11 @@ button:active {
   width: fit-content;
 }
 .coin-icon {
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
 }
 .coin-amount {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--gold);
 }
