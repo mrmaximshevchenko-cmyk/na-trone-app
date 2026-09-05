@@ -29,12 +29,7 @@ import avLux from './assets/avatars/premium/lux.jpg'
 
 
 
-// Список премиум: id + картинка + цена в звёздах
-const PREMIUM_AVATARS = [
-  { id: 'chad', img: avChad, price: 199 },
-  { id: 's67', img: av67, price: 499 },
-  { id: 'lux', img: avLux, price: 999 },
-]
+
 
 // Карта id -> картинка (для показа выбранной авы в шапке)
 const AVATAR_MAP: Record<string, string> = {
