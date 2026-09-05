@@ -850,4 +850,14 @@ button:active {
 }
 .preview-used {
   font-size: 16px; font-weight: 800; color: #4caf50; padding: 12px;
+}.shop-buy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.shop-buy-btn .coin-icon-xs {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
 }

@@ -342,12 +342,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
 
             <div className="shop-grid">
               {[...shop.skins]
-                .sort((a: any, b: any) => {
-                  // free всегда сверху, потом по цене
-                  if (a.tier === 'free' && b.tier !== 'free') return -1
-                  if (b.tier === 'free' && a.tier !== 'free') return 1
-                  return sortAsc ? a.price - b.price : b.price - a.price
-                })
+                .sort((a: any, b: any) => sortAsc ? a.price - b.price : b.price - a.price)
                 .map((skin: any) => {
                   const info = TIER_INFO[skin.tier] || TIER_INFO.common
                   const isOwned = skin.tier === 'free' || shop.owned.includes(skin.id)
@@ -403,12 +398,12 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
                   ) : previewSkin.tier === 'free' ? (
                     <button className="btn-gold" onClick={() => doSelect(previewSkin)}>Выбрать</button>
                   ) : canAfford ? (
-                    <button className="btn-gold" onClick={() => doBuy(previewSkin)}>
-                      Купить за {previewSkin.price} 🪙
+                    <button className="btn-gold shop-buy-btn" onClick={() => doBuy(previewSkin)}>
+                      Купить за {previewSkin.price} <img src={coinImg} className="coin-icon-xs" alt="" />
                     </button>
                   ) : (
-                    <button className="btn-gold" disabled style={{ opacity: 0.5 }}>
-                      Не хватает {previewSkin.price - coins} 🪙
+                    <button className="btn-gold shop-buy-btn" disabled style={{ opacity: 0.5 }}>
+                      Не хватает {previewSkin.price - coins} <img src={coinImg} className="coin-icon-xs" alt="" />
                     </button>
                   )}
                 </>
