@@ -849,9 +849,9 @@ function App() {
                 <div className="coin-onboard-row"><span>👑 Бонус старожила</span><span>+{coinsOnboard.bonus}</span></div>
               )}
             </div>
-            <p className="coin-onboard-hint">Трать их на редкие скины... или копи 👀</p>
+            <p className="coin-onboard-hint">Трать на редкие скины 🎨<br />...или копи 👀</p>
             <button className="btn-gold" onClick={() => { markCoinsOnboarded(); setCoinsOnboard(null) }}>
-              Забрать 🪙
+              Забрать
             </button>
           </motion.div>
         </div>
