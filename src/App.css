@@ -715,4 +715,23 @@ button:active {
 .coin-label {
   font-size: 14px;
   color: var(--text-dim);
+}.home-coins {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  padding: 5px 12px 5px 6px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gold);
+  z-index: 5;
+}
+.home-coin-icon {
+  width: 22px;
+  height: 22px;
 }

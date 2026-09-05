@@ -10,7 +10,8 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins } from './api'
+import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
@@ -131,6 +132,7 @@ function calcStreak(history: Session[]) {
 
 function App() {
   const [tab, setTab] = useState('home')
+  const [coins, setCoins] = useState<number>(0)
   const [flow, setFlow] = useState(false)       // идёт ли запись
   const [step, setStep] = useState('rating')    // текущий шаг записи
 
@@ -188,6 +190,7 @@ function App() {
       tg.ready()
       tg.expand()
     }
+        loadCoins().then((data) => setCoins(data.balance || 0))
     registerUser().then(() => {
       // Проверяем, пришёл ли по инвайт-ссылке (?startapp=ref_XXX)
       const startParam = tg?.initDataUnsafe?.start_param
@@ -198,6 +201,7 @@ function App() {
         }
       }
     })
+    loadCoins().then((data) => setCoins(data.balance || 0))
     loadSessionsFromServer().then((serverHistory) => {
       if (serverHistory && serverHistory.length > 0) {
         setHistory(serverHistory)
@@ -639,6 +643,10 @@ function App() {
           </>
         ) : (
           <>
+            <div className="home-coins">
+              <img src={coinImg} className="home-coin-icon" alt="🪙" />
+              <span>{coins}</span>
+            </div>
             <p className="greeting">{getGreeting()}</p>
             <div className="brand-mini">
               <span className="crown-mini">👑</span>
