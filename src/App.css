@@ -1027,3 +1027,33 @@ button:active {
   color: #E8C87A;
 }
 .tap-up-coin { width: 18px; height: 18px; }
+/* ===== ЧИСТКА ГЛАВНОЙ ===== */
+/* Стрик тонкой строкой вместо карточки */
+.streak-line {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b1a79d;
+  margin: 2px 0 6px;
+  letter-spacing: 0.2px;
+}
+
+/* Маскот тапалки — крупнее, доминанта экрана */
+.tap-mascot {
+  width: 240px !important;
+  height: auto;
+  margin: 4px 0;
+}
+
+/* Надпись "Тапай" крупнее и заметнее */
+.tap-hint {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: #E8C87A !important;
+  margin: 12px 0 14px !important;
+}
+
+/* Баланс монет — крупнее, раз убрали доллары */
+.home-coins span {
+  font-size: 22px;
+  font-weight: 800;
+}

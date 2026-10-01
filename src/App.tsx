@@ -136,7 +136,6 @@ function App() {
   const [coinsOnboard, setCoinsOnboard] = useState<any | null>(null)
 
   // ===== ТАПАЛКА =====
-  const KAKA_RATE_USD = 0.00015            // курс витрины: 1 KAKA = $ (Early Bird)
   const [tapPower, setTapPower] = useState(1)
   const [earnedToday, setEarnedToday] = useState(0)
   const [dailyLimit, setDailyLimit] = useState(1000)
@@ -738,17 +737,14 @@ function App() {
             <div className="home-coins">
               <img src={coinImg} className="home-coin-icon" alt="🪙" />
               <span>{coins}</span>
-              <span className="home-coins-usd">≈ ${(coins * KAKA_RATE_USD).toFixed(2)}</span>
             </div>
             <p className="greeting">{getGreeting()}</p>
             <div className="brand-mini">
               <span className="brand-title-mini">Трон</span>
             </div>
 
-            <div className="streak-box">
-              <span className="streak-fire">🔥</span>
-              <span className="streak-num">{streak}</span>
-              <span className="streak-label">{streak === 1 ? 'день подряд' : 'дней подряд'}</span>
+            <div className="streak-line">
+              🔥 {streak} {streak === 1 ? 'день' : 'дней'} подряд
             </div>
 
             {/* ТАПАЛКА */}
@@ -763,8 +759,8 @@ function App() {
                   src={streak >= 3 ? mascotStreak : mascotMain}
                   className="mascot-img tap-mascot" alt="Тапай"
                   draggable={false}
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                  animate={{ scale: [1, 1.06, 1] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                 />
                 {/* летящие 💩 */}
                 {poops.map((p) => (
@@ -786,7 +782,11 @@ function App() {
                 ))}
               </motion.div>
 
-              <p className="tap-hint">👆 Тапай и зарабатывай $KAKA</p>
+              <motion.p
+                className="tap-hint"
+                animate={{ scale: [1, 1.06, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              >👆 Тапай и зарабатывай $KAKA</motion.p>
 
               {/* прогресс дня */}
               <div className="tap-progress">
