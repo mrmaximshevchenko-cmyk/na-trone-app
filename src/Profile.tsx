@@ -372,12 +372,6 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
           </div>
         </div>
       )}
-            </div>
-
-            <p className="shop-soon">🔮 Скоро новые скины...</p>
-          </div>
-        </div>
-      )}
 
       {previewSkin && (
         <div className="ach-popup-overlay" onClick={() => setPreviewSkin(null)}>
