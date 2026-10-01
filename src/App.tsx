@@ -418,8 +418,6 @@ function App() {
       : '—'
   const totalSheets = history.reduce((sum, s) => sum + (s.noPaper ? 0 : s.sheets), 0)
   const streak = calcStreak(history)
-  const todayKey = dayKey(Date.now())
-  const todayCount = history.filter((s) => dayKey(s.id) === todayKey).length
   const isNewbie = total === 0
 
   const shareText = () => {
