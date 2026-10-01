@@ -13,6 +13,15 @@ const TIER_INFO: Record<string, { name: string; color: string }> = {
   mythic: { name: 'Мифический', color: '#e0455e' },
 }
 
+// Тиры для витрины-дразнилки (магазин пока в разработке)
+const TEASER_TIERS = [
+  { id: 'common',    name: 'Обычные',     color: '#9aa0a6' },
+  { id: 'rare',      name: 'Редкие',      color: '#4a90d9' },
+  { id: 'epic',      name: 'Эпические',   color: '#a259e6' },
+  { id: 'legendary', name: 'Легендарные', color: '#E8C87A' },
+  { id: 'mythic',    name: 'Мифические',  color: '#e0455e' },
+]
+
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
 import avGym from './assets/avatars/free/gym.png'
@@ -84,7 +93,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
   const [shopOpen, setShopOpen] = useState(false)
   const [shop, setShop] = useState<any>({ balance: 0, selected: 'king', owned: [], skins: [] })
   const [previewSkin, setPreviewSkin] = useState<any | null>(null)
-  const [sortAsc, setSortAsc] = useState(true)
+
 
   const refreshShop = () => {
     loadShop().then((data) => {
@@ -336,38 +345,33 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
               <button className="ach-close-btn" onClick={() => setShopOpen(false)}>✕</button>
             </div>
 
-            <button className="shop-sort" onClick={() => setSortAsc(!sortAsc)}>
-              Цена {sortAsc ? '↑' : '↓'}
-            </button>
+            {/* интро-дразнилка */}
+            <div className="teaser-intro">
+              <div className="teaser-title">Королевский гардероб готовится</div>
+              <div className="teaser-sub">Портные шьют 25 нарядов — от простых до легендарных 👀</div>
+            </div>
 
-            <div className="shop-grid">
-              {[...shop.skins]
-                .sort((a: any, b: any) => sortAsc ? a.price - b.price : b.price - a.price)
-                .map((skin: any) => {
-                  const info = TIER_INFO[skin.tier] || TIER_INFO.common
-                  const isOwned = skin.tier === 'free' || shop.owned.includes(skin.id)
-                  const isSelected = shop.selected === skin.id
-                  const canAfford = coins >= skin.price
-                  const img = AVATAR_MAP[skin.id] || AVATAR_MAP['king']
-                  return (
-                    <div key={skin.id} className="shop-cell" onClick={() => setPreviewSkin(skin)}>
-                      <div className="shop-skin" style={{ borderColor: info.color, boxShadow: `0 0 10px ${info.color}55` }}>
-                        <img src={img} className="shop-skin-img" alt={skin.id} />
-                        {isSelected && <span className="shop-selected-badge">✓</span>}
-                        {!isOwned && !canAfford && <span className="shop-lock">🔒</span>}
-                      </div>
-                      {skin.tier === 'free' ? (
-                        <span className="shop-price free">Бесплатно</span>
-                      ) : isOwned ? (
-                        <span className="shop-price owned">Куплено</span>
-                      ) : (
-                        <span className="shop-price" style={{ color: canAfford ? 'var(--gold)' : '#e0455e' }}>
-                          <img src={coinImg} className="coin-icon-xs" alt="🪙" />{skin.price}
-                        </span>
-                      )}
-                    </div>
-                  )
-                })}
+            {/* витрина под замком: 5 тиров */}
+            <div className="teaser-grid">
+              {TEASER_TIERS.map((t) => (
+                <div
+                  key={t.id}
+                  className="teaser-card"
+                  style={{ borderColor: t.color, boxShadow: `0 0 14px ${t.color}55` }}
+                >
+                  <div className="teaser-silhouette">
+                    <img src={AVATAR_MAP['king']} className="teaser-mascot" alt="" />
+                    <div className="teaser-lock">🔒</div>
+                  </div>
+                  <div className="teaser-tier-name" style={{ color: t.color }}>{t.name}</div>
+                </div>
+              ))}
+            </div>
+
+            <p className="shop-soon">🔮 Скоро можно будет купить</p>
+          </div>
+        </div>
+      )}
             </div>
 
             <p className="shop-soon">🔮 Скоро новые скины...</p>

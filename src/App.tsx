@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
@@ -10,7 +10,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
@@ -134,6 +134,17 @@ function App() {
   const [tab, setTab] = useState('home')
   const [coins, setCoins] = useState<number>(0)
   const [coinsOnboard, setCoinsOnboard] = useState<any | null>(null)
+
+  // ===== ТАПАЛКА =====
+  const KAKA_RATE_USD = 0.00015            // курс витрины: 1 KAKA = $ (Early Bird)
+  const [tapPower, setTapPower] = useState(1)
+  const [earnedToday, setEarnedToday] = useState(0)
+  const [dailyLimit, setDailyLimit] = useState(1000)
+  const [floatTaps, setFloatTaps] = useState<{ id: number; x: number; y: number; n: number }[]>([])
+  const [poops, setPoops] = useState<{ id: number; x: number; y: number; dx: number }[]>([])
+  const [tapScale, setTapScale] = useState(1)
+  const pendingTaps = useRef(0)       // буфер тапов, ещё не отправленных на сервер
+  const flushTimer = useRef<any>(null)
   const [flow, setFlow] = useState(false)       // идёт ли запись
   const [step, setStep] = useState('rating')    // текущий шаг записи
 
@@ -202,6 +213,11 @@ function App() {
         }
       }
     })
+    loadTapState().then((ts) => {
+      setTapPower(ts.tapPower || 1)
+      setEarnedToday(ts.earnedToday || 0)
+      setDailyLimit(ts.dailyLimit || 1000)
+    })
     loadCoins().then((data) => {
       setCoins(data.balance || 0)
       // Первый вход после обновления — показать салют
@@ -224,6 +240,71 @@ function App() {
       }
     })
   }, [])
+
+  // ===== ЛОГИКА ТАПА =====
+  const flushTaps = () => {
+    const n = pendingTaps.current
+    if (n <= 0) return
+    pendingTaps.current = 0
+    sendTaps(n).then((r) => {
+      if (r && r.ok) {
+        setCoins(r.balance)
+        setEarnedToday(r.earnedToday)
+      }
+    })
+  }
+
+  const handleTap = (e: any) => {
+    if (earnedToday >= dailyLimit) { haptic('warning'); return }
+    haptic('light')
+
+    const rect = e.currentTarget.getBoundingClientRect()
+    const cx = (e.touches?.[0]?.clientX ?? e.clientX) - rect.left
+    const cy = (e.touches?.[0]?.clientY ?? e.clientY) - rect.top
+
+    setCoins((c) => c + tapPower)
+    setEarnedToday((v) => Math.min(dailyLimit, v + tapPower))
+    pendingTaps.current += 1
+
+    setTapScale(0.92)
+    setTimeout(() => setTapScale(1), 90)
+
+    const fid = Date.now() + Math.random()
+    setFloatTaps((arr) => [...arr, { id: fid, x: cx, y: cy, n: tapPower }])
+    setTimeout(() => setFloatTaps((arr) => arr.filter((t) => t.id !== fid)), 700)
+
+    const burst = 2 + Math.floor(Math.random() * 2)
+    const newPoops = Array.from({ length: burst }).map(() => ({
+      id: Date.now() + Math.random(),
+      x: cx, y: cy,
+      dx: (Math.random() - 0.5) * 120,
+    }))
+    setPoops((arr) => [...arr, ...newPoops])
+    setTimeout(() => {
+      const ids = new Set(newPoops.map((p) => p.id))
+      setPoops((arr) => arr.filter((p) => !ids.has(p.id)))
+    }, 800)
+
+    if (pendingTaps.current % 20 === 0) haptic('medium')
+
+    if (flushTimer.current) clearTimeout(flushTimer.current)
+    flushTimer.current = setTimeout(flushTaps, 1500)
+  }
+
+  const TAP_COSTS = [0, 500, 1500, 4000, 10000, 25000]
+  const nextTapCost = tapPower < TAP_COSTS.length ? TAP_COSTS[tapPower] : null
+  const doTapUpgrade = () => {
+    if (nextTapCost === null || coins < nextTapCost) { haptic('error'); return }
+    haptic('medium')
+    upgradeTapPower().then((r) => {
+      if (r && r.ok) {
+        setTapPower(r.tapPower)
+        setCoins(r.balance)
+        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, colors: ['#E8C87A', '#FFD700', '#ffffff'] })
+      } else { haptic('error') }
+    })
+  }
+
   const handleSheetClick = (sheetNumber: number) => {
     haptic('light')
     setNoPaper(false)
@@ -659,10 +740,11 @@ function App() {
             <div className="home-coins">
               <img src={coinImg} className="home-coin-icon" alt="🪙" />
               <span>{coins}</span>
+              <span className="home-coins-usd">≈ ${(coins * KAKA_RATE_USD).toFixed(2)}</span>
             </div>
             <p className="greeting">{getGreeting()}</p>
             <div className="brand-mini">
-              <span className="brand-title-mini">На троне</span>
+              <span className="brand-title-mini">Трон</span>
             </div>
 
             <div className="streak-box">
@@ -671,17 +753,59 @@ function App() {
               <span className="streak-label">{streak === 1 ? 'день подряд' : 'дней подряд'}</span>
             </div>
 
-            <p className="today-line">
-              {todayCount === 0
-                ? 'Сегодня ещё не был — трон скучает 🚽'
-                : `Сегодня заходов: ${todayCount} ${'💩'.repeat(Math.min(todayCount, 5))}`}
-            </p>
+            {/* ТАПАЛКА */}
+            <div className="tap-zone">
+              <motion.div
+                className="tap-mascot-wrap"
+                onPointerDown={handleTap}
+                animate={{ scale: tapScale }}
+                transition={{ type: 'spring', stiffness: 600, damping: 15 }}
+              >
+                <motion.img
+                  src={streak >= 3 ? mascotStreak : mascotMain}
+                  className="mascot-img tap-mascot" alt="Тапай"
+                  draggable={false}
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                {/* летящие 💩 */}
+                {poops.map((p) => (
+                  <motion.span
+                    key={p.id} className="tap-poop"
+                    initial={{ x: p.x, y: p.y, opacity: 1, scale: 0.6 }}
+                    animate={{ x: p.x + p.dx, y: p.y - 90, opacity: 0, scale: 1.1 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                  >💩</motion.span>
+                ))}
+                {/* всплывающие +N */}
+                {floatTaps.map((t) => (
+                  <motion.span
+                    key={t.id} className="tap-float"
+                    initial={{ x: t.x, y: t.y, opacity: 1 }}
+                    animate={{ y: t.y - 60, opacity: 0 }}
+                    transition={{ duration: 0.7, ease: 'easeOut' }}
+                  >+{t.n}</motion.span>
+                ))}
+              </motion.div>
 
-            <motion.img
-              src={streak >= 3 ? mascotStreak : mascotMain} className="mascot-img" alt="Маскот"
-              animate={{ scale: [1, 1.04, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            />
+              <p className="tap-hint">👆 Тапай и зарабатывай $KAKA</p>
+
+              {/* прогресс дня */}
+              <div className="tap-progress">
+                <div className="tap-progress-bar" style={{ width: `${Math.min(100, (earnedToday / dailyLimit) * 100)}%` }} />
+                <span className="tap-progress-label">
+                  {earnedToday >= dailyLimit ? 'Лимит на сегодня 👑' : `${earnedToday} / ${dailyLimit} за сегодня`}
+                </span>
+              </div>
+
+              {/* сила тапа */}
+              <button className="tap-upgrade" onClick={doTapUpgrade} disabled={nextTapCost === null || coins < nextTapCost}>
+                <span className="tap-up-left">⚡ Сила тапа · ур.{tapPower}</span>
+                <span className="tap-up-right">
+                  {nextTapCost === null ? 'MAX' : <><img src={coinImg} className="tap-up-coin" alt="" />{nextTapCost}</>}
+                </span>
+              </button>
+            </div>
 
             <div className="mini-stats">
               {[

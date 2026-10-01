@@ -292,3 +292,46 @@ export async function selectSkin(skinId: string) {
     })
   } catch (err) { console.log('Ошибка выбора скина:', err) }
 }
+
+// ===== ТАПАЛКА =====
+
+// Состояние тапалки: сила тапа + сколько натапано сегодня + дневной лимит
+export async function loadTapState() {
+  try {
+    const res = await fetch(`${API_URL}/tap-state/${getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка загрузки тапалки:', err)
+    return { tapPower: 1, earnedToday: 0, dailyLimit: 1000 }
+  }
+}
+
+// Отправить пачку тапов на сервер (батч). Возвращает актуальный баланс и счётчик дня.
+export async function sendTaps(taps: number) {
+  try {
+    const res = await fetch(`${API_URL}/tap`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), taps }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка отправки тапов:', err)
+    return { ok: false }
+  }
+}
+
+// Прокачать силу тапа
+export async function upgradeTapPower() {
+  try {
+    const res = await fetch(`${API_URL}/tap-upgrade`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId() }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка прокачки тапа:', err)
+    return { ok: false }
+  }
+}
