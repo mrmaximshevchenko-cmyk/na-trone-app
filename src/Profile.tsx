@@ -179,11 +179,12 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         </div>
       )}
 
-      {/* Баланс какакоинов */}
+      {/* Баланс $KAKA */}
       <div className="coin-balance">
-        <img src={coinImg} className="coin-icon" alt="какакоин" />
+        <img src={coinImg} className="coin-icon" alt="KAKA" />
         <span className="coin-amount">{coins}</span>
-        <span className="coin-label">какакоинов</span>
+        <span className="coin-label">$KAKA</span>
+        <span className="coin-usd">≈ ${(coins * 0.0001).toFixed(2)}</span>
       </div>
 
       {/* Скины */}
