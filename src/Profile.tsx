@@ -46,7 +46,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
   })
 
   // Аватар хранит id (king/gym/...). Старые эмодзи-авы -> откат на короля
-  const [avatar, setAvatar] = useState(() => {
+  const [avatar] = useState(() => {
     const saved = localStorage.getItem('throne_avatar') || 'king'
     return AVATAR_MAP[saved] ? saved : 'king'
   })
