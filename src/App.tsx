@@ -721,15 +721,7 @@ function App() {
           </>
         ) : (
           <>
-            <div className="home-coins">
-              <img src={coinImg} className="home-coin-icon" alt="🪙" />
-              <span>{coins}</span>
-            </div>
-            <RoundTimer />
-
-            <div className="streak-line">
-              🔥 {streak} {streak === 1 ? 'день' : 'дней'} подряд
-            </div>
+            <RoundTimer coins={coins} coinImg={coinImg} />
 
             {/* ТАПАЛКА */}
             <div className="tap-zone">

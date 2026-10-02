@@ -12,7 +12,7 @@ function currentRound() {
   return { key: 'ended', label: '', end: PRESALE_END }
 }
 
-export default function RoundTimer({ compact = false }: { compact?: boolean }) {
+export default function RoundTimer({ compact = false, coins, coinImg }: { compact?: boolean; coins?: number; coinImg?: string }) {
   const [, setTick] = useState(0)
   useEffect(() => {
     const t = setInterval(() => setTick((n) => n + 1), 1000)
@@ -36,9 +36,17 @@ export default function RoundTimer({ compact = false }: { compact?: boolean }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="rt-label">
-        <span className="rt-dot" />
-        {round.label} заканчивается через
+      <div className="rt-top">
+        <div className="rt-label">
+          <span className="rt-dot" />
+          {round.label} заканчивается через
+        </div>
+        {coins !== undefined && coinImg && (
+          <div className="rt-balance">
+            <img src={coinImg} alt="🪙" />
+            <span>{coins}</span>
+          </div>
+        )}
       </div>
       <div className="rt-clock">
         <div className="rt-unit"><span className="rt-num">{p(d)}</span><span className="rt-cap">дн</span></div>
