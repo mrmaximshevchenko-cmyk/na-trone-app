@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import coinImg from './assets/coin.png'
+import RoundTimer from './RoundTimer'
 
 // ===== КОНФИГ ТОКЕНОМИКИ (меняется в одном месте) =====
 const CFG = {
@@ -97,6 +98,8 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
           <span className="buy-title">🚀 Войти в Early Bird</span>
           <button className="ach-close-btn" onClick={onClose}>✕</button>
         </div>
+
+        <RoundTimer compact />
 
         <p className="buy-sub">
           {sol === 0
@@ -223,7 +226,7 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
           {canBuy ? (
             <span className="buy-paid-inner">
               <span className="buy-paid-top">Я оплатил</span>
-              <span className="buy-paid-sub">Подтвердить в саппорте →</span>
+              <span className="buy-paid-sub">Подтвердить транзакцию →</span>
             </span>
           ) : 'Минимум 0.5 SOL для входа'}
         </button>

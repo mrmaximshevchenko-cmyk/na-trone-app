@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
 import BuyScreen from './BuyScreen'
+import RoundTimer from './RoundTimer'
 import { ACHIEVEMENTS, getUnlockedIds } from './achievements'
 import Profile from './Profile'
 import mascotMain from './assets/mascot/main.png'
@@ -103,13 +104,7 @@ type Session = {
   noPaper: boolean
 }
 
-function getGreeting() {
-  const h = new Date().getHours()
-  if (h >= 5 && h < 12) return 'Доброе утро! ☀️'
-  if (h >= 12 && h < 18) return 'Добрый день! 🌤️'
-  if (h >= 18 && h < 23) return 'Добрый вечер! 🌆'
-  return 'Доброй ночи! 🌙'
-}
+
 
 function dayKey(ms: number) {
   const d = new Date(ms)
@@ -730,10 +725,7 @@ function App() {
               <img src={coinImg} className="home-coin-icon" alt="🪙" />
               <span>{coins}</span>
             </div>
-            <p className="greeting">{getGreeting()}</p>
-            <div className="brand-mini">
-              <span className="brand-title-mini">Трон</span>
-            </div>
+            <RoundTimer />
 
             <div className="streak-line">
               🔥 {streak} {streak === 1 ? 'день' : 'дней'} подряд
