@@ -146,13 +146,29 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
             <motion.circle cx={p30.x} cy={p30.y} r="6.5" fill="#5bd37a" filter="url(#moonGlow)"
               animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 1.3, repeat: Infinity }} />
 
-            {/* ЦИФРЫ НАД/У ТОЧЕК */}
-            <text x={pNow.x} y={pNow.y - 12} fill="#E8C87A" fontSize="12" fontWeight="800" textAnchor="start">{fmtUsd(pts.now)}</text>
-            <text x={pPre.x} y={pPre.y - 12} fill="#efe9df" fontSize="11" fontWeight="700" textAnchor="middle">{fmtUsd(pts.presale)}</text>
-            <text x={p30.x} y={p30.y - 14} fill="#5bd37a" fontSize="13" fontWeight="800" textAnchor="end">{fmtUsd(pts.list30)} 🚀</text>
-            <text x={p30.x} y={p30.y - 2} fill="#5bd37a" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.85">30x</text>
-            <text x={p10.x} y={p10.y + 18} fill="#E8C87A" fontSize="12" fontWeight="800" textAnchor="end">{fmtUsd(pts.list10)}</text>
-            <text x={p10.x} y={p10.y + 29} fill="#E8C87A" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.85">10x</text>
+            {/* ЦИФРЫ С ПОДЛОЖКАМИ */}
+            {/* сейчас */}
+            <g transform={`translate(${pNow.x}, ${pNow.y - 20})`}>
+              <rect x="-4" y="-13" width={fmtUsd(pts.now).length * 7.5 + 8} height="18" rx="5" fill="#0f0d13" opacity="0.85" />
+              <text x="0" y="0" fill="#E8C87A" fontSize="12" fontWeight="800" textAnchor="start">{fmtUsd(pts.now)}</text>
+            </g>
+            {/* presale */}
+            <g transform={`translate(${pPre.x}, ${pPre.y - 20})`}>
+              <rect x={-(fmtUsd(pts.presale).length * 6.5 + 8) / 2} y="-13" width={fmtUsd(pts.presale).length * 6.5 + 8} height="18" rx="5" fill="#0f0d13" opacity="0.85" />
+              <text x="0" y="0" fill="#efe9df" fontSize="11" fontWeight="700" textAnchor="middle">{fmtUsd(pts.presale)}</text>
+            </g>
+            {/* 30x — высоко в угол */}
+            <g transform={`translate(${p30.x + 6}, ${p30.y - 26})`}>
+              <rect x={-(fmtUsd(pts.list30).length * 7.5 + 30)} y="-13" width={fmtUsd(pts.list30).length * 7.5 + 30} height="19" rx="5" fill="#0f0d13" opacity="0.9" />
+              <text x="0" y="0" fill="#5bd37a" fontSize="13" fontWeight="800" textAnchor="end">{fmtUsd(pts.list30)} 🚀</text>
+              <text x="0" y="12" fill="#5bd37a" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.9">30x</text>
+            </g>
+            {/* 10x — ниже и левее, оторван от жёлтой */}
+            <g transform={`translate(${p10.x - 2}, ${p10.y + 24})`}>
+              <rect x={-(fmtUsd(pts.list10).length * 7.5 + 8)} y="-13" width={fmtUsd(pts.list10).length * 7.5 + 8} height="19" rx="5" fill="#0f0d13" opacity="0.9" />
+              <text x="0" y="0" fill="#E8C87A" fontSize="12" fontWeight="800" textAnchor="end">{fmtUsd(pts.list10)}</text>
+              <text x="0" y="12" fill="#E8C87A" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.9">10x</text>
+            </g>
 
             <text x={pNow.x} y={H - 8} fill="#8a8f98" fontSize="10" textAnchor="start">{sol === 0 ? 'Сейчас' : 'Твой вход'}</text>
             <text x={pPre.x} y={H - 8} fill="#8a8f98" fontSize="10" textAnchor="middle">Presale</text>
@@ -189,6 +205,12 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
             <div className="buy-addr">{CFG.wallet}</div>
             <button className="buy-copy" onClick={copyWallet}>{copied ? '✓' : 'Копир.'}</button>
           </div>
+          <img
+            className="buy-qr"
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=0&bgcolor=ffffff&data=${encodeURIComponent(CFG.wallet)}`}
+            alt="QR кошелька"
+            loading="lazy"
+          />
         </div>
 
         {/* ===== САППОРТ ===== */}
@@ -198,7 +220,12 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
           disabled={!canBuy}
           style={!canBuy ? { opacity: 0.5 } : undefined}
         >
-          {canBuy ? 'Я оплатил → написать в саппорт' : 'Минимум 0.5 SOL для входа'}
+          {canBuy ? (
+            <span className="buy-paid-inner">
+              <span className="buy-paid-top">Я оплатил</span>
+              <span className="buy-paid-sub">Подтвердить в саппорте →</span>
+            </span>
+          ) : 'Минимум 0.5 SOL для входа'}
         </button>
 
         <p className="buy-legal">

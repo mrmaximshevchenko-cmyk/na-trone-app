@@ -1133,4 +1133,15 @@ button:active {
   font-weight: 700;
   font-size: 15px;
   color: #b1a79d;
+}.buy-paid-inner { display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.1; }
+.buy-paid-top { font-size: 17px; font-weight: 800; }
+.buy-paid-sub { font-size: 11px; font-weight: 600; opacity: 0.75; }
+.buy-qr {
+  display: block;
+  width: 116px;
+  height: 116px;
+  margin: 14px auto 0;
+  background: #fff;
+  padding: 8px;
+  border-radius: 12px;
 }
