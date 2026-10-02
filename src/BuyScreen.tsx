@@ -170,9 +170,9 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
               <text x="0" y="12" fill="#E8C87A" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.9">10x</text>
             </g>
 
-            <text x={pNow.x} y={H - 8} fill="#8a8f98" fontSize="10" textAnchor="start">{sol === 0 ? 'Сейчас' : 'Твой вход'}</text>
-            <text x={pPre.x} y={H - 8} fill="#8a8f98" fontSize="10" textAnchor="middle">Presale</text>
-            <text x={p10.x} y={H - 8} fill="#8a8f98" fontSize="10" textAnchor="end">Листинг</text>
+            <text x={pNow.x} y={H - 8} fill="#b2924f" fontSize="10" fontWeight="700" textAnchor="start">{sol === 0 ? 'Сейчас' : 'Твой вход'}</text>
+            <text x={pPre.x} y={H - 8} fill="#E8C87A" fontSize="10" fontWeight="700" textAnchor="middle">Presale</text>
+            <text x={p10.x} y={H - 8} fill="#5bd37a" fontSize="10" fontWeight="700" textAnchor="end">Листинг</text>
           </svg>
         </div>
 
