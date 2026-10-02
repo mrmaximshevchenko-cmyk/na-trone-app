@@ -1,27 +1,9 @@
 import { useState, useEffect } from 'react'
-import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins, loadShop, buySkin, selectSkin } from './api'
+import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins } from './api'
 import coinImg from './assets/coin.png'
-import confetti from 'canvas-confetti'
+
 
 // Русские названия тиров + цвета рамок
-const TIER_INFO: Record<string, { name: string; color: string }> = {
-  free: { name: 'Обычный', color: '#8a8a8a' },
-  common: { name: 'Обычный', color: '#9aa0a6' },
-  rare: { name: 'Редкий', color: '#4a90d9' },
-  epic: { name: 'Эпический', color: '#a259e6' },
-  legendary: { name: 'Легендарный', color: '#E8C87A' },
-  mythic: { name: 'Мифический', color: '#e0455e' },
-}
-
-// Тиры для витрины-дразнилки (магазин пока в разработке)
-const TEASER_TIERS = [
-  { id: 'common',    name: 'Обычные',     color: '#9aa0a6' },
-  { id: 'rare',      name: 'Редкие',      color: '#4a90d9' },
-  { id: 'epic',      name: 'Эпические',   color: '#a259e6' },
-  { id: 'legendary', name: 'Легендарные', color: '#E8C87A' },
-  { id: 'mythic',    name: 'Мифические',  color: '#e0455e' },
-]
-
 // Бесплатные аватарки (картинки без фона)
 import avKing from './assets/avatars/free/king.png'
 import avGym from './assets/avatars/free/gym.png'
@@ -89,51 +71,10 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
   const [friends, setFriends] = useState<any[]>([])
   const [coins, setCoins] = useState<number>(0)
 
-  // Магазин скинов
-  const [shopOpen, setShopOpen] = useState(false)
-  const [shop, setShop] = useState<any>({ balance: 0, selected: 'king', owned: [], skins: [] })
-  const [previewSkin, setPreviewSkin] = useState<any | null>(null)
-
-
-  const refreshShop = () => {
-    loadShop().then((data) => {
-      setShop(data)
-      setCoins(data.balance || 0)
-    })
-  }
-
   useEffect(() => {
     loadFriends().then((list) => setFriends(Array.isArray(list) ? list : []))
     loadCoins().then((data) => setCoins(data.balance || 0))
   }, [])
-
-  const openShop = () => { refreshShop(); setShopOpen(true) }
-
-  const doBuy = async (skin: any) => {
-    if (skin.price > 500) {
-      if (!window.confirm(`Купить за ${skin.price} 🪙?`)) return
-    }
-    const res = await buySkin(skin.id)
-    if (res.ok) {
-      const tg = (window as any).Telegram?.WebApp
-      tg?.HapticFeedback?.notificationOccurred('success')
-      const color = TIER_INFO[skin.tier]?.color || '#E8C87A'
-      confetti({ particleCount: 140, spread: 90, origin: { y: 0.6 }, colors: [color, '#FFD700', '#ffffff'] })
-      setCoins(res.balance)
-      setShop((prev: any) => ({ ...prev, balance: res.balance, owned: [...prev.owned, skin.id] }))
-      setPreviewSkin(null)
-    } else if (res.error === 'not_enough') {
-      window.alert('Не хватает какакоинов 🪙')
-    }
-  }
-
-  const doSelect = async (skin: any) => {
-    await selectSkin(skin.id)
-    setShop((prev: any) => ({ ...prev, selected: skin.id }))
-    setAvatar(skin.id)
-    localStorage.setItem('throne_avatar', skin.id)
-    setPreviewSkin(null)
-  }
 
   const isFriend = (userId: string) => friends.some((f) => f.user_id === userId)
 
@@ -246,9 +187,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       </div>
 
       {/* Скины */}
-      <button className="skins-open-btn" onClick={openShop}>
-        🎨 Магазин скинов
-      </button>
+
 
       {/* Друзья */}
       <p className="field-label ach-block-title">Друзья</p>
@@ -335,81 +274,7 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
       </button>
 
       {/* О приложении */}
-      <p className="profile-about">На троне · версия 0.1</p>
-      {shopOpen && (
-        <div className="shop-overlay">
-          <div className="shop-window">
-            <div className="shop-header">
-              <span className="shop-title">🎨 Скины</span>
-              <div className="shop-balance"><img src={coinImg} className="coin-icon-sm" alt="🪙" />{coins}</div>
-              <button className="ach-close-btn" onClick={() => setShopOpen(false)}>✕</button>
-            </div>
-
-            {/* интро-дразнилка */}
-            <div className="teaser-intro">
-              <div className="teaser-title">Королевский гардероб готовится</div>
-              <div className="teaser-sub">Портные шьют 25 нарядов — от простых до легендарных 👀</div>
-            </div>
-
-            {/* витрина под замком: 5 тиров */}
-            <div className="teaser-grid">
-              {TEASER_TIERS.map((t) => (
-                <div
-                  key={t.id}
-                  className="teaser-card"
-                  style={{ borderColor: t.color, boxShadow: `0 0 14px ${t.color}55` }}
-                >
-                  <div className="teaser-silhouette">
-                    <img src={AVATAR_MAP['king']} className="teaser-mascot" alt="" />
-                    <div className="teaser-lock">🔒</div>
-                  </div>
-                  <div className="teaser-tier-name" style={{ color: t.color }}>{t.name}</div>
-                </div>
-              ))}
-            </div>
-
-            <p className="shop-soon">🔮 Скоро можно будет купить</p>
-          </div>
-        </div>
-      )}
-
-      {previewSkin && (
-        <div className="ach-popup-overlay" onClick={() => setPreviewSkin(null)}>
-          <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="ach-close-btn" onClick={() => setPreviewSkin(null)}>✕</button>
-            {(() => {
-              const info = TIER_INFO[previewSkin.tier] || TIER_INFO.common
-              const isOwned = previewSkin.tier === 'free' || shop.owned.includes(previewSkin.id)
-              const isSelected = shop.selected === previewSkin.id
-              const canAfford = coins >= previewSkin.price
-              const img = AVATAR_MAP[previewSkin.id] || AVATAR_MAP['king']
-              return (
-                <>
-                  <div className="preview-skin" style={{ borderColor: info.color, boxShadow: `0 0 24px ${info.color}66` }}>
-                    <img src={img} className="preview-skin-img" alt={previewSkin.id} />
-                  </div>
-                  <div className="preview-tier" style={{ color: info.color }}>{info.name}</div>
-                  {isSelected ? (
-                    <div className="preview-used">Используется ✓</div>
-                  ) : isOwned ? (
-                    <button className="btn-gold" onClick={() => doSelect(previewSkin)}>Выбрать</button>
-                  ) : previewSkin.tier === 'free' ? (
-                    <button className="btn-gold" onClick={() => doSelect(previewSkin)}>Выбрать</button>
-                  ) : canAfford ? (
-                    <button className="btn-gold shop-buy-btn" onClick={() => doBuy(previewSkin)}>
-                      Купить за {previewSkin.price} <img src={coinImg} className="coin-icon-xs" alt="" />
-                    </button>
-                  ) : (
-                    <button className="btn-gold shop-buy-btn" disabled style={{ opacity: 0.5 }}>
-                      Не хватает {previewSkin.price - coins} <img src={coinImg} className="coin-icon-xs" alt="" />
-                    </button>
-                  )}
-                </>
-              )
-            })()}
-          </div>
-        </div>
-      )}
+      <p className="profile-about">Трон · версия 0.1</p>
       {showNotifyHelp && (
         <div className="ach-popup-overlay" onClick={() => setShowNotifyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
