@@ -1200,3 +1200,37 @@ button:active {
   font-size: 32px; color: #E8C87A; line-height: 1;
 }
 .tap-balance-lab { font-size: 15px; font-weight: 700; color: #b1a79d; align-self: flex-end; margin-bottom: 4px; }
+/* ===== РАСПРЕДЕЛЕНИЕ ВОЗДУХА НА ГЛАВНОЙ ===== */
+/* Контейнер главной — растягиваем контент на всю высоту, воздух между блоками */
+.tab-content.home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.tab-content.home > * {
+  flex-shrink: 0;
+}
+
+/* Маскот крупнее */
+.tap-mascot {
+  width: 250px !important;
+}
+
+/* Баланс крупнее + лёгкое свечение */
+.tap-balance-num {
+  font-size: 40px !important;
+  text-shadow: 0 0 24px rgba(232, 200, 122, 0.35);
+}
+.tap-balance-coin {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Равномерные отступы между блоками тапалки */
+.round-timer { margin-bottom: 18px !important; }
+.tap-zone { margin: 10px 0 !important; }
+.tap-balance { margin: 12px 0 6px !important; }
+.tap-hint { margin: 10px 0 16px !important; }
+.tap-progress { margin-bottom: 4px; }
+.tap-upgrade { margin-top: 14px !important; }
+.buy-cta { margin-top: 20px !important; margin-bottom: 10px; }
