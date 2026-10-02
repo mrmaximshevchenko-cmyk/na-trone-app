@@ -185,12 +185,6 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
             <span className="buy-calc-lab">{sol === 0 ? 'Докупить (двигай)' : 'Докупить'}</span>
             <span className="buy-calc-sol">{sol % 1 === 0 ? sol : sol.toFixed(1)} SOL</span>
           </div>
-          <input
-            type="range" min={0} max={CFG.maxSol} step={0.5} value={sol}
-            onChange={(e) => setSol(parseFloat(e.target.value))}
-            className="buy-range"
-            style={{ ['--pct' as any]: `${(sol / CFG.maxSol) * 100}%` }}
-          />
           <div className="buy-calc-get">
             {sol === 0 ? (
               <span className="buy-calc-base">Твой баланс: {fmtKaka(balance)} $KAKA</span>
@@ -198,6 +192,12 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
               <><img src={coinImg} className="buy-calc-coin" alt="" />+{fmtKaka(bought)} $KAKA</>
             )}
           </div>
+          <input
+            type="range" min={0} max={CFG.maxSol} step={0.5} value={sol}
+            onChange={(e) => setSol(parseFloat(e.target.value))}
+            className="buy-range"
+            style={{ ['--pct' as any]: `${(sol / CFG.maxSol) * 100}%` }}
+          />
         </div>
 
         {/* ===== КОШЕЛЁК ===== */}

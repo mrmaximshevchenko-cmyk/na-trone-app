@@ -1103,7 +1103,7 @@ button:active {
 .buy-range::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #f6e3a8, #E8C87A); border: 2px solid #1a1a1f; box-shadow: 0 2px 8px rgba(0,0,0,.4); cursor: pointer; }
 .buy-range::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #E8C87A; border: 2px solid #1a1a1f; cursor: pointer; }
-.buy-calc-get { display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 800; font-size: 17px; color: #E8C87A; }
+.buy-calc-get { display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 800; font-size: 17px; color: #E8C87A; margin: 6px 0 12px; }
 .buy-calc-coin { width: 20px; height: 20px; }
 
 .buy-wallet { background: #221e27; border: 1px solid #38323f; border-radius: 16px; padding: 16px; margin-bottom: 14px; text-align: center; }
