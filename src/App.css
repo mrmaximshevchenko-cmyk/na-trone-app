@@ -1189,3 +1189,14 @@ button:active {
 .tap-hint { margin: 8px 0 10px !important; }
 .round-timer { margin-bottom: 10px !important; }
 .mini-stats { margin-top: 10px !important; }
+/* Баланс под маскотом — акцент */
+.tap-balance {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 6px 0 2px;
+}
+.tap-balance-coin { width: 34px; height: 34px; }
+.tap-balance-num {
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 32px; color: #E8C87A; line-height: 1;
+}
+.tap-balance-lab { font-size: 15px; font-weight: 700; color: #b1a79d; align-self: flex-end; margin-bottom: 4px; }

@@ -407,12 +407,6 @@ function App() {
 
   // ===== Показатели =====
   const total = history.length
-  const rated = history.filter((s) => s.rating > 0)
-  const avgRating =
-    rated.length > 0
-      ? (rated.reduce((sum, s) => sum + s.rating, 0) / rated.length).toFixed(1)
-      : '—'
-  const totalSheets = history.reduce((sum, s) => sum + (s.noPaper ? 0 : s.sheets), 0)
   const streak = calcStreak(history)
   const isNewbie = total === 0
 
@@ -721,7 +715,7 @@ function App() {
           </>
         ) : (
           <>
-            <RoundTimer coins={coins} coinImg={coinImg} />
+            <RoundTimer />
 
             {/* ТАПАЛКА */}
             <div className="tap-zone">
@@ -758,6 +752,12 @@ function App() {
                 ))}
               </motion.div>
 
+              <div className="tap-balance">
+                <img src={coinImg} className="tap-balance-coin" alt="🪙" />
+                <span className="tap-balance-num">{coins}</span>
+                <span className="tap-balance-lab">$KAKA</span>
+              </div>
+
               <motion.p
                 className="tap-hint"
                 animate={{ scale: [1, 1.06, 1] }}
@@ -779,25 +779,6 @@ function App() {
                   {nextTapCost === null ? 'MAX' : <><img src={coinImg} className="tap-up-coin" alt="" />{nextTapCost}</>}
                 </span>
               </button>
-            </div>
-
-            <div className="mini-stats">
-              {[
-                { v: <>⭐ {avgRating}<span className="mini-unit">/10</span></>, l: 'средняя' },
-                { v: <>📊 {total}</>, l: 'сеансов' },
-                { v: <>🧻 {totalSheets}</>, l: 'бумаги всего' },
-              ].map((c, i) => (
-                <motion.div
-                  key={i}
-                  className="mini-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.4, ease: 'easeOut' }}
-                >
-                  <div className="mini-value">{c.v}</div>
-                  <div className="mini-label">{c.l}</div>
-                </motion.div>
-              ))}
             </div>
 
             <button className="buy-cta" onClick={() => setBuyOpen(true)}>
