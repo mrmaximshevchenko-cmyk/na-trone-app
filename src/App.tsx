@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
+import BuyScreen from './BuyScreen'
 import { ACHIEVEMENTS, getUnlockedIds } from './achievements'
 import Profile from './Profile'
 import mascotMain from './assets/mascot/main.png'
@@ -132,6 +133,7 @@ function calcStreak(history: Session[]) {
 
 function App() {
   const [tab, setTab] = useState('home')
+  const [buyOpen, setBuyOpen] = useState(false)
   const [coins, setCoins] = useState<number>(0)
   const [coinsOnboard, setCoinsOnboard] = useState<any | null>(null)
 
@@ -419,17 +421,7 @@ function App() {
   const streak = calcStreak(history)
   const isNewbie = total === 0
 
-  const shareText = () => {
-    const text = `👑 Я на троне уже ${total} раз! Средняя ${avgRating}/10, стрик ${streak} дней 🔥 Кто больше? 💩`
-    const url = 'https://t.me/natrone_bot/throne'
-    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
-    const tg = (window as any).Telegram?.WebApp
-    if (tg?.openTelegramLink) {
-      tg.openTelegramLink(shareUrl)
-    } else {
-      window.open(shareUrl, '_blank')
-    }
-  }
+
 
   const achPopup = popupAch.length > 0 && (
     <div className="ach-popup-overlay" onClick={() => setPopupAch([])}>
@@ -824,8 +816,9 @@ function App() {
               ))}
             </div>
 
-            <button className="share-btn" onClick={shareText}>
-              📤 Похвастаться
+            <button className="buy-cta" onClick={() => setBuyOpen(true)}>
+              <span className="buy-cta-top">🚀 Войти в Early Bird</span>
+              <span className="buy-cta-sub">Потенциал 10–30x</span>
             </button>
           </>
         )}
@@ -934,6 +927,8 @@ function App() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {buyOpen && <BuyScreen balance={coins} onClose={() => setBuyOpen(false)} />}
 
       <nav className="tabbar">
         <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>
