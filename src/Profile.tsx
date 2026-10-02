@@ -36,7 +36,7 @@ function validateNick(nick: string): string {
   return '' // пусто = всё ок
 }
 
-function Profile({ onClearHistory }: { onClearHistory: () => void }) {
+function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; onOpenBuy: () => void }) {
   // Имя: сначала из Telegram (username или имя), иначе из памяти
   const tgUser = getTelegramUser()
   const [nick, setNick] = useState(() => {
@@ -184,8 +184,13 @@ function Profile({ onClearHistory }: { onClearHistory: () => void }) {
         <img src={coinImg} className="coin-icon" alt="KAKA" />
         <span className="coin-amount">{coins}</span>
         <span className="coin-label">$KAKA</span>
-        <span className="coin-usd">≈ ${(coins * 0.0001).toFixed(2)}</span>
+        <span className="coin-usd">≈ ${(coins * 0.000075).toFixed(2)}</span>
       </div>
+
+      <button className="buy-cta" onClick={onOpenBuy}>
+        <span className="buy-cta-top">🚀 Войти в Early Bird</span>
+        <span className="buy-cta-sub">Потенциал 10–30x</span>
+      </button>
 
       {/* Скины */}
 

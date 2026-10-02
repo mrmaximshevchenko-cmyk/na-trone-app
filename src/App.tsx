@@ -899,6 +899,7 @@ function App() {
   if (tab === 'profile') {
     content = (
       <Profile
+        onOpenBuy={() => setBuyOpen(true)}
         onClearHistory={() => {
           setHistory([])
           setUnlocked([])
