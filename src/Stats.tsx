@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends, loadUserStats } from './api'
+import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends, loadUserStats, loadDaily } from './api'
 
 // Карта аватарок (те же, что в профиле)
 import avKing from './assets/avatars/free/king.png'
@@ -74,6 +74,19 @@ function Stats({ history }: { history: Session[] }) {
   const myId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
     ? 'tg_' + (window as any).Telegram.WebApp.initDataUnsafe.user.id
     : (localStorage.getItem('throne_nick') || 'throne_user')
+
+  // Заработок KAKA по дням: ключ 'YYYY-M-D' (month 0-based под календарь)
+  const [earnByDay, setEarnByDay] = useState<Record<string, number>>({})
+  useEffect(() => {
+    loadDaily().then((rows: any[]) => {
+      const map: Record<string, number> = {}
+      ;(Array.isArray(rows) ? rows : []).forEach((r) => {
+        const [y, m, d] = r.day.split('-').map((x: string) => parseInt(x, 10))
+        map[`${y}-${m - 1}-${d}`] = r.earned
+      })
+      setEarnByDay(map)
+    })
+  }, [])
 
   useEffect(() => {
     if (view !== 'rating') return
@@ -258,6 +271,9 @@ function Stats({ history }: { history: Session[] }) {
                     <span className="cal-poop">
                       💩{sessions.length > 1 ? `×${sessions.length}` : ''}
                     </span>
+                  )}
+                  {earnByDay[key] > 0 && (
+                    <span className="cal-earn">+{earnByDay[key] >= 1000 ? (earnByDay[key] / 1000).toFixed(1) + 'k' : earnByDay[key]}</span>
                   )}
                 </motion.button>
               )

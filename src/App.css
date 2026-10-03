@@ -1234,3 +1234,11 @@ button:active {
 .tap-progress { margin-bottom: 4px; }
 .tap-upgrade { margin-top: 14px !important; }
 .buy-cta { margin-top: 20px !important; margin-bottom: 10px; }
+.cal-earn {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  color: #E8C87A;
+  line-height: 1;
+  margin-top: 1px;
+}

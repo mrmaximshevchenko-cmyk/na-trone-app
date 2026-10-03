@@ -335,3 +335,28 @@ export async function upgradeTapPower() {
     return { ok: false }
   }
 }
+// ===== DAILY STREAK =====
+
+export async function dailyCheckin() {
+  try {
+    const res = await fetch(`${API_URL}/daily-checkin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId() }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка чек-ина:', err)
+    return { ok: false }
+  }
+}
+
+export async function loadDaily(userId?: string) {
+  try {
+    const res = await fetch(`${API_URL}/daily/${userId || getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка заработка по дням:', err)
+    return []
+  }
+}
