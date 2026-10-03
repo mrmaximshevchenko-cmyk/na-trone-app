@@ -70,6 +70,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
   // Друзья
   const [friends, setFriends] = useState<any[]>([])
   const [coins, setCoins] = useState<number>(0)
+  const [friendsExpanded, setFriendsExpanded] = useState(false)
 
   useEffect(() => {
     loadFriends().then((list) => setFriends(Array.isArray(list) ? list : []))
@@ -228,7 +229,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       {friends.length > 0 && (
         <>
           <p className="field-label ach-block-title">Мои друзья ({friends.length})</p>
-          {friends.map((f) => (
+          {(friendsExpanded ? friends : friends.slice(0, 3)).map((f) => (
             <div key={f.user_id} className="friend-found">
               <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt=""
                 onClick={() => openUserStats(f)} style={{ cursor: 'pointer' }} />
@@ -236,6 +237,11 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
               <button className="friend-remove" onClick={() => removeFriend(f.user_id)}>✕</button>
             </div>
           ))}
+          {friends.length > 3 && (
+            <button className="friends-toggle" onClick={() => setFriendsExpanded(!friendsExpanded)}>
+              {friendsExpanded ? 'Свернуть ▲' : `Показать всех (${friends.length}) ▼`}
+            </button>
+          )}
         </>
       )}
 

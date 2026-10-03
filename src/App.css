@@ -1284,3 +1284,19 @@ button:active {
 .daily-sub {
   font-size: 13px; color: #b1a79d; margin: 6px 0 18px;
 }
+.friends-toggle {
+  display: block;
+  width: 100%;
+  margin: 8px 0 4px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #38323f;
+  border-radius: 12px;
+  color: #E8C87A;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.friends-toggle:active { background: rgba(232,200,122,0.08); }

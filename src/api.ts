@@ -382,3 +382,16 @@ export async function loadLeaderboardBalanceFriends() {
     return []
   }
 }
+
+// ===== РЕФЕРАЛЫ =====
+
+// Сохранить реф-связь при входе по ссылке (бонус начислится при первом походе)
+export async function saveInvite(inviterId: string) {
+  try {
+    await fetch(`${API_URL}/invite`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invited: getUserId(), inviter: inviterId }),
+    })
+  } catch (err) { console.log('Ошибка сохранения инвайта:', err) }
+}

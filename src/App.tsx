@@ -12,7 +12,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower, dailyCheckin } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower, dailyCheckin, saveInvite } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
@@ -213,6 +213,7 @@ function App() {
         const inviterId = 'tg_' + startParam.replace('ref_', '')
         if (inviterId !== getUserId()) {
           acceptInvite(inviterId)
+          saveInvite(inviterId)
         }
       }
     })
