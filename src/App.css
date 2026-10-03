@@ -1242,3 +1242,30 @@ button:active {
   line-height: 1;
   margin-top: 1px;
 }
+/* Попап ежедневного чек-ина */
+.daily-popup {
+  text-align: center;
+  padding: 28px 24px;
+}
+.daily-fire {
+  font-size: 56px;
+  line-height: 1;
+  animation: dailyPulse 1.2s ease-in-out infinite;
+}
+@keyframes dailyPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+.daily-day {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: #E8C87A;
+  margin: 10px 0 4px;
+}
+.daily-reward {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-weight: 800; font-size: 28px; color: #5bd37a;
+  margin: 8px 0;
+}
+.daily-coin { width: 32px; height: 32px; }
+.daily-sub {
+  font-size: 13px; color: #b1a79d; margin: 6px 0 18px;
+}

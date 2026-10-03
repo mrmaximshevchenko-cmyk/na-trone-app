@@ -12,7 +12,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower, dailyCheckin } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
@@ -166,6 +166,7 @@ function App() {
   })
 
   const [popupAch, setPopupAch] = useState<typeof ACHIEVEMENTS>([])
+  const [dailyPopup, setDailyPopup] = useState<{ day: number; reward: number } | null>(null)
   const [pendingAch, setPendingAch] = useState<typeof ACHIEVEMENTS>([])
   const [viewAch, setViewAch] = useState<typeof ACHIEVEMENTS[number] | null>(null)
 
@@ -213,6 +214,17 @@ function App() {
       setTapPower(ts.tapPower || 1)
       setEarnedToday(ts.earnedToday || 0)
       setDailyLimit(ts.dailyLimit || 1000)
+    })
+    // Ежедневный чек-ин — бонус за вход
+    dailyCheckin().then((r) => {
+      if (r && r.ok && r.claimed) {
+        setCoins((c) => c + r.reward)
+        setDailyPopup({ day: r.day, reward: r.reward })
+        haptic('success')
+        if (r.streak >= 3) {
+          setTimeout(() => confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 }, colors: ['#E8C87A', '#FFD700', '#ffffff'] }), 300)
+        }
+      }
     })
     loadCoins().then((data) => {
       setCoins(data.balance || 0)
@@ -411,6 +423,27 @@ function App() {
   const isNewbie = total === 0
 
 
+
+  const dailyPopupEl = dailyPopup && (
+    <div className="ach-popup-overlay" onClick={() => setDailyPopup(null)}>
+      <motion.div
+        className="ach-popup daily-popup"
+        initial={{ scale: 0.7, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="daily-fire">🔥</div>
+        <div className="daily-day">День {dailyPopup.day}</div>
+        <div className="daily-reward">
+          <img src={coinImg} className="daily-coin" alt="" />
+          +{dailyPopup.reward} $KAKA
+        </div>
+        <div className="daily-sub">Заходи каждый день — награда растёт!</div>
+        <button className="btn-gold" onClick={() => setDailyPopup(null)}>Забрать 👑</button>
+      </motion.div>
+    </div>
+  )
 
   const achPopup = popupAch.length > 0 && (
     <div className="ach-popup-overlay" onClick={() => setPopupAch([])}>
@@ -920,6 +953,7 @@ function App() {
 
       {achPopup}
       {achViewModal}
+      {dailyPopupEl}
 
       {coinsOnboard && (
         <div className="ach-popup-overlay" onClick={() => {}}>
