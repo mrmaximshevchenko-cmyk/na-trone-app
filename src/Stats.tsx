@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { loadLeaderboardWeek, loadLeaderboardMonth, loadLeaderboardWeekFriends, loadLeaderboardMonthFriends, loadUserStats, loadDaily } from './api'
+import { loadLeaderboardBalance, loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
 
 // Карта аватарок (те же, что в профиле)
 import avKing from './assets/avatars/free/king.png'
@@ -58,7 +58,6 @@ function Stats({ history }: { history: Session[] }) {
   const [view, setView] = useState('numbers')
 
   // Рейтинг
-  const [lbPeriod, setLbPeriod] = useState<'week' | 'month'>('week')
   const [lbScope, setLbScope] = useState<'global' | 'friends'>('friends')
   const [lbData, setLbData] = useState<any[]>([])
   const [lbLoading, setLbLoading] = useState(false)
@@ -93,15 +92,15 @@ function Stats({ history }: { history: Session[] }) {
     setLbLoading(true)
     let loader
     if (lbScope === 'friends') {
-      loader = lbPeriod === 'week' ? loadLeaderboardWeekFriends : loadLeaderboardMonthFriends
+      loader = loadLeaderboardBalanceFriends
     } else {
-      loader = lbPeriod === 'week' ? loadLeaderboardWeek : loadLeaderboardMonth
+      loader = loadLeaderboardBalance
     }
     loader().then((data) => {
       setLbData(Array.isArray(data) ? data : [])
       setLbLoading(false)
     })
-  }, [view, lbPeriod, lbScope])
+  }, [view, lbScope])
   // Какой месяц показываем в календаре
   const [calMonth, setCalMonth] = useState(() => {
     const d = new Date()
@@ -317,16 +316,12 @@ function Stats({ history }: { history: Session[] }) {
       {view === 'rating' && (
         <div className="lb">
           <div className="seg lb-seg">
-            <button className={lbPeriod === 'week' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbPeriod('week')}>Неделя</button>
-            <button className={lbPeriod === 'month' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbPeriod('month')}>Месяц</button>
-          </div>
-          <div className="seg lb-seg">
             <button className={lbScope === 'friends' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('friends')}>Друзья</button>
             <button className={lbScope === 'global' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('global')}>Глобально</button>
           </div>
 
           <p className="lb-hint">
-            {lbPeriod === 'week' ? 'Сеансов за неделю' : 'Лучший стрик за месяц'}
+            Баланс $KAKA 💰
           </p>
 
           {lbLoading ? (
@@ -340,8 +335,8 @@ function Stats({ history }: { history: Session[] }) {
               {lbData.map((u, i) => {
                 const isMe = u.user_id === myId
                 const name = u.username || u.first_name || 'Аноним'
-                const value = lbPeriod === 'week' ? u.count : u.streak
-                const unit = lbPeriod === 'week' ? '' : ' дн.'
+                const value = u.count
+                const unit = ' $KAKA'
                 return (
                   <motion.div key={u.user_id} className={isMe ? 'lb-row me' : 'lb-row'}
                     onClick={() => { if (!isMe) openUserStats(u) }}

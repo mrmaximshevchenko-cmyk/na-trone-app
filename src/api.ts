@@ -360,3 +360,25 @@ export async function loadDaily(userId?: string) {
     return []
   }
 }
+
+// ===== РЕЙТИНГ ПО БАЛАНСУ =====
+
+export async function loadLeaderboardBalance() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/balance`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка рейтинга (баланс):', err)
+    return []
+  }
+}
+
+export async function loadLeaderboardBalanceFriends() {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard/balance/friends/${getUserId()}`)
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка рейтинга (баланс, друзья):', err)
+    return []
+  }
+}
