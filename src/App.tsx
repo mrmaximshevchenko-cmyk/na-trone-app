@@ -128,6 +128,7 @@ function calcStreak(history: Session[]) {
 
 function App() {
   const [tab, setTab] = useState('home')
+  const shellRef = useRef<HTMLDivElement>(null)
   const [buyOpen, setBuyOpen] = useState(false)
   const [coins, setCoins] = useState<number>(0)
   const [coinsOnboard, setCoinsOnboard] = useState<any | null>(null)
@@ -193,6 +194,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('throne_unlocked', JSON.stringify(unlocked))
   }, [unlocked])
+  // Сброс скролла наверх при смене вкладки
+  useEffect(() => {
+    shellRef.current?.scrollTo(0, 0)
+  }, [tab])
+
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp
     if (tg) {
@@ -913,7 +919,7 @@ function App() {
   // ======================================================
   return (
     <div className="app-shell">
-      <div className="shell-body">
+      <div className="shell-body" ref={shellRef}>
         <AnimatePresence mode="wait">
           <motion.div
             key={tab}

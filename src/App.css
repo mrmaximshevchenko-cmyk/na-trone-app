@@ -15,6 +15,7 @@ body { font-family: var(--font-body); }
   flex: 1;
   overflow-y: auto;
   padding-bottom: 84px;
+  overscroll-behavior: contain;
 }
 
 /* Экраны без меню (запись/рулон/результат) */
@@ -239,7 +240,21 @@ body { font-family: var(--font-body); }
   cursor: pointer; flex: 1; padding: 6px 0;
 }
 .tab.active { color: var(--gold); }
-.tab-icon { font-size: 22px; }
+.tab.active .tab-icon {
+  filter: drop-shadow(0 0 8px rgba(232,200,122,0.6));
+  transform: scale(1.1);
+}
+.tab.active .tab-text { font-weight: 800; }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 3px; border-radius: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(232,200,122,0.7);
+}
+.tab { position: relative; }
+.tab-icon { font-size: 22px; transition: transform 0.2s; }
 .tab-text { font-size: 11px; font-weight: 600; }
 .tab-center { flex: 0 0 auto; }
 .tab-toilet {
