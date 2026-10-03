@@ -255,7 +255,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       </div>
 
       <button className="btn-gold invite-btn ref-invite-btn" onClick={inviteFriend}>
-        ➕ Пригласить и получить <img src={coinImg} className="ref-btn-coin" alt="" /> 500
+        ➕ Пригласить и получить 500 $KAKA
       </button>
 
       {/* Уведомления */}
