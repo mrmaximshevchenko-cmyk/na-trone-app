@@ -1329,3 +1329,21 @@ button:active {
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
 .ref-btn-coin { width: 20px; height: 20px; vertical-align: middle; }
+/* Окно подтверждения прокачки тапа */
+.upgrade-popup { text-align: center; padding: 26px 24px; }
+.upg-icon { font-size: 48px; line-height: 1; }
+.upg-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800; font-size: 22px; color: #E8C87A;
+  margin: 10px 0 14px;
+}
+.upg-row { font-size: 15px; color: #cfc6ba; margin: 6px 0; }
+.upg-next { color: #5bd37a; font-weight: 800; }
+.upg-cost {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 16px; font-weight: 700; color: #E8C87A;
+  margin: 14px 0 18px;
+}
+.upg-coin { width: 22px; height: 22px; }
+.upg-actions { display: flex; gap: 10px; }
+.upg-actions .btn-gold, .upg-actions .back-btn { flex: 1; }
