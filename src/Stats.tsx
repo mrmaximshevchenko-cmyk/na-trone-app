@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { loadLeaderboardBalance, loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
+import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
 
 // Карта аватарок (те же, что в профиле)
 import avKing from './assets/avatars/free/king.png'
@@ -58,7 +58,7 @@ function Stats({ history }: { history: Session[] }) {
   const [view, setView] = useState('numbers')
 
   // Рейтинг
-  const [lbScope, setLbScope] = useState<'global' | 'friends'>('friends')
+
   const [lbData, setLbData] = useState<any[]>([])
   const [lbLoading, setLbLoading] = useState(false)
   const [viewUser, setViewUser] = useState<any | null>(null)
@@ -90,17 +90,11 @@ function Stats({ history }: { history: Session[] }) {
   useEffect(() => {
     if (view !== 'rating') return
     setLbLoading(true)
-    let loader
-    if (lbScope === 'friends') {
-      loader = loadLeaderboardBalanceFriends
-    } else {
-      loader = loadLeaderboardBalance
-    }
-    loader().then((data) => {
+    loadLeaderboardBalanceFriends().then((data) => {
       setLbData(Array.isArray(data) ? data : [])
       setLbLoading(false)
     })
-  }, [view, lbScope])
+  }, [view])
   // Какой месяц показываем в календаре
   const [calMonth, setCalMonth] = useState(() => {
     const d = new Date()
@@ -315,10 +309,7 @@ function Stats({ history }: { history: Session[] }) {
       {/* ВИД: РЕЙТИНГ */}
       {view === 'rating' && (
         <div className="lb">
-          <div className="seg lb-seg">
-            <button className={lbScope === 'friends' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('friends')}>Друзья</button>
-            <button className={lbScope === 'global' ? 'seg-btn active' : 'seg-btn'} onClick={() => setLbScope('global')}>Глобально</button>
-          </div>
+
 
           <p className="lb-hint">
             Баланс $KAKA 💰
@@ -328,7 +319,7 @@ function Stats({ history }: { history: Session[] }) {
             <p className="subtitle">Загрузка…</p>
           ) : lbData.length === 0 ? (
             <p className="subtitle">
-              {lbScope === 'friends' ? 'Добавь друзей в профиле 👥' : 'Пока пусто. Будь первым! 👑'}
+              Добавь друзей в профиле 👥
             </p>
           ) : (
             <div className="lb-list">

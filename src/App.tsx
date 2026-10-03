@@ -197,6 +197,9 @@ function App() {
   // Сброс скролла наверх при смене вкладки
   useEffect(() => {
     shellRef.current?.scrollTo(0, 0)
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
   }, [tab])
 
   useEffect(() => {

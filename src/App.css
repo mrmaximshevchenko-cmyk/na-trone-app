@@ -4,7 +4,8 @@ body { font-family: var(--font-body); }
 
 /* Оболочка с меню */
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: linear-gradient(170deg, #1a1a1f 0%, #26262d 60%, #2e2a24 100%);
@@ -15,6 +16,7 @@ body { font-family: var(--font-body); }
   flex: 1;
   overflow-y: auto;
   padding-bottom: 84px;
+  overscroll-behavior: contain;
   overscroll-behavior: contain;
 }
 
