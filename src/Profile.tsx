@@ -119,7 +119,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
     const myId = getTelegramUser()?.id
     const ref = myId ? `ref_${myId}` : ''
     const link = `https://t.me/natrone_bot/throne?startapp=${ref}`
-    const text = '👑 Го на трон — следи за моими дропами 💩 Кто больше?'
+    const text = '👑 Залетай на Трон! Нам обоим по 500 $KAKA, когда сходишь первый раз 💩 Го?'
     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`
     const tg = (window as any).Telegram?.WebApp
     if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl)
@@ -245,8 +245,17 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         </>
       )}
 
-      <button className="btn-gold invite-btn" onClick={inviteFriend}>
-        ➕ Пригласить друга
+      <div className="ref-promo">
+        <div className="ref-promo-head">
+          <img src={coinImg} className="ref-coin" alt="" />
+          Зови друзей — получай $KAKA
+        </div>
+        <div className="ref-promo-row"><span className="ref-plus">+500</span> тебе за каждого друга</div>
+        <div className="ref-promo-row"><span className="ref-plus">+500</span> другу, когда он сходит на трон 👑</div>
+      </div>
+
+      <button className="btn-gold invite-btn ref-invite-btn" onClick={inviteFriend}>
+        ➕ Пригласить и получить <img src={coinImg} className="ref-btn-coin" alt="" /> 500
       </button>
 
       {/* Уведомления */}

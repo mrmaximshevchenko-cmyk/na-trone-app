@@ -1302,3 +1302,30 @@ button:active {
   transition: background 0.15s;
 }
 .friends-toggle:active { background: rgba(232,200,122,0.08); }
+/* Реф-промо блок */
+.ref-promo {
+  background: linear-gradient(180deg, #2a2516, #231f24);
+  border: 1px solid #5a4d2e;
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin: 8px 0 12px;
+}
+.ref-promo-head {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800; font-size: 17px; color: #E8C87A;
+  margin-bottom: 12px;
+}
+.ref-coin { width: 26px; height: 26px; }
+.ref-promo-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; color: #cfc6ba; margin: 6px 0;
+}
+.ref-plus {
+  display: inline-block; min-width: 48px;
+  font-weight: 900; font-size: 16px; color: #5bd37a;
+}
+.ref-invite-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.ref-btn-coin { width: 20px; height: 20px; vertical-align: middle; }
