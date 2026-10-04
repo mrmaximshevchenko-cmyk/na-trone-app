@@ -4,30 +4,7 @@ import { t, LANG, setLang } from './i18n'
 import coinImg from './assets/coin.png'
 
 
-// Русские названия тиров + цвета рамок
-// Бесплатные аватарки (картинки без фона)
-import avKing from './assets/avatars/free/king.png'
-import avGym from './assets/avatars/free/gym.png'
-import avCool from './assets/avatars/free/cool.png'
-import avGamer from './assets/avatars/free/gamer.png'
-import avZen from './assets/avatars/free/zen.png'
 
-// Премиум аватарки (картинки с цветным фоном)
-import avChad from './assets/avatars/premium/chad.jpg'
-import avNeo from './assets/avatars/premium/neo.jpg'
-import avRap from './assets/avatars/premium/rap.jpg'
-import av67 from './assets/avatars/premium/s67.jpg'
-import avLux from './assets/avatars/premium/lux.jpg'
-
-
-
-
-
-// Карта id -> картинка (для показа выбранной авы в шапке)
-const AVATAR_MAP: Record<string, string> = {
-  king: avKing, gym: avGym, cool: avCool, gamer: avGamer, zen: avZen,
-  chad: avChad, neo: avNeo, rap: avRap, s67: av67, lux: avLux,
-}
 
 // Проверка ника: латиница, цифры, _ ; без пробелов и спецсимволов; 3-20 символов
 function validateNick(nick: string): string {
@@ -46,11 +23,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
     return localStorage.getItem('throne_nick') || 'throne_user'
   })
 
-  // Аватар хранит id (king/gym/...). Старые эмодзи-авы -> откат на короля
-  const [avatar] = useState(() => {
-    const saved = localStorage.getItem('throne_avatar') || 'king'
-    return AVATAR_MAP[saved] ? saved : 'king'
-  })
+
 
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(nick)
@@ -156,18 +129,15 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       <div className="lang-switch">
         <button
           className={LANG === 'ru' ? 'lang-btn on' : 'lang-btn'}
-          onClick={() => { setLang('ru'); location.reload() }}
+          onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('ru'); location.reload() }}
         >🇷🇺 RU</button>
         <button
           className={LANG === 'en' ? 'lang-btn on' : 'lang-btn'}
-          onClick={() => { setLang('en'); location.reload() }}
+          onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('en'); location.reload() }}
         >🇬🇧 EN</button>
       </div>
 
-      {/* Шапка */}
-      <div className="profile-avatar">
-        <img src={AVATAR_MAP[avatar]} className="profile-avatar-img" alt="аватар" />
-      </div>
+
       {!editing ? (
         <div className="profile-nick-row">
           <span className="profile-nick">@{nick}</span>
@@ -229,7 +199,6 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         const isMe = u.username === (tgUser?.username || '')
         return (
           <div key={u.user_id} className="friend-found">
-            <img src={AVATAR_MAP[u.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt="" />
             <span className="friend-name">@{u.username || u.first_name}</span>
             {isMe ? null : isFriend(u.user_id)
               ? <span className="friend-added">✓</span>
@@ -244,8 +213,6 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
           <p className="field-label ach-block-title">{t('profile.myFriends')} ({friends.length})</p>
           {(friendsExpanded ? friends : friends.slice(0, 3)).map((f) => (
             <div key={f.user_id} className="friend-found">
-              <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt=""
-                onClick={() => openUserStats(f)} style={{ cursor: 'pointer' }} />
               <span className="friend-name" onClick={() => openUserStats(f)} style={{ cursor: 'pointer' }}>@{f.username || f.first_name}</span>
               <button className="friend-remove" onClick={() => removeFriend(f.user_id)}>✕</button>
             </div>
@@ -267,8 +234,9 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         <div className="ref-promo-row"><span className="ref-plus">+500</span> {t('profile.refFriend')}</div>
       </div>
 
-      <button className="btn-gold invite-btn ref-invite-btn" onClick={inviteFriend}>
-        {t('profile.inviteBtn')}
+      <button className="invite-cta" onClick={inviteFriend}>
+        <span className="buy-cta-shine" />
+        <span className="invite-cta-text">{t('profile.inviteBtn')}</span>
       </button>
 
       {/* Уведомления */}
@@ -331,7 +299,6 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         <div className="ach-popup-overlay" onClick={() => setViewUser(null)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setViewUser(null)}>✕</button>
-            <img src={AVATAR_MAP[viewUser.base.avatar] || AVATAR_MAP['king']} className="profile-avatar-img" alt="" />
             <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
             {viewUser.loading ? (
               <p className="subtitle">{t('common.loading')}</p>

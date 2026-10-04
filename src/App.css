@@ -1491,3 +1491,33 @@ button:active {
   border-color: var(--gold, #E8C87A);
 }
 .lang-btn:active { transform: scale(0.95); }
+/* Премиальная кнопка приглашения */
+.invite-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 86%;
+  max-width: 320px;
+  margin: 12px auto 20px;
+  padding: 15px 20px;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8e7af 0%, #E8C87A 55%, #cfa94e 100%);
+  box-shadow:
+    0 10px 26px rgba(232,200,122,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 4px rgba(140,100,30,0.3);
+  transition: transform 0.12s;
+}
+.invite-cta:active { transform: scale(0.96); }
+.invite-cta-text {
+  position: relative;
+  z-index: 2;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 16px;
+  color: #1a1a1f;
+}
