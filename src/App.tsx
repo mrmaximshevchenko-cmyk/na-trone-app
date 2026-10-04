@@ -767,6 +767,10 @@ function App() {
           <>
             <RoundTimer />
 
+            <button className="buy-pill" onClick={() => setBuyOpen(true)}>
+              💰 Купить $KAKA
+            </button>
+
             {/* ТАПАЛКА */}
             <div className="tap-zone">
               <motion.div
