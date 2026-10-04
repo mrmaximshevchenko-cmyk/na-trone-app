@@ -101,6 +101,8 @@ const DICT: Record<string, { ru: string; en: string }> = {
   'stats.avgScore': { ru: 'средняя оценка', en: 'avg score' },
   'stats.totalSheets': { ru: 'листов всего', en: 'total sheets' },
   'stats.mostOften': { ru: 'чаще всего', en: 'most often' },
+  'stats.streakDays': { ru: 'дней подряд', en: 'day streak' },
+  'stats.streakTomorrow': { ru: 'Завтра:', en: 'Tomorrow:' },
 
   // --- Профиль ---
   'profile.title': { ru: 'Профиль 👤', en: 'Profile 👤' },

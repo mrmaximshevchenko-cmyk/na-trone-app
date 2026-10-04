@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { t, MONTHS, WEEKDAYS, TIMES } from './i18n'
 import { motion } from 'framer-motion'
-import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
+import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily, loadTapState } from './api'
 
 
 // Число прокручивается от 0 до value
@@ -61,6 +61,16 @@ function Stats({ history }: { history: Session[] }) {
   const myId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id
     ? 'tg_' + (window as any).Telegram.WebApp.initDataUnsafe.user.id
     : (localStorage.getItem('throne_nick') || 'throne_user')
+
+  // Daily-стрик заходов + награда за завтра
+  const [dailyStreak, setDailyStreak] = useState(0)
+  const [nextReward, setNextReward] = useState(100)
+  useEffect(() => {
+    loadTapState().then((ts: any) => {
+      setDailyStreak(ts.dailyStreak || 0)
+      setNextReward(ts.nextReward || 100)
+    })
+  }, [])
 
   // Заработок KAKA по дням: ключ 'YYYY-M-D' (month 0-based под календарь)
   const [earnByDay, setEarnByDay] = useState<Record<string, number>>({})
@@ -185,6 +195,27 @@ function Stats({ history }: { history: Session[] }) {
           {total === 0 && <p className="subtitle">{t('stats.noDataYet')}</p>}
           {total > 0 && (
             <div className="stats-grid">
+              <motion.div
+                className="stat-card stat-wide streak-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+              >
+                <div className="streak-left">
+                  <motion.span
+                    className="streak-fire-big"
+                    animate={{ scale: [1, 1.15, 1] }}
+                    transition={{ duration: 1.3, repeat: Infinity, ease: 'easeInOut' }}
+                  >🔥</motion.span>
+                  <div className="streak-num-wrap">
+                    <span className="streak-num-big">{dailyStreak}</span>
+                    <span className="streak-days-lab">{t('stats.streakDays')}</span>
+                  </div>
+                </div>
+                <div className="streak-next">
+                  {t('stats.streakTomorrow')} <span className="grn">+{nextReward} $KAKA</span>
+                </div>
+              </motion.div>
               {[
                 { v: <>📊 <CountUp value={total} /></>, l: t('stats.totalVisits'), wide: false },
                 { v: <>⭐ {avgRating === '—' ? '—' : <CountUp value={Number(avgRating)} decimals={1} />}</>, l: t('stats.avgScore'), wide: false },
