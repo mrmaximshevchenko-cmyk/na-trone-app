@@ -12,7 +12,7 @@ import mascotNeutral from './assets/mascot/neutral.png'
 import mascotSad from './assets/mascot/sad.png'
 import mascotShrug from './assets/mascot/shrug.png'
 import mascotStreak from './assets/mascot/streak.png'
-import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, upgradeTapPower, dailyCheckin, saveInvite } from './api'
+import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, dailyCheckin, saveInvite } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
 
@@ -309,26 +309,7 @@ function App() {
     flushTimer.current = setTimeout(flushTaps, 1500)
   }
 
-  const TAP_COSTS = [0, 500, 1500, 4000, 10000, 25000]
-  const nextTapCost = tapPower < TAP_COSTS.length ? TAP_COSTS[tapPower] : null
-  const [confirmUpgrade, setConfirmUpgrade] = useState(false)
-  const askTapUpgrade = () => {
-    if (nextTapCost === null || coins < nextTapCost) { haptic('error'); return }
-    haptic('light')
-    setConfirmUpgrade(true)
-  }
-  const doTapUpgrade = () => {
-    setConfirmUpgrade(false)
-    if (nextTapCost === null || coins < nextTapCost) { haptic('error'); return }
-    haptic('medium')
-    upgradeTapPower().then((r) => {
-      if (r && r.ok) {
-        setTapPower(r.tapPower)
-        setCoins(r.balance)
-        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, colors: ['#E8C87A', '#FFD700', '#ffffff'] })
-      } else { haptic('error') }
-    })
-  }
+
 
   const handleSheetClick = (sheetNumber: number) => {
     haptic('light')
@@ -826,13 +807,7 @@ function App() {
                 </span>
               </div>
 
-              {/* сила тапа */}
-              <button className="tap-upgrade" onClick={askTapUpgrade} disabled={nextTapCost === null || coins < nextTapCost}>
-                <span className="tap-up-left">⚡ Сила тапа · ур.{tapPower}</span>
-                <span className="tap-up-right">
-                  {nextTapCost === null ? 'MAX' : <><img src={coinImg} className="tap-up-coin" alt="" />{nextTapCost}</>}
-                </span>
-              </button>
+
             </div>
 
             <button className="buy-cta" onClick={() => setBuyOpen(true)}>
@@ -976,29 +951,7 @@ function App() {
       {achViewModal}
       {dailyPopupEl}
 
-      {confirmUpgrade && nextTapCost !== null && (
-        <div className="ach-popup-overlay" onClick={() => setConfirmUpgrade(false)}>
-          <motion.div
-            className="ach-popup upgrade-popup"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="upg-icon">⚡</div>
-            <div className="upg-title">Улучшить силу тапа?</div>
-            <div className="upg-row">Уровень {tapPower} → <span className="upg-next">{tapPower + 1}</span></div>
-            <div className="upg-row">Тап: +{tapPower} → <span className="upg-next">+{tapPower + 1} $KAKA</span></div>
-            <div className="upg-cost">
-              Стоимость: <img src={coinImg} className="upg-coin" alt="" /> {nextTapCost}
-            </div>
-            <div className="upg-actions">
-              <button className="btn-gold" onClick={doTapUpgrade}>Улучшить</button>
-              <button className="back-btn" onClick={() => setConfirmUpgrade(false)}>Отмена</button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+
 
       {coinsOnboard && (
         <div className="ach-popup-overlay" onClick={() => {}}>
