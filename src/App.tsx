@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { t } from './i18n'
+import { t, amountLabel, consLabel } from './i18n'
 import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
@@ -498,9 +498,9 @@ function App() {
             disabled={rating === 0}
             onClick={goNext}
           >
-            Далее →
+            {t('common.next')} →
           </button>
-          <button className="back-btn" onClick={closeFlow}>← Отмена</button>
+          <button className="back-btn" onClick={closeFlow}>← {t('common.cancel')}</button>
           </motion.div>
         </div>
       )
@@ -521,7 +521,7 @@ function App() {
                 className={amount === opt ? 'big-option active' : 'big-option'}
                 onClick={() => { haptic('light'); setAmount(opt) }}
               >
-                <span className="opt-ico">{ico}</span> {opt}
+                <span className="opt-ico">{ico}</span> {amountLabel(opt)}
               </button>
             ))}
           </div>
@@ -530,7 +530,7 @@ function App() {
             disabled={!amount}
             onClick={goNext}
           >
-            Далее →
+            {t('common.next')} →
           </button>
           </motion.div>
         </div>
@@ -546,13 +546,13 @@ function App() {
           <h2 className="record-title">{t('rec.q.cons')}</h2>
           <p className="subtitle">{t('rec.q.consSub')}</p>
           <div className="big-options">
-              {[['Жидко','💧'], ['Мягко','🍦'], ['Колбаска','🌭'], ['Сухарь','🪨']].map(([opt, ico]) => (
+              {[['Жидко','💦'], ['Мягко','☁️'], ['Колбаска','🌭'], ['Сухарь','🧱']].map(([opt, ico]) => (
               <button
                 key={opt}
                 className={consistency === opt ? 'big-option active' : 'big-option'}
                 onClick={() => { haptic('light'); setConsistency(opt) }}
               >
-                <span className="opt-ico">{ico}</span> {opt}
+                <span className="opt-ico">{ico}</span> {consLabel(opt)}
               </button>
             ))}
           </div>
@@ -561,7 +561,7 @@ function App() {
             disabled={!consistency}
             onClick={goNext}
           >
-            Далее →
+            {t('common.next')} →
           </button>
           </motion.div>
         </div>
@@ -633,7 +633,7 @@ function App() {
         </p>
 
         <button className="btn-gold next-btn" onClick={saveSession}>
-          Сохранить ✅
+          {t('common.save')} ✅
         </button>
         </motion.div>
       </div>
