@@ -189,6 +189,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       </div>
 
       <button className="buy-cta" onClick={onOpenBuy}>
+        <span className="buy-cta-shine" />
         <span className="buy-cta-top">🚀 Войти в Early Bird</span>
         <span className="buy-cta-sub">Потенциал 10–30x</span>
       </button>
