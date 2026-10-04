@@ -16,84 +16,10 @@ import mascotStreak from './assets/mascot/streak.png'
 import { saveSessionToServer, loadSessionsFromServer, registerUser, acceptInvite, getUserId, notifyAchievement, haptic, loadCoins, markCoinsOnboarded, loadTapState, sendTaps, dailyCheckin, saveInvite } from './api'
 import coinImg from './assets/coin.png'
 import confetti from 'canvas-confetti'
+import { PRAISE, NEUTRAL, SYMPATHY, ENCOURAGE, TIP_HARD, TIP_LOOSE } from './phrases'
 
 // ==== БИБЛИОТЕКА ФРАЗ ====
-const PRAISE = [
-  'Шедевр! Можно вешать в галерею 🖼️',
-  'Чистая работа, король трона 👑',
-  'Вот это ты выдал! Стоячая овация 👏',
-  'Идеально. Прям учебное пособие 📚',
-  'Ты сегодня в ударе! 🔥',
-  'Профессионал своего дела 🏆',
-  'Легенда трона проснулась 🐉',
-  'Ты справился на все сто! 💯',
-  'Космос! Прям взлёт без турбулентности 🚀',
-  'Ювелирная работа 💎',
-  'Ты сегодня победитель. Официально 🥇',
-  'Как швейцарские часы. Точно и надёжно',
-  'Это было эпично. Титры 🎬',
-  'Вот она — гармония с собой ☯️',
-  'Изящно! Балет, а не поход',
-  'Вот это контроль! Мастер дзена 🧘',
-  'Триумф! Можно и похвастаться друзьям 📣',
-]
 
-const NEUTRAL = [
-  'Норм заход. Дело сделано 👍',
-  'Стабильно. Без сюрпризов',
-  'Рабочий вариант. Живём дальше',
-  'Ок, задача выполнена ✅',
-  'Обычный день на троне. И это нормально',
-  'Сойдёт! Не каждый раз шедевр',
-  'Твёрдая серединка. Всё по плану',
-  'Без фанфар, но чётко 🫡',
-]
-
-const SYMPATHY = [
-  'Бывает и такое. В следующий раз будет легче 💛',
-  'Не переживай, у всех бывают трудные дни',
-  'Организм капризничает — это пройдёт',
-  'Держись, дружище. Мы это переживём 🫂',
-  'Иногда трон испытывает нас на прочность',
-  'Это временно. Верю в твой кишечник 🙏',
-  'Обнимаю. Пусть следующий раз будет мягче 🫂',
-  'Организму сегодня непросто. Побереги себя',
-  'Сложный заход. Отдохни, попей водички',
-  'Ты сильнее, чем кажется. Даже на троне 💪',
-  'Немного сбой в системе — перезагрузимся 🔄',
-  'Крепись. И побольше воды, ага? 💧',
-  'Пусть следующий трон будет добрее к тебе',
-]
-
-const ENCOURAGE = [
-  'Бывает! Не всё сразу 🫡',
-  'Ложная тревога — тоже результат 😄',
-  'Организм просто передумал. Ничего страшного',
-  'Не вышло — значит, не время. Всё ок 👍',
-]
-
-const TIPS_HARD = [
-  'Съешь сегодня свёклу или морковь — они помогают 🥕',
-  'Чернослив — твой друг. Пара штук творят чудеса',
-  'Закинься киви или грушей, организм скажет спасибо 🥝',
-  'Выпей стакан кефира на ночь 🥛',
-  'Побольше воды сегодня — сухость любит влагу 💧',
-  'Прогуляйся 20–30 минут, движение помогает кишечнику 🚶',
-  'Овсянка на завтрак — и станет легче',
-]
-
-const TIPS_LOOSE = [
-  'Сегодня рис и бананы — они закрепляют 🍌',
-  'Побольше воды! При жидком легко обезводиться 💧',
-  'Сухарики и тосты — простая спасительная еда',
-  'Избегай сегодня жирного и острого 🌶️',
-  'Крепкий несладкий чай тоже выручает 🍵',
-  'Дай желудку отдохнуть — лёгкая еда сегодня',
-]
-
-function pick(arr: string[]) {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
 
 type Session = {
   id: number
@@ -354,25 +280,25 @@ function App() {
     let tip = ''
 
            if (amount === 'Осечка') {
-      title = pick(ENCOURAGE)
-      tip = pick(TIPS_HARD)
+      title = ENCOURAGE()
+      tip = TIP_HARD()
       setResultMascot(mascotShrug)
     } else if (consistency === 'Сухарь') {
-      title = pick(SYMPATHY)
-      tip = pick(TIPS_HARD)
+      title = SYMPATHY()
+      tip = TIP_HARD()
       setResultMascot(mascotSad)
     } else if (consistency === 'Жидко') {
-      title = pick(SYMPATHY)
-      tip = pick(TIPS_LOOSE)
+      title = SYMPATHY()
+      tip = TIP_LOOSE()
       setResultMascot(mascotSad)
     } else if (rating >= 7) {
-      title = pick(PRAISE)
+      title = PRAISE()
       setResultMascot(mascotHappy)
     } else if (rating >= 4) {
-      title = pick(NEUTRAL)
+      title = NEUTRAL()
       setResultMascot(mascotNeutral)
     } else {
-      title = pick(SYMPATHY)
+      title = SYMPATHY()
       setResultMascot(mascotSad)
     }
 
