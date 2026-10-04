@@ -883,7 +883,7 @@ function App() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: Math.min(i * 0.03, 0.5), duration: 0.3 }}>
                 <div className="ach-emoji">{got ? a.emoji : '❓'}</div>
-                <div className="ach-name">{got ? a.name : '???'}</div>
+                <div className="ach-name">{got ? a.name() : '???'}</div>
                 {got && <div className="ach-cond">{a.condition()}</div>}
                 <div className={got ? 'ach-coins got' : 'ach-coins'}>
                   <img src={coinImg} className="ach-coin-icon" alt="🪙" />
