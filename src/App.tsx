@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { t } from './i18n'
 import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
@@ -432,13 +433,13 @@ function App() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="daily-fire">🔥</div>
-        <div className="daily-day">День {dailyPopup.day}</div>
+        <div className="daily-day">{t('daily.day')} {dailyPopup.day}</div>
         <div className="daily-reward">
           <img src={coinImg} className="daily-coin" alt="" />
           +{dailyPopup.reward} $KAKA
         </div>
-        <div className="daily-sub">Заходи каждый день — награда растёт!</div>
-        <button className="btn-gold" onClick={() => setDailyPopup(null)}>Забрать 👑</button>
+        <div className="daily-sub">{t('daily.sub')}</div>
+        <button className="btn-gold" onClick={() => setDailyPopup(null)}>{t('daily.claim')}</button>
       </motion.div>
     </div>
   )
@@ -553,8 +554,8 @@ function App() {
         <div className="app app-scroll">
           {progress}
           <motion.div className="step-motion" key="rating" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-          <h2 className="record-title">Как всё прошло?</h2>
-          <p className="subtitle">Оцени сеанс от 1 до 10</p>
+          <h2 className="record-title">{t('rec.q.rate')}</h2>
+          <p className="subtitle">{t('rec.q.rateSub')}</p>
           <div className="rating-grid">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
               <button
@@ -585,8 +586,8 @@ function App() {
         <div className="app app-scroll">
           {progress}
           <motion.div className="step-motion" key="amount" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-          <h2 className="record-title">Сколько добра?</h2>
-          <p className="subtitle">Оцени объём</p>
+          <h2 className="record-title">{t('rec.q.amount')}</h2>
+          <p className="subtitle">{t('rec.q.amountSub')}</p>
           <div className="big-options">
                       {[['Осечка','💨'], ['Чуток','🤏'], ['Стандарт','👍'], ['Куча','💪']].map(([opt, ico]) => (
               <button
@@ -616,8 +617,8 @@ function App() {
         <div className="app app-scroll">
           {progress}
           <motion.div className="step-motion" key="consistency" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-          <h2 className="record-title">Какая консистенция?</h2>
-          <p className="subtitle">Выбери, что ближе</p>
+          <h2 className="record-title">{t('rec.q.cons')}</h2>
+          <p className="subtitle">{t('rec.q.consSub')}</p>
           <div className="big-options">
               {[['Жидко','💧'], ['Мягко','🍦'], ['Колбаска','🌭'], ['Сухарь','🪨']].map(([opt, ico]) => (
               <button
@@ -646,14 +647,14 @@ function App() {
       <div className="app app-scroll">
         {progress}
         <motion.div className="step-motion" key="paper" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-        <h2 className="record-title">Сколько бумаги ушло?</h2>
-        <p className="subtitle">Тапни по листам или проведи пальцем</p>
+        <h2 className="record-title">{t('rec.q.paper')}</h2>
+        <p className="subtitle">{t('rec.q.paperSub')}</p>
 
         <button
           className={noPaper ? 'option-btn no-paper-btn active' : 'option-btn no-paper-btn'}
           onClick={() => { setNoPaper(true); setSheets(0) }}
         >
-          💩 Без бумаги 🚿
+          {t('rec.noPaperBtn')}
         </button>
 
         <div className="roll-top">🧻</div>
@@ -702,7 +703,7 @@ function App() {
         </div>
 
         <p className="sheets-count">
-          {noPaper ? 'Без бумаги' : sheets === 0 ? 'Ещё не выбрано' : `Оторвано: ${sheets} 🧻`}
+          {noPaper ? t('rec.noPaper') : sheets === 0 ? t('rec.notPicked') : `${t('rec.torn')} ${sheets} 🧻`}
         </p>
 
         <button className="btn-gold next-btn" onClick={saveSession}>
@@ -725,8 +726,8 @@ function App() {
           <>
             <div className="brand">
               <div className="crown">👑</div>
-              <h1 className="brand-title">На троне</h1>
-              <p className="brand-sub">Твой личный какашка-трекер</p>
+              <h1 className="brand-title">{t('brand.title')}</h1>
+              <p className="brand-sub">{t('brand.sub')}</p>
             </div>
             <motion.img
               src={mascotMain} className="mascot-img" alt="На троне"
@@ -741,7 +742,7 @@ function App() {
               <div className="feature-row"><span className="feature-ico">🔥</span> Ставь рекорды и делись с друзьями</div>
             </div>
 
-            <p className="newbie-cta">Запиши свой первый поход!</p>
+            <p className="newbie-cta">{t('newbie.cta')}</p>
             <p className="newbie-arrow">👇 Жми на унитаз</p>
           </>
         ) : (
@@ -755,7 +756,7 @@ function App() {
               transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
             >
               <span className="buy-pill-shine" />
-              <span className="buy-pill-text">💰 Купить $KAKA</span>
+              <span className="buy-pill-text">{t('home.buy')}</span>
               <span className="buy-pill-arrow">→</span>
             </motion.button>
 
@@ -804,13 +805,13 @@ function App() {
                 className="tap-hint"
                 animate={{ scale: [1, 1.06, 1] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-              >👆 Тапай и зарабатывай $KAKA</motion.p>
+              >{t('home.tapHint')}</motion.p>
 
               {/* прогресс дня */}
               <div className="tap-progress">
                 <div className="tap-progress-bar" style={{ width: `${Math.min(100, (earnedToday / dailyLimit) * 100)}%` }} />
                 <span className="tap-progress-label">
-                  {earnedToday >= dailyLimit ? 'Лимит на сегодня 👑' : `${earnedToday} / ${dailyLimit} за сегодня`}
+                  {earnedToday >= dailyLimit ? t('home.dailyLimit') : `${earnedToday} / ${dailyLimit} ${t('home.todayProgress')}`}
                 </span>
               </div>
 
@@ -818,8 +819,8 @@ function App() {
             </div>
 
             <button className="buy-cta" onClick={() => setBuyOpen(true)}>
-              <span className="buy-cta-top">🚀 Войти в Early Bird</span>
-              <span className="buy-cta-sub">Потенциал 10–30x</span>
+              <span className="buy-cta-top">{t('home.buyCtaTop')}</span>
+              <span className="buy-cta-sub">{t('home.buyCtaSub')}</span>
             </button>
           </>
         )}
@@ -846,7 +847,7 @@ function App() {
 
     content = (
       <div className="tab-content ach-screen">
-        <h2 className="record-title">Достижения 🏆</h2>
+        <h2 className="record-title">{t('ach.title')}</h2>
         <p className="ach-counter">Получено {gotCount} из {ACHIEVEMENTS.length}</p>
 
         <p className="field-label ach-block-title">🎯 Задания</p>
@@ -892,7 +893,7 @@ function App() {
             )
           })}
         </div>
-        <button className="ach-end-marker" onClick={unlockReader}>Ты долистал до самого низа 🫡</button>
+        <button className="ach-end-marker" onClick={unlockReader}>{t('ach.reader')}</button>
       </div>
     )
   }
@@ -935,22 +936,22 @@ function App() {
       <nav className="tabbar">
         <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>
           <motion.span className="tab-icon" animate={tab === 'home' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>🏠</motion.span>
-          <span className="tab-text">Главная</span>
+          <span className="tab-text">{t('tab.home')}</span>
         </button>
         <button className={tab === 'stats' ? 'tab active' : 'tab'} onClick={() => setTab('stats')}>
           <motion.span className="tab-icon" animate={tab === 'stats' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>📊</motion.span>
-          <span className="tab-text">Стата</span>
+          <span className="tab-text">{t('tab.stats')}</span>
         </button>
         <button className="tab tab-center" onClick={startRecord}>
           <span className="tab-toilet">🚽</span>
         </button>
         <button className={tab === 'achievements' ? 'tab active' : 'tab'} onClick={() => setTab('achievements')}>
           <motion.span className="tab-icon" animate={tab === 'achievements' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>🏆</motion.span>
-          <span className="tab-text">Ачивки</span>
+          <span className="tab-text">{t('tab.ach')}</span>
         </button>
         <button className={tab === 'profile' ? 'tab active' : 'tab'} onClick={() => setTab('profile')}>
           <motion.span className="tab-icon" animate={tab === 'profile' ? { y: [0, -6, 0] } : {}} transition={{ duration: 0.3 }}>👤</motion.span>
-          <span className="tab-text">Профиль</span>
+          <span className="tab-text">{t('tab.profile')}</span>
         </button>
       </nav>
 
@@ -974,12 +975,12 @@ function App() {
               <span>{coinsOnboard.total}</span>
             </div>
             <div className="coin-onboard-list">
-              <div className="coin-onboard-row"><span>🏆 Ачивки ({coinsOnboard.achCount})</span><span>+{coinsOnboard.achSum}</span></div>
+              <div className="coin-onboard-row"><span>{t('ach.title')} ({coinsOnboard.achCount})</span><span>+{coinsOnboard.achSum}</span></div>
               {coinsOnboard.bonus > 0 && (
                 <div className="coin-onboard-row"><span>👑 Бонус старожила</span><span>+{coinsOnboard.bonus}</span></div>
               )}
             </div>
-            <p className="coin-onboard-hint">Трать на редкие скины 🎨<br />...или копи 👀</p>
+            <p className="coin-onboard-hint">{t('onboard.hint')}</p>
             <button className="btn-gold" onClick={() => { markCoinsOnboarded(); setCoinsOnboard(null) }}>
               Забрать
             </button>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { t, MONTHS, WEEKDAYS } from './i18n'
 import { motion } from 'framer-motion'
 import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
 
@@ -129,22 +130,18 @@ function Stats({ history }: { history: Session[] }) {
     }
   }
 
-  const times = { 'Утро 🌅': 0, 'День ☀️': 0, 'Вечер 🌆': 0, 'Ночь 🌙': 0 }
+  const timeCounts = [0, 0, 0, 0]  // утро, день, вечер, ночь
   history.forEach((s) => {
     const hour = new Date(s.id).getHours()
-    if (hour >= 5 && hour < 12) times['Утро 🌅']++
-    else if (hour >= 12 && hour < 18) times['День ☀️']++
-    else if (hour >= 18 && hour < 23) times['Вечер 🌆']++
-    else times['Ночь 🌙']++
+    if (hour >= 5 && hour < 12) timeCounts[0]++
+    else if (hour >= 12 && hour < 18) timeCounts[1]++
+    else if (hour >= 18 && hour < 23) timeCounts[2]++
+    else timeCounts[3]++
   })
-  let topTime = '—'
+  let topTimeIdx = -1
   let topTimeN = 0
-  for (const key in times) {
-    if (times[key as keyof typeof times] > topTimeN) {
-      topTimeN = times[key as keyof typeof times]
-      topTime = key
-    }
-  }
+  timeCounts.forEach((c, i) => { if (c > topTimeN) { topTimeN = c; topTimeIdx = i } })
+  const topTime = topTimeIdx >= 0 ? TIMES()[topTimeIdx] : '—' 
 
   // ===== Данные для календаря =====
   const year = calMonth.getFullYear()
@@ -190,26 +187,26 @@ function Stats({ history }: { history: Session[] }) {
 
   return (
     <div className="tab-content">
-      <h2 className="record-title">Статистика 📊</h2>
+      <h2 className="record-title">{t('stats.titleFull')}</h2>
 
       <div className="seg">
-        <button className={view === 'numbers' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('numbers')}>Цифры</button>
-        <button className={view === 'calendar' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('calendar')}>Календарь</button>
-        <button className={view === 'rating' ? 'seg-btn active seg-rating' : 'seg-btn seg-rating'} onClick={() => setView('rating')}>Рейтинг</button>
+        <button className={view === 'numbers' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('numbers')}>{t('stats.numbers')}</button>
+        <button className={view === 'calendar' ? 'seg-btn active' : 'seg-btn'} onClick={() => setView('calendar')}>{t('stats.calendar')}</button>
+        <button className={view === 'rating' ? 'seg-btn active seg-rating' : 'seg-btn seg-rating'} onClick={() => setView('rating')}>{t('stats.rating')}</button>
       </div>
 
       {/* ВИД: ЦИФРЫ */}
       {view === 'numbers' && (
         <>
-          {total === 0 && <p className="subtitle">Пока нет данных. Запиши первый сеанс!</p>}
+          {total === 0 && <p className="subtitle">{t('stats.noDataYet')}</p>}
           {total > 0 && (
             <div className="stats-grid">
               {[
-                { v: <>📊 <CountUp value={total} /></>, l: 'всего сеансов', wide: false },
-                { v: <>⭐ {avgRating === '—' ? '—' : <CountUp value={Number(avgRating)} decimals={1} />}</>, l: 'средняя оценка', wide: false },
-                { v: <>🧻 <CountUp value={totalSheets} /></>, l: 'листов всего', wide: false },
-                { v: <>💩 {topCons}</>, l: 'чаще всего', wide: false },
-                { v: <>{topTime}</>, l: 'любимое время', wide: true },
+                { v: <>📊 <CountUp value={total} /></>, l: t('stats.totalVisits'), wide: false },
+                { v: <>⭐ {avgRating === '—' ? '—' : <CountUp value={Number(avgRating)} decimals={1} />}</>, l: t('stats.avgScore'), wide: false },
+                { v: <>🧻 <CountUp value={totalSheets} /></>, l: t('stats.totalSheets'), wide: false },
+                { v: <>💩 {topCons}</>, l: t('stats.mostOften'), wide: false },
+                { v: <>{topTime}</>, l: t('stats.favTime'), wide: true },
               ].map((c, i) => (
                 <motion.div
                   key={i}
@@ -237,7 +234,7 @@ function Stats({ history }: { history: Session[] }) {
           </div>
 
           <div className="cal-weekdays">
-            {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((w) => (
+            {WEEKDAYS().map((w) => (
               <div key={w} className="cal-wd">{w}</div>
             ))}
           </div>
@@ -283,7 +280,7 @@ function Stats({ history }: { history: Session[] }) {
           {/* Детали выбранного дня */}
           {selectedDay && (
             <div className="cal-details">
-              <p className="field-label">Сеансы за день</p>
+              <p className="field-label">{t('stats.dayVisits')}</p>
               <div className="history-list">
                 {selectedSessions.map((s) => (
                   <div key={s.id} className="history-card">
@@ -312,11 +309,11 @@ function Stats({ history }: { history: Session[] }) {
 
 
           <p className="lb-hint">
-            Баланс $KAKA 💰
+            {t('stats.lbBalance')}
           </p>
 
           {lbLoading ? (
-            <p className="subtitle">Загрузка…</p>
+            <p className="subtitle">{t('common.loading')}</p>
           ) : lbData.length === 0 ? (
             <p className="subtitle">
               Добавь друзей в профиле 👥
@@ -325,7 +322,7 @@ function Stats({ history }: { history: Session[] }) {
             <div className="lb-list">
               {lbData.map((u, i) => {
                 const isMe = u.user_id === myId
-                const name = u.username || u.first_name || 'Аноним'
+                const name = u.username || u.first_name || t('stats.anon')
                 const value = u.count
                 const unit = ' $KAKA'
                 return (
@@ -336,7 +333,7 @@ function Stats({ history }: { history: Session[] }) {
                     transition={{ delay: Math.min(i * 0.05, 0.5), duration: 0.3 }}>
                     <span className="lb-rank">{i + 1}</span>
                     <img src={LB_AVATARS[u.avatar] || avKing} className="lb-avatar" alt="" />
-                    <span className="lb-name">{name}{isMe ? ' (ты)' : ''}</span>
+                    <span className="lb-name">{name}{isMe ? ' ' + t('stats.you') : ''}</span>
                     <span className="lb-value">{value}{unit}</span>
                   </motion.div>
                 )
@@ -353,16 +350,16 @@ function Stats({ history }: { history: Session[] }) {
             <img src={LB_AVATARS[viewUser.base.avatar] || avKing} className="profile-avatar-img" alt="" />
             <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
             {viewUser.loading ? (
-              <p className="subtitle">Загрузка…</p>
+              <p className="subtitle">{t('common.loading')}</p>
             ) : viewUser.stats?.ok ? (
               <div className="stats-grid" style={{ marginTop: 12 }}>
-                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">сеансов</div></div>
-                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">средняя</div></div>
-                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">листов</div></div>
-                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">лучший стрик</div></div>
+                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">{t('stats.total')}</div></div>
+                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">{t('stats.avg')}</div></div>
+                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">{t('stats.sheets')}</div></div>
+                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">{t('stats.bestStreak')}</div></div>
               </div>
             ) : (
-              <p className="subtitle">Нет данных</p>
+              <p className="subtitle">{t('profile.noData')}</p>
             )}
           </div>
         </div>

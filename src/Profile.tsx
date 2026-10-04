@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins } from './api'
+import { t } from './i18n'
 import coinImg from './assets/coin.png'
 
 
@@ -30,9 +31,9 @@ const AVATAR_MAP: Record<string, string> = {
 
 // Проверка ника: латиница, цифры, _ ; без пробелов и спецсимволов; 3-20 символов
 function validateNick(nick: string): string {
-  if (nick.length < 3) return 'Минимум 3 символа'
-  if (nick.length > 20) return 'Максимум 20 символов'
-  if (!/^[a-zA-Z0-9_]+$/.test(nick)) return 'Только латиница, цифры и _'
+  if (nick.length < 3) return t('profile.nickErr.short')
+  if (nick.length > 20) return t('profile.nickErr.long')
+  if (!/^[a-zA-Z0-9_]+$/.test(nick)) return t('profile.nickErr.chars')
   return '' // пусто = всё ок
 }
 
@@ -119,7 +120,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
     const myId = getTelegramUser()?.id
     const ref = myId ? `ref_${myId}` : ''
     const link = `https://t.me/natrone_bot/throne?startapp=${ref}`
-    const text = '👑 Залетай на Трон! Нам обоим по 500 $KAKA, когда сходишь первый раз 💩 Го?'
+    const text = t('profile.inviteText')
     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`
     const tg = (window as any).Telegram?.WebApp
     if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl)
@@ -143,14 +144,14 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
 
 
   const confirmClear = () => {
-    if (window.confirm('Удалить всю историю и достижения? Это нельзя отменить.')) {
+    if (window.confirm(t('profile.clearConfirm'))) {
       onClearHistory()
     }
   }
 
   return (
     <div className="tab-content profile">
-      <h2 className="record-title">Профиль 👤</h2>
+      <h2 className="record-title">{t('profile.title')}</h2>
 
       {/* Шапка */}
       <div className="profile-avatar">
@@ -169,13 +170,13 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
             className="nick-input"
             value={draft}
             onChange={(e) => { setDraft(e.target.value); setError('') }}
-            placeholder="ник"
+            placeholder={t('profile.nickPh')}
             maxLength={20}
           />
           {error && <p className="nick-error">{error}</p>}
           <div className="nick-actions">
-            <button className="btn-gold small" onClick={saveNick}>Сохранить</button>
-            <button className="back-btn small" onClick={() => { setEditing(false); setError('') }}>Отмена</button>
+            <button className="btn-gold small" onClick={saveNick}>{t('common.save')}</button>
+            <button className="back-btn small" onClick={() => { setEditing(false); setError('') }}>{t('common.cancel')}</button>
           </div>
         </div>
       )}
@@ -190,28 +191,28 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
 
       <button className="buy-cta" onClick={onOpenBuy}>
         <span className="buy-cta-shine" />
-        <span className="buy-cta-top">🚀 Войти в Early Bird</span>
-        <span className="buy-cta-sub">Потенциал 10–30x</span>
+        <span className="buy-cta-top">{t('home.buyCtaTop')}</span>
+        <span className="buy-cta-sub">{t('home.buyCtaSub')}</span>
       </button>
 
       {/* Скины */}
 
 
       {/* Друзья */}
-      <p className="field-label ach-block-title">Друзья</p>
+      <p className="field-label ach-block-title">{t('profile.friends')}</p>
       <div className="friend-search">
         <input
           className="nick-input"
           value={searchNick}
           onChange={(e) => setSearchNick(e.target.value)}
-          placeholder="Найти по нику"
+          placeholder={t('profile.searchNick')}
           onKeyDown={(e) => { if (e.key === 'Enter') doSearch() }}
         />
         <button className="btn-gold small" onClick={doSearch}>🔍</button>
       </div>
 
       {searched && searchResults.length === 0 && (
-        <p className="subtitle">Никого не нашли 🤷</p>
+        <p className="subtitle">{t('profile.noneFound')}</p>
       )}
       {searchResults.map((u) => {
         const isMe = u.username === (tgUser?.username || '')
@@ -229,7 +230,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       {/* Список друзей */}
       {friends.length > 0 && (
         <>
-          <p className="field-label ach-block-title">Мои друзья ({friends.length})</p>
+          <p className="field-label ach-block-title">{t('profile.myFriends')} ({friends.length})</p>
           {(friendsExpanded ? friends : friends.slice(0, 3)).map((f) => (
             <div key={f.user_id} className="friend-found">
               <img src={AVATAR_MAP[f.avatar] || AVATAR_MAP['king']} className="friend-avatar" alt=""
@@ -240,7 +241,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
           ))}
           {friends.length > 3 && (
             <button className="friends-toggle" onClick={() => setFriendsExpanded(!friendsExpanded)}>
-              {friendsExpanded ? 'Свернуть ▲' : `Показать всех (${friends.length}) ▼`}
+              {friendsExpanded ? t('profile.collapse') : `${t('profile.showAll')} (${friends.length}) ▼`}
             </button>
           )}
         </>
@@ -249,23 +250,23 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       <div className="ref-promo">
         <div className="ref-promo-head">
           <img src={coinImg} className="ref-coin" alt="" />
-          Зови друзей — получай $KAKA
+          {t('profile.refHead')}
         </div>
-        <div className="ref-promo-row"><span className="ref-plus">+500</span> тебе за каждого друга</div>
-        <div className="ref-promo-row"><span className="ref-plus">+500</span> другу, когда он сходит на трон 👑</div>
+        <div className="ref-promo-row"><span className="ref-plus">+500</span> {t('profile.refYou')}</div>
+        <div className="ref-promo-row"><span className="ref-plus">+500</span> {t('profile.refFriend')}</div>
       </div>
 
       <button className="btn-gold invite-btn ref-invite-btn" onClick={inviteFriend}>
-        ➕ Пригласить и получить 500 $KAKA
+        {t('profile.inviteBtn')}
       </button>
 
       {/* Уведомления */}
       <p className="field-label ach-block-title">
-        Уведомления
+        {t('profile.notifications')}
         <button className="help-btn" onClick={() => setShowNotifyHelp(true)}>?</button>
       </p>
       <div className="privacy-row">
-        <span>🔔 Уведомления о друзьях</span>
+        <span>{t('profile.notifyFriends')}</span>
         <button
           className={notifyOn ? 'toggle on' : 'toggle'}
           onClick={toggleNotify}
@@ -276,11 +277,11 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
 
       {/* Приватность */}
       <p className="field-label ach-block-title">
-        Приватность
+        {t('profile.privacy')}
         <button className="help-btn" onClick={() => setShowPrivacyHelp(true)}>?</button>
       </p>
       <div className="privacy-row">
-        <span>🔒 Приватный аккаунт</span>
+        <span>{t('profile.privateAcc')}</span>
         <button
           className={isPrivate ? 'toggle on' : 'toggle'}
           onClick={togglePrivacy}
@@ -290,22 +291,19 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       </div>
 
       {/* Данные */}
-      <p className="field-label ach-block-title">Данные</p>
+      <p className="field-label ach-block-title">{t('profile.data')}</p>
       <button className="danger-btn" onClick={confirmClear}>
-        🗑️ Очистить историю
+        {t('profile.clearHistory')}
       </button>
 
       {/* О приложении */}
-      <p className="profile-about">Трон · Early Bird 👑</p>
+      <p className="profile-about">{t('profile.about')}</p>
       {showNotifyHelp && (
         <div className="ach-popup-overlay" onClick={() => setShowNotifyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setShowNotifyHelp(false)}>✕</button>
-            <div className="ach-popup-title">Уведомления о друзьях 🔔</div>
-            <p className="privacy-help-text">
-              Когда включено, тебе будут приходить уведомления о походах твоих друзей на трон.<br /><br />
-              Выключишь — не будешь получать эти уведомления.
-            </p>
+            <div className="ach-popup-title">{t('profile.notifyHelpTitle')}</div>
+            <p className="privacy-help-text" dangerouslySetInnerHTML={{ __html: t('profile.notifyHelpText') }} />
           </div>
         </div>
       )}
@@ -313,15 +311,8 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         <div className="ach-popup-overlay" onClick={() => setShowPrivacyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setShowPrivacyHelp(false)}>✕</button>
-            <div className="ach-popup-title">Приватный аккаунт 🔒</div>
-            <p className="privacy-help-text">
-              Если включить:<br /><br />
-              • Тебя не видно в глобальном рейтинге<br />
-              • Тебя нельзя найти по нику<br />
-              • Друзья по-прежнему видят тебя и твою статистику<br />
-              • Ты сам видишь все свои данные<br /><br />
-              Выключишь — снова станешь виден всем.
-            </p>
+            <div className="ach-popup-title">{t('profile.privacyHelpTitle')}</div>
+            <p className="privacy-help-text" dangerouslySetInnerHTML={{ __html: t('profile.privacyHelpText') }} />
           </div>
         </div>
       )}
@@ -332,16 +323,16 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
             <img src={AVATAR_MAP[viewUser.base.avatar] || AVATAR_MAP['king']} className="profile-avatar-img" alt="" />
             <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
             {viewUser.loading ? (
-              <p className="subtitle">Загрузка…</p>
+              <p className="subtitle">{t('common.loading')}</p>
             ) : viewUser.stats?.ok ? (
               <div className="stats-grid" style={{ marginTop: 12 }}>
-                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">сеансов</div></div>
-                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">средняя</div></div>
-                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">листов</div></div>
-                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">лучший стрик</div></div>
+                <div className="stat-card"><div className="stat-value">📊 {viewUser.stats.total}</div><div className="stat-label">{t('stats.total')}</div></div>
+                <div className="stat-card"><div className="stat-value">⭐ {viewUser.stats.avg}</div><div className="stat-label">{t('stats.avg')}</div></div>
+                <div className="stat-card"><div className="stat-value">🧻 {viewUser.stats.totalSheets}</div><div className="stat-label">{t('stats.sheets')}</div></div>
+                <div className="stat-card"><div className="stat-value">🔥 {viewUser.stats.bestStreak}</div><div className="stat-label">{t('stats.bestStreak')}</div></div>
               </div>
             ) : (
-              <p className="subtitle">Нет данных</p>
+              <p className="subtitle">{t('profile.noData')}</p>
             )}
           </div>
         </div>

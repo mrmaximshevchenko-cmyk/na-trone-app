@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './i18n'   // инициализация языка (автоопределение при импорте)
 import App from './App.tsx'
 
 function startApp() {

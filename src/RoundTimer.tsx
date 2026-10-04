@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { t } from './i18n'
 
 // Раунды (UTC)
 const EARLY_BIRD_END = new Date('2026-10-20T23:59:59Z').getTime()
@@ -39,7 +40,7 @@ export default function RoundTimer({ compact = false, coins, coinImg }: { compac
       <div className="rt-top">
         <div className="rt-label">
           <span className="rt-dot" />
-          {round.label} заканчивается через
+          {round.label} {t('timer.endsIn')}
         </div>
         {coins !== undefined && coinImg && (
           <div className="rt-balance">
@@ -49,13 +50,13 @@ export default function RoundTimer({ compact = false, coins, coinImg }: { compac
         )}
       </div>
       <div className="rt-clock">
-        <div className="rt-unit"><span className="rt-num">{p(d)}</span><span className="rt-cap">дн</span></div>
+        <div className="rt-unit"><span className="rt-num">{p(d)}</span><span className="rt-cap">{t('timer.days')}</span></div>
         <span className="rt-sep">:</span>
-        <div className="rt-unit"><span className="rt-num">{p(h)}</span><span className="rt-cap">ч</span></div>
+        <div className="rt-unit"><span className="rt-num">{p(h)}</span><span className="rt-cap">{t('timer.hours')}</span></div>
         <span className="rt-sep">:</span>
-        <div className="rt-unit"><span className="rt-num">{p(m)}</span><span className="rt-cap">мин</span></div>
+        <div className="rt-unit"><span className="rt-num">{p(m)}</span><span className="rt-cap">{t('timer.mins')}</span></div>
         <span className="rt-sep">:</span>
-        <div className="rt-unit"><span className="rt-num">{p(s)}</span><span className="rt-cap">сек</span></div>
+        <div className="rt-unit"><span className="rt-num">{p(s)}</span><span className="rt-cap">{t('timer.secs')}</span></div>
       </div>
     </motion.div>
   )

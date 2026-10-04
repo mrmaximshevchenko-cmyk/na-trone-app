@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import coinImg from './assets/coin.png'
 import RoundTimer from './RoundTimer'
 import { sendPurchaseRequest } from './api'
+import { t } from './i18n'
 
 // ===== КОНФИГ ТОКЕНОМИКИ (меняется в одном месте) =====
 const CFG = {
@@ -108,7 +109,7 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
         transition={{ type: 'spring', stiffness: 260, damping: 26 }}
       >
         <div className="buy-header">
-          <span className="buy-title">🚀 Войти в Early Bird</span>
+          <span className="buy-title">{t('buy.title')}</span>
           <button className="ach-close-btn" onClick={onClose}>✕</button>
         </div>
 
@@ -116,8 +117,8 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
 
         <p className="buy-sub">
           {sol === 0
-            ? <>Вот во что превратится твой баланс. Подвигай ползунок — <span className="grn">докупи и смотри рост</span>.</>
-            : <>Чем раньше зайдёшь — тем дешевле $KAKA. Потенциал <span className="grn">10–30x</span> к листингу.</>}
+            ? t('buy.subBase')
+            : t('buy.subBuy')}
         </p>
 
         {/* ===== ГРАФИК ===== */}
@@ -186,21 +187,21 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
               <text x="0" y="12" fill="#E8C87A" fontSize="9" fontWeight="700" textAnchor="end" opacity="0.9">10x</text>
             </g>
 
-            <text x={pNow.x} y={H - 8} fill="#b2924f" fontSize="10" fontWeight="700" textAnchor="start">{sol === 0 ? 'Сейчас' : 'Твой вход'}</text>
+            <text x={pNow.x} y={H - 8} fill="#b2924f" fontSize="10" fontWeight="700" textAnchor="start">{sol === 0 ? t('buy.now') : t('buy.yourEntry')}</text>
             <text x={pPre.x} y={H - 8} fill="#E8C87A" fontSize="10" fontWeight="700" textAnchor="middle">Presale</text>
-            <text x={p10.x} y={H - 8} fill="#5bd37a" fontSize="10" fontWeight="700" textAnchor="end">Листинг</text>
+            <text x={p10.x} y={H - 8} fill="#5bd37a" fontSize="10" fontWeight="700" textAnchor="end">{t('buy.listing')}</text>
           </svg>
         </div>
 
         {/* ===== ПОЛЗУНОК ===== */}
         <div className="buy-calc">
           <div className="buy-calc-row">
-            <span className="buy-calc-lab">{sol === 0 ? 'Докупить (двигай)' : 'Докупить'}</span>
+            <span className="buy-calc-lab">{sol === 0 ? t('buy.addMove') : t('buy.add')}</span>
             <span className="buy-calc-sol">{sol % 1 === 0 ? sol : sol.toFixed(1)} SOL</span>
           </div>
           <div className="buy-calc-get">
             {sol === 0 ? (
-              <span className="buy-calc-base">Твой баланс: {fmtKaka(balance)} $KAKA</span>
+              <span className="buy-calc-base">{t('buy.yourBalance')}: {fmtKaka(balance)} $KAKA</span>
             ) : (
               <><img src={coinImg} className="buy-calc-coin" alt="" />+{fmtKaka(bought)} $KAKA</>
             )}
@@ -215,16 +216,16 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
 
         {/* ===== КОШЕЛЁК ===== */}
         <div className="buy-wallet">
-          <div className="buy-wallet-head">Отправь SOL сюда</div>
-          <div className="buy-wallet-sub">Сеть Solana · минимум 0.5 SOL</div>
+          <div className="buy-wallet-head">{t('buy.sendHere')}</div>
+          <div className="buy-wallet-sub">{t('buy.network')}</div>
           <div className="buy-addr-row">
             <div className="buy-addr">{CFG.wallet}</div>
-            <button className="buy-copy" onClick={copyWallet}>{copied ? '✓' : 'Копир.'}</button>
+            <button className="buy-copy" onClick={copyWallet}>{copied ? '✓' : t('buy.copy')}</button>
           </div>
           <img
             className="buy-qr"
             src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=0&bgcolor=ffffff&data=${encodeURIComponent(CFG.wallet)}`}
-            alt="QR кошелька"
+            alt="wallet QR"
             loading="lazy"
           />
         </div>
@@ -238,14 +239,14 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
         >
           {canBuy ? (
             <span className="buy-paid-inner">
-              <span className="buy-paid-top">Я оплатил</span>
-              <span className="buy-paid-sub">Подтвердить транзакцию →</span>
+              <span className="buy-paid-top">{t('buy.paidTop')}</span>
+              <span className="buy-paid-sub">{t('buy.paidSub')}</span>
             </span>
-          ) : 'Минимум 0.5 SOL для входа'}
+          ) : t('buy.minSol')}
         </button>
 
         <p className="buy-legal">
-          Оценка по цене текущего раунда. Потенциал роста — не гарантия. Участвуй ответственно.
+          {t('buy.legal')}
         </p>
       </motion.div>
 
@@ -262,27 +263,27 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
             {sent ? (
               <div className="pay-done">
                 <div className="pay-done-icon">✅</div>
-                <div className="pay-done-title">Заявка отправлена!</div>
-                <div className="pay-done-sub">Проверим транзакцию и начислим $KAKA. Придёт уведомление в бот 👑</div>
-                <button className="btn-gold" onClick={() => { setShowForm(false); onClose() }}>Понятно</button>
+                <div className="pay-done-title">{t('buy.doneTitle')}</div>
+                <div className="pay-done-sub">{t('buy.doneSub')}</div>
+                <button className="btn-gold" onClick={() => { setShowForm(false); onClose() }}>{t('buy.gotIt')}</button>
               </div>
             ) : (
               <>
-                <div className="pay-form-title">Подтвердить транзакцию</div>
-                <label className="pay-label">Сколько SOL отправил</label>
+                <div className="pay-form-title">{t('buy.formTitle')}</div>
+                <label className="pay-label">{t('buy.howMuchSol')}</label>
                 <input
                   className="pay-input" type="number" inputMode="decimal"
                   placeholder="0.5" value={paidSol}
                   onChange={(e) => setPaidSol(e.target.value)}
                 />
-                <label className="pay-label">Хэш транзакции</label>
+                <label className="pay-label">{t('buy.txHash')}</label>
                 <input
                   className="pay-input" type="text"
-                  placeholder="Вставь хэш из кошелька"
+                  placeholder={t('buy.txPlaceholder')}
                   value={txHash} onChange={(e) => setTxHash(e.target.value)}
                 />
                 <div className="pay-calc">
-                  Получишь: <span className="grn">{fmtKaka((parseFloat(paidSol) || 0) * CFG.kakaPerSolEarly)} $KAKA</span>
+                  {t('buy.youGet')} <span className="grn">{fmtKaka((parseFloat(paidSol) || 0) * CFG.kakaPerSolEarly)} $KAKA</span>
                 </div>
                 <button
                   className="btn-gold pay-submit"
@@ -290,9 +291,9 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
                   disabled={sending || !parseFloat(paidSol) || !txHash.trim()}
                   style={(sending || !parseFloat(paidSol) || !txHash.trim()) ? { opacity: 0.5 } : undefined}
                 >
-                  {sending ? 'Отправка…' : 'Отправить заявку'}
+                  {sending ? t('buy.sending') : t('buy.sendReq')}
                 </button>
-                <p className="pay-hint">Начисление после проверки транзакции оператором</p>
+                <p className="pay-hint">{t('buy.reqHint')}</p>
               </>
             )}
           </motion.div>
