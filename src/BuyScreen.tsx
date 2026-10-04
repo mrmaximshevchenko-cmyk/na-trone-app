@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import coinImg from './assets/coin.png'
 import RoundTimer from './RoundTimer'
+import { sendPurchaseRequest } from './api'
 
 // ===== КОНФИГ ТОКЕНОМИКИ (меняется в одном месте) =====
 const CFG = {
@@ -25,6 +26,11 @@ const fmtKaka = (v: number) => Math.round(v).toLocaleString('ru-RU')
 export default function BuyScreen({ balance, onClose }: { balance: number; onClose: () => void }) {
   const [sol, setSol] = useState(0)          // ползунок от 0 (0 = только мой баланс)
   const [copied, setCopied] = useState(false)
+  const [showForm, setShowForm] = useState(false)   // окно заявки
+  const [paidSol, setPaidSol] = useState('')        // сколько SOL отправил
+  const [txHash, setTxHash] = useState('')          // хэш транзакции
+  const [sent, setSent] = useState(false)           // заявка отправлена
+  const [sending, setSending] = useState(false)
 
   const bought = sol * CFG.kakaPerSolEarly
   const total = balance + bought
@@ -76,14 +82,20 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
     }).catch(() => {})
   }
 
-  const goSupport = () => {
-    const tg = (window as any).Telegram?.WebApp
-    const text = encodeURIComponent(
-      `Здравствуйте! Хочу зайти в $KAKA на ${sol} SOL. Прикрепляю транзакцию: [вставь хэш]. Мой ник в приложении: `
-    )
-    const url = `${CFG.supportUrl}?text=${text}`
-    if (tg?.openTelegramLink) tg.openTelegramLink(url)
-    else window.open(url, '_blank')
+  const openForm = () => {
+    setPaidSol(sol >= CFG.minBuySol ? String(sol) : '')
+    setTxHash('')
+    setSent(false)
+    setShowForm(true)
+  }
+
+  const submitRequest = async () => {
+    const solNum = parseFloat(paidSol)
+    if (!solNum || solNum <= 0 || !txHash.trim()) return
+    setSending(true)
+    const r = await sendPurchaseRequest(solNum, txHash.trim())
+    setSending(false)
+    if (r && r.ok) setSent(true)
   }
 
   return (
@@ -219,7 +231,7 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
         {/* ===== САППОРТ ===== */}
         <button
           className="btn-gold buy-paid-btn"
-          onClick={goSupport}
+          onClick={openForm}
           disabled={!canBuy}
           style={!canBuy ? { opacity: 0.5 } : undefined}
         >
@@ -235,6 +247,56 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
           Оценка по цене текущего раунда. Потенциал роста — не гарантия. Участвуй ответственно.
         </p>
       </motion.div>
+
+      {showForm && (
+        <div className="pay-form-overlay" onClick={() => setShowForm(false)}>
+          <motion.div
+            className="pay-form"
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="ach-close-btn" onClick={() => setShowForm(false)}>✕</button>
+            {sent ? (
+              <div className="pay-done">
+                <div className="pay-done-icon">✅</div>
+                <div className="pay-done-title">Заявка отправлена!</div>
+                <div className="pay-done-sub">Проверим транзакцию и начислим $KAKA. Придёт уведомление в бот 👑</div>
+                <button className="btn-gold" onClick={() => { setShowForm(false); onClose() }}>Понятно</button>
+              </div>
+            ) : (
+              <>
+                <div className="pay-form-title">Подтвердить транзакцию</div>
+                <label className="pay-label">Сколько SOL отправил</label>
+                <input
+                  className="pay-input" type="number" inputMode="decimal"
+                  placeholder="0.5" value={paidSol}
+                  onChange={(e) => setPaidSol(e.target.value)}
+                />
+                <label className="pay-label">Хэш транзакции</label>
+                <input
+                  className="pay-input" type="text"
+                  placeholder="Вставь хэш из кошелька"
+                  value={txHash} onChange={(e) => setTxHash(e.target.value)}
+                />
+                <div className="pay-calc">
+                  Получишь: <span className="grn">{fmtKaka((parseFloat(paidSol) || 0) * CFG.kakaPerSolEarly)} $KAKA</span>
+                </div>
+                <button
+                  className="btn-gold pay-submit"
+                  onClick={submitRequest}
+                  disabled={sending || !parseFloat(paidSol) || !txHash.trim()}
+                  style={(sending || !parseFloat(paidSol) || !txHash.trim()) ? { opacity: 0.5 } : undefined}
+                >
+                  {sending ? 'Отправка…' : 'Отправить заявку'}
+                </button>
+                <p className="pay-hint">Начисление после проверки транзакции оператором</p>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

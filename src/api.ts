@@ -395,3 +395,21 @@ export async function saveInvite(inviterId: string) {
     })
   } catch (err) { console.log('Ошибка сохранения инвайта:', err) }
 }
+
+// ===== ЗАЯВКА НА ПОКУПКУ =====
+
+export async function sendPurchaseRequest(sol: number, txHash: string) {
+  try {
+    const tg = getTelegramUser()
+    const nick = tg?.username || tg?.firstName || ''
+    const res = await fetch(`${API_URL}/purchase-request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: getUserId(), nick, sol, tx_hash: txHash }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('Ошибка заявки:', err)
+    return { ok: false }
+  }
+}

@@ -1347,3 +1347,34 @@ button:active {
 .upg-coin { width: 22px; height: 22px; }
 .upg-actions { display: flex; gap: 10px; }
 .upg-actions .btn-gold, .upg-actions .back-btn { flex: 1; }
+/* Окно заявки на покупку */
+.pay-form-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(10,8,12,0.8); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.pay-form {
+  position: relative; width: 100%; max-width: 380px;
+  background: #1c1922; border: 1px solid #38323f; border-radius: 22px;
+  padding: 26px 22px;
+}
+.pay-form-title {
+  font-family: 'Playfair Display', serif; font-weight: 800;
+  font-size: 22px; color: #E8C87A; text-align: center; margin-bottom: 18px;
+}
+.pay-label { display: block; font-size: 13px; color: #b1a79d; margin: 12px 0 6px; font-weight: 600; }
+.pay-input {
+  width: 100%; background: #15131a; border: 1px solid #38323f; border-radius: 12px;
+  padding: 13px 14px; color: #efe9df; font-family: inherit; font-size: 15px; outline: none;
+}
+.pay-input:focus { border-color: #E8C87A; }
+.pay-calc {
+  text-align: center; font-size: 15px; color: #b1a79d; font-weight: 600;
+  margin: 16px 0;
+}
+.pay-submit { width: 100%; margin-top: 4px; }
+.pay-hint { font-size: 11px; color: #6a6358; text-align: center; margin: 12px 0 0; }
+.pay-done { text-align: center; padding: 10px 0; }
+.pay-done-icon { font-size: 52px; }
+.pay-done-title { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 22px; color: #5bd37a; margin: 10px 0 8px; }
+.pay-done-sub { font-size: 14px; color: #b1a79d; line-height: 1.5; margin-bottom: 18px; }
