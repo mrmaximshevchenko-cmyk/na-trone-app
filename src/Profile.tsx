@@ -295,7 +295,7 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
       </button>
 
       {/* О приложении */}
-      <p className="profile-about">Трон · версия 0.1</p>
+      <p className="profile-about">Трон · Early Bird 👑</p>
       {showNotifyHelp && (
         <div className="ach-popup-overlay" onClick={() => setShowNotifyHelp(false)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
