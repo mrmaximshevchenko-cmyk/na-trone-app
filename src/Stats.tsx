@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { t, MONTHS, WEEKDAYS } from './i18n'
+import { t, MONTHS, WEEKDAYS, TIMES } from './i18n'
 import { motion } from 'framer-motion'
 import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
 
@@ -146,10 +146,7 @@ function Stats({ history }: { history: Session[] }) {
   // ===== Данные для календаря =====
   const year = calMonth.getFullYear()
   const month = calMonth.getMonth()
-  const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь',
-  ]
+  const monthNames = MONTHS()
 
   // Группируем сеансы по дню
   const byDay: Record<string, Session[]> = {}
