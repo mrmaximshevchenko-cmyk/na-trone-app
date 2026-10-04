@@ -3,20 +3,7 @@ import { t, MONTHS, WEEKDAYS, TIMES } from './i18n'
 import { motion } from 'framer-motion'
 import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily } from './api'
 
-// Карта аватарок (те же, что в профиле)
-import avKing from './assets/avatars/free/king.png'
-import avGym from './assets/avatars/free/gym.png'
-import avCool from './assets/avatars/free/cool.png'
-import avGamer from './assets/avatars/free/gamer.png'
-import avZen from './assets/avatars/free/zen.png'
-import avChad from './assets/avatars/premium/chad.jpg'
-import av67 from './assets/avatars/premium/s67.jpg'
-import avLux from './assets/avatars/premium/lux.jpg'
 
-const LB_AVATARS: Record<string, string> = {
-  king: avKing, gym: avGym, cool: avCool, gamer: avGamer, zen: avZen,
-  chad: avChad, s67: av67, lux: avLux,
-}
 // Число прокручивается от 0 до value
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const [display, setDisplay] = useState(0)
@@ -288,7 +275,7 @@ function Stats({ history }: { history: Session[] }) {
                     <div className="history-tags">
                       {s.amount && <span className="tag">{s.amount}</span>}
                       {s.consistency && <span className="tag">{s.consistency}</span>}
-                      <span className="tag">{s.noPaper ? 'Без бумаги' : `🧻 ${s.sheets}`}</span>
+                      <span className="tag">{s.noPaper ? t('rec.noPaper') : `🧻 ${s.sheets}`}</span>
                     </div>
                   </div>
                 ))}
@@ -313,7 +300,7 @@ function Stats({ history }: { history: Session[] }) {
             <p className="subtitle">{t('common.loading')}</p>
           ) : lbData.length === 0 ? (
             <p className="subtitle">
-              Добавь друзей в профиле 👥
+              {t('stats.lbEmpty')}
             </p>
           ) : (
             <div className="lb-list">
@@ -329,7 +316,6 @@ function Stats({ history }: { history: Session[] }) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: Math.min(i * 0.05, 0.5), duration: 0.3 }}>
                     <span className="lb-rank">{i + 1}</span>
-                    <img src={LB_AVATARS[u.avatar] || avKing} className="lb-avatar" alt="" />
                     <span className="lb-name">{name}{isMe ? ' ' + t('stats.you') : ''}</span>
                     <span className="lb-value">{value}{unit}</span>
                   </motion.div>
@@ -344,7 +330,6 @@ function Stats({ history }: { history: Session[] }) {
         <div className="ach-popup-overlay" onClick={() => setViewUser(null)}>
           <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
             <button className="ach-close-btn" onClick={() => setViewUser(null)}>✕</button>
-            <img src={LB_AVATARS[viewUser.base.avatar] || avKing} className="profile-avatar-img" alt="" />
             <div className="ach-popup-title">@{viewUser.base.username || viewUser.base.first_name}</div>
             {viewUser.loading ? (
               <p className="subtitle">{t('common.loading')}</p>

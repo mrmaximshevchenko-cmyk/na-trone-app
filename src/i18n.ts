@@ -114,6 +114,8 @@ const DICT: Record<string, { ru: string; en: string }> = {
   'profile.refYou': { ru: 'тебе за каждого друга', en: 'for you per friend' },
   'profile.refFriend': { ru: 'другу, когда он сходит на трон 👑', en: 'for your friend after their first visit 👑' },
   'profile.inviteBtn': { ru: '➕ Пригласить и получить 500 $KAKA', en: '➕ Invite and get 500 $KAKA' },
+  'profile.inviteTop': { ru: '➕ Пригласить друзей', en: '➕ Invite friends' },
+  'profile.inviteSub': { ru: 'Получить 500 $KAKA', en: 'Get 500 $KAKA' },
   'profile.inviteText': { ru: '👑 Залетай на Трон! Нам обоим по 500 $KAKA, когда сходишь первый раз 💩 Го?', en: '👑 Come to the Throne! We both get 500 $KAKA after your first visit 💩 Let\'s go?' },
   'profile.notifications': { ru: 'Уведомления', en: 'Notifications' },
   'profile.notifyFriends': { ru: '🔔 Уведомления о друзьях', en: '🔔 Friend notifications' },

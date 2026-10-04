@@ -128,13 +128,13 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
 
       <div className="lang-switch">
         <button
-          className={LANG === 'ru' ? 'lang-btn on' : 'lang-btn'}
-          onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('ru'); location.reload() }}
-        >🇷🇺 RU</button>
-        <button
           className={LANG === 'en' ? 'lang-btn on' : 'lang-btn'}
           onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('en'); location.reload() }}
         >🇬🇧 EN</button>
+        <button
+          className={LANG === 'ru' ? 'lang-btn on' : 'lang-btn'}
+          onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('ru'); location.reload() }}
+        >🇷🇺 RU</button>
       </div>
 
 
@@ -234,9 +234,10 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
         <div className="ref-promo-row"><span className="ref-plus">+500</span> {t('profile.refFriend')}</div>
       </div>
 
-      <button className="invite-cta" onClick={inviteFriend}>
+      <button className="buy-cta" onClick={inviteFriend}>
         <span className="buy-cta-shine" />
-        <span className="invite-cta-text">{t('profile.inviteBtn')}</span>
+        <span className="buy-cta-top">{t('profile.inviteTop')}</span>
+        <span className="buy-cta-sub">{t('profile.inviteSub')}</span>
       </button>
 
       {/* Уведомления */}
