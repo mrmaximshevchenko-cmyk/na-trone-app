@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import coinImg from './assets/coin.png'
 import RoundTimer from './RoundTimer'
@@ -248,7 +249,7 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
         </p>
       </motion.div>
 
-      {showForm && (
+      {showForm && createPortal(
         <div className="pay-form-overlay" onClick={() => setShowForm(false)}>
           <motion.div
             className="pay-form"
@@ -295,7 +296,8 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
               </>
             )}
           </motion.div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

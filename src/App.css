@@ -1385,3 +1385,69 @@ button:active {
 .pay-done-icon { font-size: 52px; }
 .pay-done-title { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 22px; color: #5bd37a; margin: 10px 0 8px; }
 .pay-done-sub { font-size: 14px; color: #b1a79d; line-height: 1.5; margin-bottom: 18px; }
+/* Пилюля покупки под таймером */
+/* Кнопка покупки — премиальная, с бликом */
+.buy-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: -2px auto 14px;
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f8e7af 0%, #E8C87A 55%, #cfa94e 100%);
+  color: #1a1a1f;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 8px 22px rgba(232,200,122,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 4px rgba(140,100,30,0.3);
+}
+.buy-pill-text { position: relative; z-index: 2; }
+.buy-pill-arrow {
+  position: relative; z-index: 2;
+  font-weight: 900; font-size: 18px;
+  transition: transform 0.2s;
+}
+.buy-pill:active { transform: scale(0.95); }
+.buy-pill:active .buy-pill-arrow { transform: translateX(3px); }
+.buy-pill-shine {
+  position: absolute;
+  top: 0; left: -60%;
+  width: 45%; height: 100%;
+  background: linear-gradient(110deg, transparent, rgba(255,255,255,0.75), transparent);
+  transform: skewX(-20deg);
+  animation: pillShine 3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes pillShine {
+  0% { left: -60%; }
+  45%, 100% { left: 140%; }
+}
+
+/* Баланс наверху (под кнопкой Купить) */
+.home-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 2px 0 8px;
+}
+.home-balance-coin { width: 30px; height: 30px; }
+.home-balance-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 34px;
+  color: #E8C87A;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(232,200,122,0.35);
+}
+.home-balance-lab {
+  font-size: 15px; font-weight: 700; color: #b1a79d;
+  align-self: flex-end; margin-bottom: 4px;
+}

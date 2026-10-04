@@ -748,9 +748,22 @@ function App() {
           <>
             <RoundTimer />
 
-            <button className="buy-pill" onClick={() => setBuyOpen(true)}>
-              💰 Купить $KAKA
-            </button>
+            <motion.button
+              className="buy-pill" onClick={() => setBuyOpen(true)}
+              whileTap={{ scale: 0.95 }}
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <span className="buy-pill-shine" />
+              <span className="buy-pill-text">💰 Купить $KAKA</span>
+              <span className="buy-pill-arrow">→</span>
+            </motion.button>
+
+            <div className="home-balance">
+              <img src={coinImg} className="home-balance-coin" alt="🪙" />
+              <span className="home-balance-num">{coins}</span>
+              <span className="home-balance-lab">$KAKA</span>
+            </div>
 
             {/* ТАПАЛКА */}
             <div className="tap-zone">
@@ -786,12 +799,6 @@ function App() {
                   >+{t.n}</motion.span>
                 ))}
               </motion.div>
-
-              <div className="tap-balance">
-                <img src={coinImg} className="tap-balance-coin" alt="🪙" />
-                <span className="tap-balance-num">{coins}</span>
-                <span className="tap-balance-lab">$KAKA</span>
-              </div>
 
               <motion.p
                 className="tap-hint"
