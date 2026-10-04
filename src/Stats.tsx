@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { t, MONTHS, WEEKDAYS, TIMES } from './i18n'
+import { t, MONTHS, WEEKDAYS, TIMES, amountLabel, consLabel } from './i18n'
 import { motion } from 'framer-motion'
 import { loadLeaderboardBalanceFriends, loadUserStats, loadDaily, loadTapState } from './api'
 
@@ -220,7 +220,7 @@ function Stats({ history }: { history: Session[] }) {
                 { v: <>📊 <CountUp value={total} /></>, l: t('stats.totalVisits'), wide: false },
                 { v: <>⭐ {avgRating === '—' ? '—' : <CountUp value={Number(avgRating)} decimals={1} />}</>, l: t('stats.avgScore'), wide: false },
                 { v: <>🧻 <CountUp value={totalSheets} /></>, l: t('stats.totalSheets'), wide: false },
-                { v: <>💩 {topCons}</>, l: t('stats.mostOften'), wide: false },
+                { v: <>💩 {topCons === '—' ? '—' : consLabel(topCons)}</>, l: t('stats.mostOften'), wide: false },
                 { v: <>{topTime}</>, l: t('stats.favTime'), wide: true },
               ].map((c, i) => (
                 <motion.div
@@ -304,8 +304,8 @@ function Stats({ history }: { history: Session[] }) {
                       <span className="history-date">{s.date}</span>
                     </div>
                     <div className="history-tags">
-                      {s.amount && <span className="tag">{s.amount}</span>}
-                      {s.consistency && <span className="tag">{s.consistency}</span>}
+                      {s.amount && <span className="tag">{amountLabel(s.amount)}</span>}
+                      {s.consistency && <span className="tag">{consLabel(s.consistency)}</span>}
                       <span className="tag">{s.noPaper ? t('rec.noPaper') : `🧻 ${s.sheets}`}</span>
                     </div>
                   </div>
