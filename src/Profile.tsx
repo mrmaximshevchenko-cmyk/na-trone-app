@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getTelegramUser, searchUser, followUser, unfollowUser, loadFriends, loadUserStats, setPrivacy, setNotify, loadCoins } from './api'
-import { t } from './i18n'
+import { t, LANG, setLang } from './i18n'
 import coinImg from './assets/coin.png'
 
 
@@ -152,6 +152,17 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
   return (
     <div className="tab-content profile">
       <h2 className="record-title">{t('profile.title')}</h2>
+
+      <div className="lang-switch">
+        <button
+          className={LANG === 'ru' ? 'lang-btn on' : 'lang-btn'}
+          onClick={() => { setLang('ru'); location.reload() }}
+        >🇷🇺 RU</button>
+        <button
+          className={LANG === 'en' ? 'lang-btn on' : 'lang-btn'}
+          onClick={() => { setLang('en'); location.reload() }}
+        >🇬🇧 EN</button>
+      </div>
 
       {/* Шапка */}
       <div className="profile-avatar">

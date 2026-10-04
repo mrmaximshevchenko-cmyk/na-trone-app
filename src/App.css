@@ -1466,3 +1466,28 @@ button:active {
   font-size: 15px; font-weight: 700; color: #b1a79d;
   align-self: flex-end; margin-bottom: 4px;
 }
+/* Переключатель языка */
+.lang-switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+.lang-btn {
+  background: #221e27;
+  border: 1px solid #38323f;
+  border-radius: 999px;
+  padding: 7px 16px;
+  color: #9a9089;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.lang-btn.on {
+  background: var(--gold, #E8C87A);
+  color: #1a1a1f;
+  border-color: var(--gold, #E8C87A);
+}
+.lang-btn:active { transform: scale(0.95); }
