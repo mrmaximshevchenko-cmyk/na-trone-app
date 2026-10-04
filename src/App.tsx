@@ -128,12 +128,7 @@ function calcStreak(history: Session[]) {
 }
 
 function App() {
-  const [tab, setTab] = useState(() => {
-    // Восстановить вкладку после смены языка (reload), один раз
-    const saved = localStorage.getItem('throne_return_tab')
-    if (saved) { localStorage.removeItem('throne_return_tab'); return saved }
-    return 'home'
-  })
+  const [tab, setTab] = useState('home')
   const shellRef = useRef<HTMLDivElement>(null)
   const [buyOpen, setBuyOpen] = useState(false)
   const [coins, setCoins] = useState<number>(0)
@@ -185,7 +180,7 @@ function App() {
       tg.switchInlineQuery(query, ['users', 'groups', 'channels', 'bots'])
     } else {
       // Запасной вариант вне Telegram
-      const text = `🏆 Новое достижение на троне: «${a.name}»!`
+      const text = `🏆 New badge on the Throne: "${a.name()}"!`
       const url = 'https://t.me/natrone_bot/throne'
       window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank')
     }
@@ -413,7 +408,7 @@ function App() {
       setPendingAch(freshAch)
       haptic('success')
       // Тихо шлём картинки полученных ачивок в чат с ботом
-      freshAch.forEach((a) => notifyAchievement(a.id, a.name))
+      freshAch.forEach((a) => notifyAchievement(a.id, a.name()))
     }
 
     setStep('result')
@@ -468,8 +463,8 @@ function App() {
               onClick={() => { if (popupAch.length > 1) setViewAch(a) }}>
               <span className="ach-popup-emoji">{a.emoji}</span>
               <div className="ach-popup-text">
-                <span className="ach-popup-name">{a.name}</span>
-                <span className="ach-popup-cond">{a.condition}</span>
+                <span className="ach-popup-name">{a.name()}</span>
+                <span className="ach-popup-cond">{a.condition()}</span>
               </div>
               {popupAch.length > 1 && <span className="ach-popup-arrow">›</span>}
             </div>
@@ -492,8 +487,8 @@ function App() {
       <div className="ach-popup" onClick={(e) => e.stopPropagation()}>
         <button className="ach-close-btn" onClick={() => setViewAch(null)}>✕</button>
         <div className="ach-view-emoji">{viewAch.emoji}</div>
-        <div className="ach-popup-title">{viewAch.name}</div>
-        <div className="ach-view-cond">{viewAch.condition}</div>
+        <div className="ach-popup-title">{viewAch.name()}</div>
+        <div className="ach-view-cond">{viewAch.condition()}</div>
         <button className="btn-gold" onClick={() => shareAch(viewAch)}>
           Похвастаться 📤
         </button>
@@ -853,9 +848,9 @@ function App() {
     content = (
       <div className="tab-content ach-screen">
         <h2 className="record-title">{t('ach.title')}</h2>
-        <p className="ach-counter">Получено {gotCount} из {ACHIEVEMENTS.length}</p>
+        <p className="ach-counter">{t('ach.counter')} {gotCount} / {ACHIEVEMENTS.length}</p>
 
-        <p className="field-label ach-block-title">🎯 Задания</p>
+        <p className="field-label ach-block-title">{t('ach.tasks')}</p>
         <div className="ach-grid">
           {visible.map((a, i) => {
             const got = unlocked.includes(a.id)
@@ -866,8 +861,8 @@ function App() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: Math.min(i * 0.03, 0.5), duration: 0.3 }}>
                 <div className="ach-emoji">{got ? a.emoji : '🔒'}</div>
-                <div className="ach-name">{a.name}</div>
-                <div className="ach-cond">{a.condition}</div>
+                <div className="ach-name">{a.name()}</div>
+                <div className="ach-cond">{a.condition()}</div>
                 <div className={got ? 'ach-coins got' : 'ach-coins'}>
                   <img src={coinImg} className="ach-coin-icon" alt="🪙" />
                   {got ? '+' : ''}{a.coins}
@@ -877,7 +872,7 @@ function App() {
           })}
         </div>
 
-        <p className="field-label ach-block-title">🕵️ Секретные</p>
+        <p className="field-label ach-block-title">{t('ach.secret')}</p>
         <div className="ach-grid">
           {secret.map((a, i) => {
             const got = unlocked.includes(a.id)
@@ -889,7 +884,7 @@ function App() {
                 transition={{ delay: Math.min(i * 0.03, 0.5), duration: 0.3 }}>
                 <div className="ach-emoji">{got ? a.emoji : '❓'}</div>
                 <div className="ach-name">{got ? a.name : '???'}</div>
-                {got && <div className="ach-cond">{a.condition}</div>}
+                {got && <div className="ach-cond">{a.condition()}</div>}
                 <div className={got ? 'ach-coins got' : 'ach-coins'}>
                   <img src={coinImg} className="ach-coin-icon" alt="🪙" />
                   {got ? '+' + a.coins : '???'}
