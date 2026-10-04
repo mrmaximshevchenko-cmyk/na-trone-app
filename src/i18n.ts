@@ -63,15 +63,15 @@ const DICT: Record<string, { ru: string; en: string }> = {
   'rec.noPaper': { ru: 'Без бумаги', en: 'No paper' },
   'rec.saveBtn': { ru: 'Сохранить', en: 'Save' },
   // количество
-  'amount.miss': { ru: 'Осечка', en: 'Misfire' },
+  'amount.miss': { ru: 'Осечка', en: 'False alarm' },
   'amount.little': { ru: 'Чуток', en: 'A bit' },
   'amount.normal': { ru: 'Стандарт', en: 'Normal' },
-  'amount.lot': { ru: 'Куча', en: 'A load' },
+  'amount.lot': { ru: 'Куча', en: 'Huge' },
   // консистенция
-  'cons.liquid': { ru: 'Жидко', en: 'Runny' },
+  'cons.liquid': { ru: 'Жидко', en: 'Watery' },
   'cons.soft': { ru: 'Мягко', en: 'Soft' },
   'cons.sausage': { ru: 'Колбаска', en: 'Sausage' },
-  'cons.rock': { ru: 'Сухарь', en: 'Rock' },
+  'cons.rock': { ru: 'Сухарь', en: 'Bricks' },
 
   // --- Результат ---
   'res.great': { ru: 'Красота! 🎉', en: 'Beautiful! 🎉' },
@@ -178,12 +178,12 @@ const DICT: Record<string, { ru: string; en: string }> = {
   'newbie.cta': { ru: 'Запиши свой первый поход!', en: 'Log your first visit!' },
 
   // --- Заголовки записи ---
-  'rec.q.rate': { ru: 'Как всё прошло?', en: 'How did it go?' },
-  'rec.q.rateSub': { ru: 'Оцени сеанс от 1 до 10', en: 'Rate it from 1 to 10' },
+  'rec.q.rate': { ru: 'Как всё прошло?', en: 'Rate your poop 💩' },
+  'rec.q.rateSub': { ru: 'Оцени сеанс от 1 до 10', en: 'from 1 to 10' },
   'rec.q.amount': { ru: 'Сколько добра?', en: 'How much?' },
   'rec.q.amountSub': { ru: 'Оцени объём', en: 'Pick the amount' },
-  'rec.q.cons': { ru: 'Какая консистенция?', en: "What's the texture?" },
-  'rec.q.consSub': { ru: 'Выбери, что ближе', en: 'Pick the closest' },
+  'rec.q.cons': { ru: 'Какая консистенция?', en: 'Describe your poop 💩' },
+  'rec.q.consSub': { ru: 'Выбери, что ближе', en: '' },
   'rec.q.paper': { ru: 'Сколько бумаги ушло?', en: 'How much paper?' },
   'rec.q.paperSub': { ru: 'Тапни по листам или проведи пальцем', en: 'Tap the sheets or swipe' },
   'rec.noPaperBtn': { ru: '💩 Без бумаги 🚿', en: '💩 No paper 🚿' },
@@ -298,4 +298,20 @@ export function TIMES(): string[] {
   return LANG === 'ru'
     ? ['Утро 🌅','День ☀️','Вечер 🌆','Ночь 🌙']
     : ['Morning 🌅','Day ☀️','Evening 🌆','Night 🌙']
+}
+
+// Перевод значений количества/консистенции (данные хранятся по-русски)
+export function amountLabel(v: string): string {
+  const map: Record<string, string> = {
+    'Осечка': t('amount.miss'), 'Чуток': t('amount.little'),
+    'Стандарт': t('amount.normal'), 'Куча': t('amount.lot'),
+  }
+  return map[v] || v
+}
+export function consLabel(v: string): string {
+  const map: Record<string, string> = {
+    'Жидко': t('cons.liquid'), 'Мягко': t('cons.soft'),
+    'Колбаска': t('cons.sausage'), 'Сухарь': t('cons.rock'),
+  }
+  return map[v] || v
 }
