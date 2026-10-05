@@ -54,7 +54,11 @@ function calcStreak(history: Session[]) {
 }
 
 function App() {
-  const [tab, setTab] = useState('home')
+  const [tab, setTab] = useState(() => {
+    const saved = localStorage.getItem('throne_return_tab')
+    if (saved) { localStorage.removeItem('throne_return_tab'); return saved }
+    return 'home'
+  })
   const shellRef = useRef<HTMLDivElement>(null)
   const [buyOpen, setBuyOpen] = useState(false)
   const [coins, setCoins] = useState<number>(0)
