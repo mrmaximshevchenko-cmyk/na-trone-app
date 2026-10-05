@@ -1618,10 +1618,11 @@ button:active {
 .wl-btn:active { transform: scale(0.95); }
 .brand-title-compact {
   font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-size: 34px;
+  font-weight: 800;
+  font-size: 32px;
   color: #E8C87A;
   text-align: center;
-  margin: 4px 0 8px;
-  text-shadow: 0 2px 0 #b2924f, 0 0 20px rgba(232,200,122,0.3);
+  margin: 6px 0 10px;
+  letter-spacing: 0.5px;
+  -webkit-font-smoothing: antialiased;
 }
