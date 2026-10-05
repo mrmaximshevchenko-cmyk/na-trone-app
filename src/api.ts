@@ -1,3 +1,5 @@
+import { LANG } from './i18n'
+
 // Адрес нашего сервера
 export const API_URL = 'https://na-trone-server.onrender.com'
 
@@ -83,7 +85,7 @@ export async function registerUser() {
     await fetch(`${API_URL}/user`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id, username, first_name, avatar }),
+      body: JSON.stringify({ user_id, username, first_name, avatar, lang: LANG }),
     })
   } catch (err) {
     console.log('Не удалось зарегистрировать юзера:', err)
