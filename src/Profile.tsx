@@ -128,6 +128,10 @@ function Profile({ onClearHistory, onOpenBuy }: { onClearHistory: () => void; on
 
       <div className="lang-switch">
         <button
+          className={LANG === 'hi' ? 'lang-btn on' : 'lang-btn'}
+          onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('hi'); location.reload() }}
+        >🇮🇳 HI</button>
+        <button
           className={LANG === 'en' ? 'lang-btn on' : 'lang-btn'}
           onClick={() => { localStorage.setItem('throne_return_tab', 'profile'); setLang('en'); location.reload() }}
         >🇬🇧 EN</button>
