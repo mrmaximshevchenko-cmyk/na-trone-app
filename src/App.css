@@ -1616,3 +1616,12 @@ button:active {
   border-color: #E8C87A;
 }
 .wl-btn:active { transform: scale(0.95); }
+.brand-title-compact {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 34px;
+  color: #E8C87A;
+  text-align: center;
+  margin: 4px 0 8px;
+  text-shadow: 0 2px 0 #b2924f, 0 0 20px rgba(232,200,122,0.3);
+}

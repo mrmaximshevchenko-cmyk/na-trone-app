@@ -660,8 +660,10 @@ function App() {
               <button className={LANG === 'ru' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('ru'); location.reload() }}>🇷🇺 RU</button>
             </div>
 
+            <h1 className="brand-title-compact">{t('brand.title')}</h1>
+
             <motion.img
-              src={mascotMain} className="mascot-img" alt="На троне"
+              src={mascotMain} className="mascot-img" alt="Throne"
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             />
