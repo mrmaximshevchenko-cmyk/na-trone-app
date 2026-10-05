@@ -177,7 +177,11 @@ const DICT: Record<string, { ru: string; en: string; hi: string }> = {
   'brand.title': { ru: 'На троне', en: 'The Throne', hi: 'The Throne' },
   'brand.sub': { ru: 'Твой личный какашка-трекер', en: 'Your personal poop tracker', hi: 'तेरा अपना पॉटी ट्रैकर' },
   'newbie.cta': { ru: 'Запиши свой первый поход!', en: 'Log your first visit!', hi: 'अपना पहला विज़िट लॉग करो!' },
-
+  'welcome.f1': { ru: 'Веди дневник походов', en: 'Keep a visit diary', hi: 'विज़िट डायरी रखो' },
+  'welcome.f2': { ru: 'Следи за здоровьем ЖКТ', en: 'Track your gut health', hi: 'पेट की सेहत ट्रैक करो' },
+  'welcome.f3': { ru: 'Зарабатывай достижения', en: 'Earn badges', hi: 'बैजेस कमाओ' },
+  'welcome.f4': { ru: 'Ставь рекорды и делись с друзьями', en: 'Set records and share with friends', hi: 'रिकॉर्ड बनाओ और दोस्तों को दिखाओ' },
+  'welcome.arrow': { ru: '👇 Жми на унитаз', en: '👇 Tap the toilet', hi: '👇 टॉयलेट पे टैप करो' },
   // --- Заголовки записи ---
   'rec.q.rate': { ru: 'Как всё прошло?', en: 'Rate your poop 💩', hi: 'अपनी पॉटी रेट करो 💩' },
   'rec.q.rateSub': { ru: 'Оцени сеанс от 1 до 10', en: 'from 1 to 10', hi: '1 से 10 तक' },

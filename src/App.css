@@ -1591,3 +1591,28 @@ button:active {
   color: #E8C87A !important;
   font-weight: 800 !important;
 }
+/* Выбор языка на welcome */
+.welcome-lang {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+.wl-btn {
+  background: rgba(34,30,39,0.8);
+  border: 1px solid #38323f;
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: #9a9089;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.wl-btn.on {
+  background: #E8C87A;
+  color: #1a1a1f;
+  border-color: #E8C87A;
+}
+.wl-btn:active { transform: scale(0.95); }

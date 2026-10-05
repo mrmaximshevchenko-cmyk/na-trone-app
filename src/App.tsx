@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { t, amountLabel, consLabel } from './i18n'
+import { t, amountLabel, consLabel, LANG, setLang } from './i18n'
 import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
 import Stats from './Stats'
@@ -654,6 +654,11 @@ function App() {
       <div className="tab-content home">
         {isNewbie ? (
           <>
+            <div className="welcome-lang">
+              <button className={LANG === 'hi' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('hi'); location.reload() }}>🇮🇳 HI</button>
+              <button className={LANG === 'en' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('en'); location.reload() }}>🇬🇧 EN</button>
+              <button className={LANG === 'ru' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('ru'); location.reload() }}>🇷🇺 RU</button>
+            </div>
             <div className="brand">
               <div className="crown">👑</div>
               <h1 className="brand-title">{t('brand.title')}</h1>
@@ -666,14 +671,14 @@ function App() {
             />
 
             <div className="newbie-features">
-              <div className="feature-row"><span className="feature-ico">✅</span> Веди дневник походов</div>
-              <div className="feature-row"><span className="feature-ico">❤️</span> Следи за здоровьем ЖКТ</div>
-              <div className="feature-row"><span className="feature-ico">🏆</span> Зарабатывай достижения</div>
-              <div className="feature-row"><span className="feature-ico">🔥</span> Ставь рекорды и делись с друзьями</div>
+              <div className="feature-row"><span className="feature-ico">✅</span> {t('welcome.f1')}</div>
+              <div className="feature-row"><span className="feature-ico">❤️</span> {t('welcome.f2')}</div>
+              <div className="feature-row"><span className="feature-ico">🏆</span> {t('welcome.f3')}</div>
+              <div className="feature-row"><span className="feature-ico">🔥</span> {t('welcome.f4')}</div>
             </div>
 
             <p className="newbie-cta">{t('newbie.cta')}</p>
-            <p className="newbie-arrow">👇 Жми на унитаз</p>
+            <p className="newbie-arrow">{t('welcome.arrow')}</p>
           </>
         ) : (
           <>
