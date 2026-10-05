@@ -243,8 +243,16 @@ body { font-family: var(--font-body); }
 }
 .tab.active { color: var(--gold); }
 .tab.active .tab-icon {
-  filter: drop-shadow(0 0 8px rgba(232,200,122,0.6));
   transform: scale(1.1);
+  position: relative;
+}
+.tab.active .tab-icon::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,200,122,0.45), transparent 70%);
+  z-index: -1;
 }
 .tab.active .tab-text { font-weight: 800; }
 .tab.active::after {
