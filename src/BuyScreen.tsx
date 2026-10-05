@@ -194,9 +194,9 @@ export default function BuyScreen({ balance, onClose }: { balance: number; onClo
         </div>
 
         {/* ===== ПОЛЗУНОК ===== */}
-        <div className="buy-calc">
+        <div className={sol === 0 ? 'buy-calc buy-calc-hint' : 'buy-calc'}>
           <div className="buy-calc-row">
-            <span className="buy-calc-lab">{sol === 0 ? t('buy.addMove') : t('buy.add')}</span>
+            <span className={sol === 0 ? 'buy-calc-lab buy-calc-lab-gold' : 'buy-calc-lab'}>{sol === 0 ? t('buy.addMove') : t('buy.add')}</span>
             <span className="buy-calc-sol">{sol % 1 === 0 ? sol : sol.toFixed(1)} SOL</span>
           </div>
           <div className="buy-calc-get">

@@ -1577,3 +1577,17 @@ button:active {
   font-size: 15px;
   margin-top: 2px;
 }
+/* Подсветка ползунка пока не тронут */
+.buy-calc-hint {
+  border-color: #E8C87A !important;
+  box-shadow: 0 0 0 1px #E8C87A, 0 0 24px rgba(232,200,122,0.4);
+  animation: calcPulse 2s ease-in-out infinite;
+}
+@keyframes calcPulse {
+  0%, 100% { box-shadow: 0 0 0 1px #E8C87A, 0 0 20px rgba(232,200,122,0.35); }
+  50% { box-shadow: 0 0 0 1px #E8C87A, 0 0 30px rgba(232,200,122,0.6); }
+}
+.buy-calc-lab-gold {
+  color: #E8C87A !important;
+  font-weight: 800 !important;
+}
