@@ -659,11 +659,7 @@ function App() {
               <button className={LANG === 'en' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('en'); location.reload() }}>🇬🇧 EN</button>
               <button className={LANG === 'ru' ? 'wl-btn on' : 'wl-btn'} onClick={() => { setLang('ru'); location.reload() }}>🇷🇺 RU</button>
             </div>
-            <div className="brand">
-              <div className="crown">👑</div>
-              <h1 className="brand-title">{t('brand.title')}</h1>
-              <p className="brand-sub">{t('brand.sub')}</p>
-            </div>
+
             <motion.img
               src={mascotMain} className="mascot-img" alt="На троне"
               animate={{ scale: [1, 1.04, 1] }}
